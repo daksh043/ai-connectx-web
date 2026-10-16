@@ -44,25 +44,25 @@ export default function AIConnectXHero() {
           />
 
           {/* 1. Logo On Top & Headline Below (Left-Aligned) */}
-          <div className="flex flex-col items-start gap-3 sm:gap-4">
-            {/* Official Clean Transparent Logo (Lil Small) */}
+          <div className="flex flex-col items-start gap-2.5 sm:gap-3">
+            {/* Official Clean Transparent Logo */}
             <div className="shrink-0">
               <img
                 src="/ai-connectx-logo-transparent.png"
                 alt="Ai ConnectX Official Logo"
-                className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 object-contain drop-shadow-[0_4px_20px_rgba(0,0,0,0.6)]"
+                className="w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain drop-shadow-[0_4px_20px_rgba(0,0,0,0.6)]"
               />
             </div>
 
-            {/* High-Impact Modern Typographic Headline (Below Logo) */}
+            {/* High-Impact Modern Typographic Headline (Refined, perfectly scaled) */}
             <div className="relative font-sans">
-              <h1 className="text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] font-black tracking-tight leading-[0.9] flex items-center select-none text-white drop-shadow-[0_8px_32px_rgba(0,0,0,0.95)]">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem] font-black tracking-tight leading-[0.95] flex items-center select-none text-white drop-shadow-[0_8px_32px_rgba(0,0,0,0.95)]">
                 {/* "AI" in Bold Crisp White */}
                 <motion.span
                   initial={{ opacity: 0, x: -16 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="text-white mr-2 sm:mr-3 tracking-tighter"
+                  className="text-white mr-2 sm:mr-2.5 tracking-tighter"
                 >
                   AI
                 </motion.span>
@@ -89,7 +89,7 @@ export default function AIConnectXHero() {
               </h1>
 
               {/* Precision Underline */}
-              <div className="relative mt-3 sm:mt-5 h-[2.5px] w-28 sm:w-44 bg-gradient-to-r from-cyan-400 to-transparent shadow-[0_0_12px_#22d3ee]" />
+              <div className="relative mt-2.5 sm:mt-3.5 h-[2px] w-20 sm:w-32 bg-gradient-to-r from-cyan-400 to-transparent shadow-[0_0_12px_#22d3ee]" />
             </div>
           </div>
 
