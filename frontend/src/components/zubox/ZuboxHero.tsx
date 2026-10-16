@@ -45,13 +45,21 @@ export default function AIConnectXHero() {
 
           {/* 1. Logo On Top & Headline Below (Left-Aligned) */}
           <div className="flex flex-col items-start gap-2.5 sm:gap-3">
-            {/* Official Clean Transparent Logo */}
-            <div className="shrink-0">
+            {/* Official Clean Transparent Logo & Universal AI University Affiliation */}
+            <div className="flex items-center gap-3 sm:gap-3.5 shrink-0">
               <img
                 src="/ai-connectx-logo-transparent.png"
                 alt="Ai ConnectX Official Logo"
                 className="w-11 h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain drop-shadow-[0_4px_20px_rgba(0,0,0,0.6)]"
               />
+              <div className="h-7 w-[1px] bg-white/20" />
+              <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md border border-white/40 shadow-[0_4px_16px_rgba(0,0,0,0.4)]">
+                <img
+                  src="/universal-ai-university-logo.png"
+                  alt="Universal AI University"
+                  className="h-5 sm:h-6 object-contain"
+                />
+              </div>
             </div>
 
             {/* High-Impact Modern Typographic Headline (Refined, perfectly scaled) */}

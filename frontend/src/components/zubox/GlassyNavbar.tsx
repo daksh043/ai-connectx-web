@@ -218,6 +218,15 @@ export default function GlassyNavbar({
               <span className="text-cyan-400 ml-0.5">X</span>
             </div>
 
+            {/* Universal AI University Emblem */}
+            <div className="hidden sm:block h-4 w-[1px] bg-white/20 mx-0.5" />
+            <img
+              src="/universal-ai-university-logo.png"
+              alt="Universal AI University"
+              className="hidden sm:block h-4.5 rounded px-1.5 py-0.5 bg-white/95 object-contain shrink-0"
+              title="Universal AI University"
+            />
+
             {/* Active Section Tag on Scroll */}
             {scrolled && (
               <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded-full bg-cyan-400/10 border border-cyan-400/30 text-[10px] font-mono text-cyan-300 font-bold uppercase tracking-wider transition-all ml-1">

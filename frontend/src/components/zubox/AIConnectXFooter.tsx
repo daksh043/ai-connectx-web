@@ -26,18 +26,28 @@ export default function AIConnectXFooter() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-white/10">
           {/* Col 1: Brand & Identity (5 cols) */}
           <div className="lg:col-span-5 flex flex-col items-start space-y-4">
-            <Link to="/" className="flex items-center gap-3 group">
-              <img
-                src="/ai-connectx-logo-transparent.png"
-                alt="AI ConnectX Emblem"
-                className="w-8 h-8 object-contain drop-shadow-[0_0_10px_rgba(34,211,238,0.4)] group-hover:scale-105 transition-transform"
-              />
-              <div className="flex items-baseline font-sans font-bold text-lg tracking-tight">
-                <span className="text-white">AI</span>
-                <span className="text-[#0088ff] ml-1">Connect</span>
-                <span className="text-cyan-400 ml-0.5">X</span>
+            <div className="flex items-center gap-3">
+              <Link to="/" className="flex items-center gap-2.5 group">
+                <img
+                  src="/ai-connectx-logo-transparent.png"
+                  alt="AI ConnectX Emblem"
+                  className="w-8 h-8 object-contain drop-shadow-[0_0_10px_rgba(34,211,238,0.4)] group-hover:scale-105 transition-transform"
+                />
+                <div className="flex items-baseline font-sans font-bold text-lg tracking-tight">
+                  <span className="text-white">AI</span>
+                  <span className="text-[#0088ff] ml-1">Connect</span>
+                  <span className="text-cyan-400 ml-0.5">X</span>
+                </div>
+              </Link>
+              <div className="h-6 w-[1px] bg-white/20" />
+              <div className="flex items-center px-2.5 py-1 rounded-lg bg-white/95">
+                <img
+                  src="/universal-ai-university-logo.png"
+                  alt="Universal AI University"
+                  className="h-5 object-contain"
+                />
               </div>
-            </Link>
+            </div>
 
             <p className="text-sm text-slate-200 leading-relaxed max-w-sm font-light">
               <span className="text-white font-medium">Connecting Students with Industry. Creating Opportunities.</span> Official initiative at Universal AI University bridging talent with frontier AI technology.
