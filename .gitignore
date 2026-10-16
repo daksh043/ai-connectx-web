@@ -1,23 +1,32 @@
-# Dependencies
+# Environment and Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+id_rsa
+id_dsa
+id_ed25519
+
+# Database Files
+*.db
+*.sqlite
+*.sqlite3
+ai_connectx.db
+backend/ai_connectx.db
+
+# Dependencies & Environments
 node_modules/
-*/node_modules/
-
-# Production builds
-dist/
-*/dist/
-dist-ssr/
-build/
-
-# Python
+.venv/
+venv/
+env/
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-env/
-venv/
-.venv/
-ENV/
 build/
 develop-eggs/
 dist/
@@ -30,40 +39,42 @@ parts/
 sdist/
 var/
 wheels/
-pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 
-# Database & local data
-*.db
-*.sqlite
-*.sqlite3
-
-# Environment & credentials
-.env
-.env.*
-!.env.example
-
-# Temporary / Scratch scripts & dumps
-scratch/
-test_snap.png
-opraah_actual.png
-opraah_full.html
-
-# IDE & OS
-.gemini/
-.vscode/
-.idea/
-.DS_Store
-Thumbs.db
-*.swp
-*.swo
+# Testing & Cache
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.turbo/
+.next/
 
 # Logs
 logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
+yarn-error.log*
 pnpm-debug.log*
+
+# Scratch, temporary dumps, screenshots
+scratch/
+opraah_actual.png
+opraah_full.html
+test_snap.png
+*.tmp
+*.temp
+
+# OS & Editor Files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.gemini/
+*.swp
+*~

@@ -22,7 +22,7 @@ export default function AIConnectX3DGallery() {
       id: 1,
       tag: "FLAGSHIP ANNUAL CONCLAVE",
       title: "AI CONCLAVE 4.0",
-      subtitle: "VIT BHOPAL AUDITORIUM",
+      subtitle: "UNIVERSAL AI AUDITORIUM",
       description:
         "The marquee annual convention of the AI Club. Packed auditorium with 500+ builders, industry keynotes from Google & Nvidia alumni, and our interactive neural gaming arena.",
       image: "/gallery/conclave.jpg",
@@ -233,7 +233,7 @@ export default function AIConnectX3DGallery() {
                     {evt.title}
                   </h3>
                   <p className="text-xs font-mono text-teal-300 tracking-wider mt-1 uppercase font-semibold">
-                    — {evt.subtitle}
+                    // {evt.subtitle}
                   </p>
                 </div>
 

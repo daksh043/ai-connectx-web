@@ -147,10 +147,10 @@ function PyTorchLogo() {
 
 function MidjourneyLogo() {
   return (
-    <div className="w-full h-full rounded-full bg-violet-500/20 flex items-center justify-center p-1.5">
+    <div className="w-full h-full rounded-full bg-cyan-500/20 flex items-center justify-center p-1.5">
       <svg viewBox="0 0 24 24" className="w-full h-full" fill="none">
-        <path d="M3 17l8-14 4 14-6-3-6 3z" stroke="#a78bfa" strokeWidth="2" strokeLinejoin="round" />
-        <path d="M15 17l6-6-6-2" stroke="#c4b5fd" strokeWidth="1.5" />
+        <path d="M3 17l8-14 4 14-6-3-6 3z" stroke="#22d3ee" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M15 17l6-6-6-2" stroke="#38bdf8" strokeWidth="1.5" />
       </svg>
     </div>
   );
@@ -239,13 +239,17 @@ export default function ZeroSevenLoadingScreen({
     const startTime = performance.now();
     let hasCompleted = false;
 
+    let lastPct = -1;
     const tick = (now: number) => {
       const elapsed = now - startTime;
       const progressRaw = Math.min(1, elapsed / duration);
       // Clean, linear progress increment mapped to integer 0-100
       const pct = Math.min(100, Math.round(progressRaw * 100));
-      setProgress(pct);
-      onProgressUpdateRef.current?.(pct);
+      if (pct !== lastPct) {
+        lastPct = pct;
+        setProgress(pct);
+        onProgressUpdateRef.current?.(pct);
+      }
 
       if (progressRaw >= 1 && !hasCompleted) {
         hasCompleted = true;
@@ -311,7 +315,7 @@ export default function ZeroSevenLoadingScreen({
             <motion.div
               animate={isZoomingIn ? { scale: 3, opacity: 0 } : { scale: 1, opacity: 1 }}
               transition={{ duration: 0.6 }}
-              className="absolute w-[380px] sm:w-[520px] h-[380px] sm:h-[520px] rounded-full bg-gradient-to-tr from-teal-500/20 via-cyan-500/20 to-fuchsia-500/20 blur-[130px] pointer-events-none animate-aurora-spin"
+              className="absolute w-[380px] sm:w-[520px] h-[380px] sm:h-[520px] rounded-full bg-gradient-to-tr from-teal-500/20 via-cyan-500/20 to-fuchsia-500/20 blur-[60px] pointer-events-none animate-aurora-spin"
             />
 
             {/* Orbit Ring 1 (Inner, Radius ~200px): Clockwise continuous rotation */}
@@ -326,7 +330,7 @@ export default function ZeroSevenLoadingScreen({
                   ? { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
                   : { repeat: Infinity, duration: 24, ease: "linear" }
               }
-              className="absolute w-[380px] sm:w-[440px] h-[380px] sm:h-[440px] rounded-full border border-dashed border-white/10 flex items-center justify-center pointer-events-none"
+              className="absolute w-[380px] sm:w-[440px] h-[380px] sm:h-[440px] rounded-full border border-dashed border-white/10 flex items-center justify-center pointer-events-none will-change-transform transform-gpu"
             >
               {ring1Models.map((item, idx) => {
                 const angle = (idx * 360) / ring1Models.length;
@@ -358,7 +362,7 @@ export default function ZeroSevenLoadingScreen({
                   ? { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
                   : { repeat: Infinity, duration: 34, ease: "linear" }
               }
-              className="absolute w-[510px] sm:w-[580px] h-[510px] sm:h-[580px] rounded-full border border-dashed border-teal-500/20 flex items-center justify-center pointer-events-none"
+              className="absolute w-[510px] sm:w-[580px] h-[510px] sm:h-[580px] rounded-full border border-dashed border-teal-500/20 flex items-center justify-center pointer-events-none will-change-transform transform-gpu"
             >
               {ring2Models.map((item, idx) => {
                 const angle = (idx * 360) / ring2Models.length;
@@ -390,7 +394,7 @@ export default function ZeroSevenLoadingScreen({
                   ? { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
                   : { repeat: Infinity, duration: 46, ease: "linear" }
               }
-              className="absolute w-[650px] sm:w-[730px] h-[650px] sm:h-[730px] rounded-full border border-dashed border-white/5 flex items-center justify-center pointer-events-none"
+              className="absolute w-[650px] sm:w-[730px] h-[650px] sm:h-[730px] rounded-full border border-dashed border-white/5 flex items-center justify-center pointer-events-none will-change-transform transform-gpu"
             >
               {ring3Models.map((item, idx) => {
                 const angle = (idx * 360) / ring3Models.length;
@@ -461,14 +465,14 @@ export default function ZeroSevenLoadingScreen({
                   transition={{ duration: 0.25 }}
                   className="mt-3 flex flex-col items-center"
                 >
-                  <div className="flex items-baseline gap-1 font-serif">
-                    <span className="text-xl sm:text-2xl font-bold italic text-cyan-300 drop-shadow-[0_0_12px_rgba(45,212,191,0.6)]">
-                      Ai
+                  <div className="flex items-baseline gap-1 font-sans font-bold">
+                    <span className="text-xl sm:text-2xl text-white">
+                      AI
                     </span>
-                    <span className="text-lg sm:text-xl font-bold text-[#0088ff] drop-shadow-[0_0_12px_rgba(0,136,255,0.6)] ml-0.5">
+                    <span className="text-xl sm:text-2xl text-[#0088ff] ml-0.5">
                       Connect
                     </span>
-                    <span className="text-xl sm:text-2xl font-bold text-cyan-300 drop-shadow-[0_0_14px_rgba(45,212,191,0.8)]">
+                    <span className="text-xl sm:text-2xl text-cyan-400">
                       X
                     </span>
                   </div>

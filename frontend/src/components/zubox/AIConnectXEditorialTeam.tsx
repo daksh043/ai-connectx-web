@@ -47,18 +47,38 @@ export default function AIConnectXEditorialTeam() {
 
   const featuredTeam: TeamMember[] = [
     {
+      id: "pranav-more",
+      name: "MR. PRANAV MORE",
+      role: "PATRON, AI CONNECTX",
+      title: "Patron & Leadership",
+      dept: "Universal AI University",
+      image: "/team/pranav.jpg",
+      codename: "PATRON-01",
+      bio: "Patron of AI CONNECTX. Creates direct corporate conduits connecting Universal AI University students with tech leaders, founders, and research mentors.",
+      contributions: [
+        "Executive patronage and institutional backing for club initiatives",
+        "Strategic industry relationships and corporate masterclass curation",
+      ],
+      skills: ["Strategic Leadership", "Industry Partnerships", "Executive Mentorship", "AI Ecosystem"],
+      badge: "PATRON",
+      stats: [
+        { label: "INDUSTRY CONDUITS", value: "30+" },
+        { label: "STUDENTS EMPOWERED", value: "500+" },
+        { label: "PARTNER FIRMS", value: "15+" },
+      ],
+    },
+    {
       id: "daksh",
       name: "DAKSH RAJESH KHANDAGALE",
-      role: "CLUB PRESIDENT & ARCHITECT",
+      role: "FOUNDING PRESIDENT & ARCHITECT",
       title: "Lead Architect",
-      dept: "B.Tech · AI & Machine Learning",
+      dept: "Universal AI University · AI & ML",
       image: "/team/daksh.jpg",
-      codename: "ARCHITECT-01",
-      bio: "Visionary founder and architect of Ai ConnectX. Specializes in autonomous multi-agent tool execution, edge model quantization, and production-grade intelligent machine learning systems.",
+      codename: "ARCHITECT-02",
+      bio: "President and lead architect of AI ConnectX. Specializes in autonomous multi-agent systems, edge quantization, and production engineering.",
       contributions: [
-        "Architected core club web systems & 3D cinematic visualizers",
-        "Engineered the 240-frame smooth cinematic canvas animation",
-        "Designed the 3D curved parallax event gallery and design system",
+        "Architected core club web systems & 240-frame cinematic visualizer",
+        "Spearheaded technical masterclasses and agentic AI pipelines",
       ],
       skills: ["PyTorch", "System Architecture", "React & TypeScript", "Agentic Workflows"],
       badge: "PRESIDENT",
@@ -69,69 +89,45 @@ export default function AIConnectXEditorialTeam() {
       ],
     },
     {
-      id: "yusuf",
-      name: "YUSUF CHOUGLE",
-      role: "TECHNICAL CO-LEAD & DEV",
-      title: "Technical Co-Lead",
-      dept: "B.Tech · AI & Machine Learning",
-      image: "/team/yusuf.jpg",
-      codename: "DEV-LEAD-02",
-      bio: "Technical co-lead spearheading full-stack web integration, modern UI architecture, interactive 3D components, and high-performance frontend engineering workflows.",
-      contributions: [
-        "Implemented high-performance interactive animations & state telemetry",
-        "Engineered responsive layout breakpoints and animation telemetry",
-        "Authored technical project specifications and review criteria",
-      ],
-      skills: ["Full-Stack Dev", "FastAPI & Python", "Tailwind CSS", "Data Structures"],
-      badge: "CO-LEAD",
-      stats: [
-        { label: "COMPONENTS SHIPPED", value: "65+" },
-        { label: "FPS TARGET", value: "120 FPS" },
-        { label: "MODULE INTEGRITY", value: "100%" },
-      ],
-    },
-    {
-      id: "pranav",
-      name: "PRANAV SIR",
-      role: "FACULTY GUIDE & ADVISOR",
-      title: "Faculty Guide",
-      dept: "School of Computing Science · AI Systems",
-      image: "/team/pranav.jpg",
-      codename: "ADVISOR-03",
-      bio: "Distinguished academic advisor providing guidance across software engineering methodologies, AI curriculum standards, and intelligent interactive systems.",
-      contributions: [
-        "Academic supervision of AI ConnectX Club Initiatives",
-        "Advisory on ethical AI practices, open-source compliance, and student innovation",
-        "Course guidance on scalable web architecture and state management",
-      ],
-      skills: ["Web Programming", "Software Engineering", "System Design", "Academic Mentorship"],
-      badge: "MENTOR",
-      stats: [
-        { label: "STUDENTS GUIDED", value: "350+" },
-        { label: "ACADEMIC PAPERS", value: "28" },
-        { label: "INDUSTRY LIASONS", value: "12+" },
-      ],
-    },
-    {
-      id: "rhea",
-      name: "RHEA SEN",
-      role: "HEAD OF RESEARCH & GENAI",
-      title: "Research Lead",
-      dept: "Computational Intelligence & AI",
+      id: "ratnadeep-patil",
+      name: "RATNADEEP PATIL",
+      role: "CORE TEAM & OPERATIONS LEAD",
+      title: "Operations Lead",
+      dept: "Universal AI University",
       image: "/team/rhea.jpg",
-      codename: "RESEARCH-04",
-      bio: "Leads the club's frontier research paper reading groups, benchmarking multimodal LLMs, and curating competitive student AI hackathon challenges.",
+      codename: "OPERATIONS-03",
+      bio: "Operations lead directing corporate coordination, student recruitment, and live technical workshops at Universal AI University.",
       contributions: [
-        "Organized Genesis '24 LLM Quantization & Reasoning Masterclass",
-        "Curated evaluation rubrics for club technical interviews",
-        "Mentored student teams in national AI hackathons and paper submissions",
+        "Coordinated flagship AI Engineering × Agentic Systems masterclass",
+        "Manages corporate partnerships and live project pipelines",
       ],
-      skills: ["LLM Fine-Tuning", "TensorRT", "Vision-Language Models", "Prompt Synthesis"],
-      badge: "RESEARCH",
+      skills: ["Operations", "Corporate Relations", "Event Architecture", "Project Management"],
+      badge: "CORE LEAD",
       stats: [
-        { label: "PAPERS REVIEWED", value: "48+" },
-        { label: "BENCHMARK ACCURACY", value: "94.2%" },
-        { label: "HACKATHON WINS", value: "6" },
+        { label: "EVENTS EXECUTED", value: "12+" },
+        { label: "STUDENT INTAKE", value: "150+" },
+        { label: "SPEAKER TRACKS", value: "8" },
+      ],
+    },
+    {
+      id: "purna-sai-venkat",
+      name: "PURNA SAI VENKAT GODAVARTHI",
+      role: "TECHNICAL LEAD & AI ENGINEER",
+      title: "Technical Lead",
+      dept: "Universal AI University · AI Core",
+      image: "/team/yusuf.jpg",
+      codename: "TECH-LEAD-04",
+      bio: "Technical lead developing hands-on AI curricula, RAG frameworks, and multi-agent benchmarks for student cohorts.",
+      contributions: [
+        "Led hands-on lab deployments during technical workshops",
+        "Engineered evaluation testbeds for multi-agent workflows",
+      ],
+      skills: ["Agentic AI", "RAG Frameworks", "Python & PyTorch", "Full-Stack Dev"],
+      badge: "TECH LEAD",
+      stats: [
+        { label: "LAB BUILDS", value: "18+" },
+        { label: "BENCHMARKS RUN", value: "95%" },
+        { label: "WORKSHOPS", value: "6" },
       ],
     },
   ];
@@ -139,37 +135,37 @@ export default function AIConnectXEditorialTeam() {
   const directoryMembers: TeamMember[] = [
     ...featuredTeam,
     {
-      id: "aditya-sharma",
-      name: "ADITYA SHARMA",
-      role: "SYSTEMS & INFRASTRUCTURE",
-      title: "DevOps Engineer",
-      dept: "Distributed Systems Core",
+      id: "hemanth-maddila",
+      name: "HEMANTH HARIHARAN MADDILA",
+      role: "COMMUNITY & EVENT COORDINATOR",
+      title: "Event Coordinator",
+      dept: "Universal AI University",
       image: "/team/daksh.jpg",
-      bio: "Oversees containerized deployments, edge model caching, and multi-cloud continuous integration pipelines.",
-      contributions: ["Containerized deployment pipelines", "High-availability edge cluster management"],
-      skills: ["Docker", "Kubernetes", "Linux Kernel", "CI/CD"],
+      bio: "Manages technical symposia logistics, speaker liaisons, and student community operations for AI ConnectX initiatives.",
+      contributions: ["Speaker coordination for expert technical sessions", "Community outreach across academic cohorts"],
+      skills: ["Community Management", "Event Execution", "Public Relations", "Communication"],
     },
     {
-      id: "ananya-iyer",
-      name: "ANANYA IYER",
-      role: "NEURAL NLP RESEARCHER",
-      title: "NLP Lead",
-      dept: "Natural Language Understanding",
-      image: "/team/rhea.jpg",
-      bio: "Specializes in multi-turn conversational agents, RAG benchmarking, and prompt synthesis optimization.",
-      contributions: ["Authored RAG evaluation benchmarks", "Deployed multi-agent conversational testbed"],
-      skills: ["Transformers", "HuggingFace", "Vector DBs", "LangChain"],
-    },
-    {
-      id: "rohan-kulkarni",
-      name: "ROHAN KULKARNI",
-      role: "COMPUTER VISION LEAD",
-      title: "CV Fellow",
-      dept: "Perception & Spatial Computing",
+      id: "angad-mishra",
+      name: "ANGAD MISHRA",
+      role: "STUDENT RELATIONS & NETWORKING",
+      title: "Student Relations",
+      dept: "Universal AI University",
       image: "/team/yusuf.jpg",
-      bio: "Develops real-time object tracking algorithms, edge vision pipelines, and 3D spatial reconstruction models.",
-      contributions: ["Edge vision acceleration pipeline", "Robotics perception lab integration"],
-      skills: ["OpenCV", "YOLOv9", "NeRFs", "Edge TPU"],
+      bio: "Connects student innovators with live partner projects, internships, and corporate networking opportunities.",
+      contributions: ["Facilitated corporate internships and shadowing opportunities", "Student outreach and onboarding"],
+      skills: ["Student Relations", "Networking", "Career Liaison", "Talent Matching"],
+    },
+    {
+      id: "yusuf",
+      name: "YUSUF CHOUGLE",
+      role: "TECHNICAL CO-LEAD & DEV",
+      title: "Technical Co-Lead",
+      dept: "Universal AI University · AI & ML",
+      image: "/team/pranav.jpg",
+      bio: "Technical co-lead spearheading full-stack web integration, modern UI architecture, interactive components, and high-performance engineering.",
+      contributions: ["Implemented high-performance interactive animations", "Engineered responsive layout breakpoints"],
+      skills: ["Full-Stack Dev", "FastAPI & Python", "Tailwind CSS", "Data Structures"],
     },
     {
       id: "tanvi-deshmukh",
@@ -204,28 +200,19 @@ export default function AIConnectXEditorialTeam() {
 
           {/* Editorial Header */}
           <motion.div style={{ opacity: headerOpacity, scale: headerScale }} className="text-center mb-6 sm:mb-8 origin-center">
-            <div className="inline-flex items-center gap-2 mb-2 px-3.5 py-1.5 rounded-full border border-white/15 bg-black/35 backdrop-blur-md shadow-[0_0_20px_rgba(0,0,0,0.4)]">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-white/90 font-medium">
-                CORE LEADERSHIP &amp; RESEARCH ARCHITECTS
-              </span>
-            </div>
+            <span className="text-xs font-mono tracking-[0.25em] text-cyan-400 font-semibold uppercase block mb-2">
+              04 / CORE LEADERSHIP
+            </span>
 
-            <div className="text-cyan-400 font-mono text-xs sm:text-sm tracking-[0.35em] font-bold mb-0.5 drop-shadow-[0_0_15px_rgba(34,211,238,0.7)]">
-              03
-            </div>
-
-            <h2 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white uppercase">
               TEAM
             </h2>
 
             <p className="mt-2 text-xs sm:text-sm text-slate-300/80 max-w-xl mx-auto font-light line-clamp-2">
               The engineers, researchers, and student visionaries driving frontier autonomous intelligence across the{" "}
-              <span className="font-serif">
-                <span className="italic text-cyan-300 font-bold">Ai</span>{" "}
-                <span className="text-[#0088ff] font-bold">Connect</span>
-                <span className="text-cyan-300 font-bold">X</span>
-              </span>{" "}
+              <span className="font-semibold text-white">AI</span>{" "}
+              <span className="font-semibold text-[#0088ff]">Connect</span>
+              <span className="font-semibold text-cyan-400">X</span>{" "}
               ecosystem.
             </p>
           </motion.div>
@@ -281,11 +268,11 @@ export default function AIConnectXEditorialTeam() {
 
             <button
               onClick={() => setShowDirectory(!showDirectory)}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] hover:bg-white/[0.09] border border-white/15 hover:border-white/30 text-white/90 hover:text-white text-[11px] font-mono tracking-wider uppercase transition-all backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.3)] cursor-pointer"
+              className="group inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-xs sm:text-sm tracking-wide bg-gradient-to-r from-cyan-400 to-[#0088ff] text-slate-950 hover:brightness-110 shadow-[0_4px_20px_rgba(0,229,255,0.25)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer shrink-0"
             >
-              <span>{showDirectory ? "HIDE DIRECTORY" : "COMPLETE DIRECTORY"}</span>
+              <span>{showDirectory ? "Hide Leadership Roster" : "Explore Leadership Roster"}</span>
               <ChevronDown
-                className={`w-3 h-3 text-cyan-400 transition-transform duration-300 ${
+                className={`w-4 h-4 text-slate-950 transition-transform duration-300 stroke-[2] ${
                   showDirectory ? "rotate-180" : ""
                 }`}
               />

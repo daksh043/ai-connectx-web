@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { Compass, Sparkles, Layers } from "lucide-react";
+import { Layers } from "lucide-react";
 
 export default function Spiral3DScrollAnimation() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -91,17 +91,24 @@ export default function Spiral3DScrollAnimation() {
         {/* Ambient Subtle Depth Glow */}
         <div className="absolute w-[500px] h-[500px] rounded-full bg-teal-500/10 blur-[130px] pointer-events-none" />
 
-        {/* Top Header Group: Positioned safely at top so it never encroaches on the 3D helix */}
+        {/* Top Header Group with Surrounding Dark Blur Aura */}
         <div className="absolute top-8 sm:top-10 z-20 flex flex-col items-center text-center pointer-events-none px-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-400/10 border border-teal-400/30 text-teal-300 font-mono text-[11px] uppercase tracking-widest backdrop-blur-md mb-2">
-            <Compass className="w-3.5 h-3.5 text-teal-400" />
-            <span>07 · SPIRAL 3D SCROLL ANIMATION</span>
-          </div>
-          <h3 className="text-2xl sm:text-4xl font-normal text-white tracking-tight mb-1">
-            Spiral 3D Showcase
+          <div
+            className="absolute -inset-x-12 -inset-y-8 -z-10 pointer-events-none rounded-3xl backdrop-blur-md"
+            style={{
+              background: "radial-gradient(ellipse at center, rgba(0, 0, 0, 0.58) 0%, rgba(0, 0, 0, 0.2) 60%, transparent 85%)",
+              maskImage: "radial-gradient(ellipse at center, black 30%, transparent 80%)",
+              WebkitMaskImage: "radial-gradient(ellipse at center, black 30%, transparent 80%)",
+            }}
+          />
+          <span className="text-xs font-mono tracking-[0.25em] text-cyan-400 font-semibold uppercase mb-1">
+            02 / SPATIAL HELIX ARCHITECTURE
+          </span>
+          <h3 className="text-2xl sm:text-4xl font-bold text-white tracking-tight mb-1">
+            Spatial 3D Gallery
           </h3>
           <p className="text-xs sm:text-sm text-white/50 font-mono">
-            Scroll to rotate cards through the 3D perspective spiral arms.
+            Scroll to rotate student works across the spatial dimension.
           </p>
         </div>
 
@@ -135,10 +142,9 @@ export default function Spiral3DScrollAnimation() {
                   {/* Gradient Scrim for Legibility */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/10 pointer-events-none" />
 
-                  {/* Top Minimal Pill */}
-                  <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 border border-white/10 backdrop-blur-md">
-                    <Sparkles className="w-3 h-3 text-teal-300" />
-                    <span className="text-[10px] font-mono text-white/80 tracking-wider">
+                  {/* Top Minimal Index */}
+                  <div className="absolute top-4 left-4 z-10 px-2.5 py-1 rounded-full bg-black/70 border border-white/10 backdrop-blur-md">
+                    <span className="text-[10px] font-mono text-cyan-300 font-bold tracking-wider">
                       0{card.id}
                     </span>
                   </div>

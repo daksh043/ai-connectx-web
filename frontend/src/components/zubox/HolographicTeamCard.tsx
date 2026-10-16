@@ -243,18 +243,18 @@ export default function HolographicTeamCard({
         {/* ─── Typography & Info ─── */}
         <div style={{ transform: "translateZ(25px)" }} className="flex flex-col justify-end">
           <div className="flex items-center justify-between mb-1">
-            <h3 className={`text-sm sm:text-base font-bold tracking-wider uppercase transition-colors drop-shadow-sm line-clamp-1 ${isCardActive ? "text-white" : "text-white/90"}`}>
+            <h3 className={`text-sm sm:text-base font-bold tracking-wider uppercase transition-colors drop-shadow-sm line-clamp-1 ${isCardActive ? "text-white" : "text-white"}`}>
               {member.name}
             </h3>
-            <ArrowUpRight className={`w-4 h-4 transition-all shrink-0 ml-1 ${isCardActive ? "text-cyan-300 translate-x-0.5 -translate-y-0.5" : "text-white/40"}`} />
+            <ArrowUpRight className={`w-4 h-4 transition-all shrink-0 ml-1 ${isCardActive ? "text-cyan-300 translate-x-0.5 -translate-y-0.5" : "text-white/70"}`} />
           </div>
 
-          <p className="text-[11px] font-mono tracking-widest text-cyan-300/90 uppercase mb-1.5 font-medium flex items-center gap-1.5">
-            <Zap className="w-3 h-3 text-cyan-400" />
+          <p className="text-[11px] font-mono tracking-widest text-cyan-300 uppercase mb-1.5 font-semibold flex items-center gap-1.5">
+            <Zap className="w-3 h-3 text-cyan-400 stroke-[2]" />
             <span>{member.role}</span>
           </p>
 
-          <p className="text-[11px] text-white/60 font-mono line-clamp-1">
+          <p className="text-[11px] text-slate-200 font-mono line-clamp-1 font-light">
             {member.dept}
           </p>
 
@@ -266,7 +266,7 @@ export default function HolographicTeamCard({
                 className={`text-[9px] font-mono px-2 py-0.5 rounded-full border transition-colors ${
                   isCardActive
                     ? "bg-white/10 border-white/20 text-cyan-200"
-                    : "bg-white/[0.04] border-white/10 text-white/60"
+                    : "bg-white/[0.08] border-white/15 text-slate-200"
                 }`}
               >
                 {skill}

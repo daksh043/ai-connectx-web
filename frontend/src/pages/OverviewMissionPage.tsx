@@ -100,29 +100,20 @@ export default function OverviewMissionPage() {
       {/* ─── 3. Main Page Content ─── */}
       <main className="relative z-10 pt-28 sm:pt-36 pb-20 max-w-6xl mx-auto px-5 lg:px-8">
         
-        {/* Hero Header Badge & Title */}
+        {/* Hero Header Marker & Title */}
         <div className="flex flex-col items-center text-center">
-          <motion.div
-            initial={{ opacity: 0, y: -15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/60 border border-cyan-400/30 backdrop-blur-xl shadow-[0_0_20px_rgba(34,211,238,0.25)] text-cyan-300 text-xs font-['Space_Grotesk'] font-medium mb-6"
-          >
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-            <span>Ai ConnectX · System Overview &amp; Strategic Mission</span>
-            <span className="ml-1 px-1.5 py-0.2 rounded text-[10px] bg-cyan-400/20 text-cyan-200 border border-cyan-400/30">
-              v1.0
-            </span>
-          </motion.div>
+          <span className="text-xs font-mono tracking-[0.25em] text-cyan-400 font-semibold uppercase mb-4">
+            01 / SYSTEM OVERVIEW &amp; STRATEGIC MISSION
+          </span>
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-4xl leading-[1.1] drop-shadow-[0_15px_40px_rgba(0,0,0,0.85)]"
+            className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white max-w-4xl leading-[1.1]"
           >
             Empowering the Next Wave of{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 drop-shadow-[0_0_30px_rgba(56,189,248,0.5)]">
+            <span className="text-cyan-400">
               Autonomous Intelligence
             </span>
           </motion.h1>
@@ -134,15 +125,13 @@ export default function OverviewMissionPage() {
             className="mt-6 text-base sm:text-lg text-slate-300/85 max-w-2xl leading-relaxed font-light"
           >
             Discover the technology, mathematical foundation, and strategic vision powering{" "}
-            <span className="font-serif">
-              <span className="italic text-cyan-300 font-bold">Ai</span>{" "}
-              <span className="text-[#0088ff] font-bold">Connect</span>
-              <span className="text-cyan-300 font-bold">X</span>
-            </span>
-            —uniting cutting-edge 3D visualization, autonomous workflows, and interactive developer ecosystems.
+            <span className="font-semibold text-white">AI</span>{" "}
+            <span className="font-semibold text-[#0088ff]">Connect</span>
+            <span className="font-semibold text-cyan-400">X</span>: uniting
+            cutting-edge 3D visualization, autonomous workflows, and interactive developer ecosystems.
           </motion.p>
 
-          {/* Quick Action Navigation Buttons */}
+          {/* Quick Action Navigation Buttons - Clean Modern Engineered Radii */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -151,7 +140,7 @@ export default function OverviewMissionPage() {
           >
             <button
               onClick={() => navigate("/#spiral-3d")}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-500 hover:from-blue-500 hover:to-sky-400 text-white text-xs sm:text-sm font-semibold shadow-[0_0_24px_rgba(37,99,235,0.45)] hover:shadow-[0_0_32px_rgba(59,130,246,0.7)] hover:scale-105 active:scale-95 transition-all cursor-pointer border border-blue-300/30"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-sky-500 hover:from-blue-500 hover:to-sky-400 text-white text-xs sm:text-sm font-semibold shadow-[0_0_24px_rgba(37,99,235,0.45)] hover:shadow-[0_0_32px_rgba(59,130,246,0.7)] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer border border-blue-300/30"
             >
               <Sparkles className="w-4 h-4 text-cyan-200" />
               <span>Explore 3D Helix</span>
@@ -159,7 +148,7 @@ export default function OverviewMissionPage() {
 
             <button
               onClick={() => navigate("/contact")}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-slate-900/60 hover:bg-slate-900/80 border border-sky-400/30 hover:border-cyan-400 text-cyan-200 hover:text-white text-xs sm:text-sm font-semibold backdrop-blur-xl shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:scale-105 active:scale-95 transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-slate-900/60 hover:bg-slate-900/80 border border-sky-400/30 hover:border-cyan-400 text-cyan-200 hover:text-white text-xs sm:text-sm font-semibold backdrop-blur-xl shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer"
             >
               <span>Transmission Hub</span>
               <ArrowRight className="w-4 h-4 text-cyan-400" />
@@ -167,7 +156,7 @@ export default function OverviewMissionPage() {
 
             <button
               onClick={() => navigate("/")}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/15 text-slate-300 hover:text-white text-xs sm:text-sm font-medium backdrop-blur-md transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/15 text-slate-300 hover:text-white text-xs sm:text-sm font-medium backdrop-blur-md transition-all cursor-pointer"
             >
               <span>Back to Home</span>
             </button>
@@ -256,7 +245,7 @@ export default function OverviewMissionPage() {
                   </h3>
                   <div className="w-16 h-1 rounded-full bg-gradient-to-r from-teal-300 via-cyan-400 to-sky-400 mt-3" />
                   <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
-                    At <span className="font-serif"><span className="italic text-cyan-300 font-bold">Ai</span> <span className="text-[#0088ff] font-bold">Connect</span><span className="text-cyan-300 font-bold">X</span></span>, we believe autonomous artificial intelligence should be intuitive, highly responsive, and deeply grounded in real-world application.
+                    At <span className="font-semibold text-white">AI</span> <span className="font-semibold text-[#0088ff]">Connect</span><span className="font-semibold text-cyan-400">X</span>, we believe autonomous artificial intelligence should be intuitive, highly responsive, and deeply grounded in real-world application.
                   </p>
                 </div>
 
@@ -392,7 +381,7 @@ export default function OverviewMissionPage() {
             </button>
             <span>•</span>
             <button
-              onClick={() => navigate("/#spiral-3d")}
+              onClick={() => navigate("/spiral-3d")}
               className="hover:text-cyan-300 transition-colors cursor-pointer"
             >
               3D Spiral Helix

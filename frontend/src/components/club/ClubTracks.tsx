@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { Cpu, Eye, Layers, Award, CheckCircle2, ChevronRight } from "lucide-react";
 import { useClubTheme } from "../../contexts/ClubThemeContext";
 
@@ -31,9 +31,9 @@ export default function ClubTracks() {
       title: "Generative Models & Multimodal",
       icon: Eye,
       tag: "RESEARCH & FRONTIER",
-      colorDark: "from-purple-500/20 to-pink-500/5",
-      colorLight: "from-purple-50 to-pink-50/30",
-      accent: "#a855f7",
+      colorDark: "from-teal-500/20 to-cyan-500/5",
+      colorLight: "from-teal-50 to-cyan-50/30",
+      accent: "#14b8a6",
       description:
         "Fine-tuning open weights models (Llama, DeepSeek, Mistral), real-time computer vision inference, voice generation, and multi-modal sensory pipelines.",
       skills: [

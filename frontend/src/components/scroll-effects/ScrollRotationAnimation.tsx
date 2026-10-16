@@ -25,7 +25,7 @@ export default function ScrollRotationAnimation() {
     { icon: <Code2 className="w-5 h-5 text-pink-300" />, label: "FastAPI" },
     { icon: <Globe className="w-5 h-5 text-blue-300" />, label: "React" },
     { icon: <Database className="w-5 h-5 text-orange-300" />, label: "VectorDB" },
-    { icon: <Network className="w-5 h-5 text-purple-300" />, label: "LangGraph" },
+    { icon: <Network className="w-5 h-5 text-cyan-300" />, label: "LangGraph" },
     { icon: <Cpu className="w-5 h-5 text-green-300" />, label: "ONNX" },
     { icon: <Brain className="w-5 h-5 text-yellow-300" />, label: "HuggingFace" },
   ];

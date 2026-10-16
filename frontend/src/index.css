@@ -1555,7 +1555,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/* ─── AI CLUB (VIT BHOPAL) DESIGN SYSTEM ───────────────────────── */
+/* ─── AI CONNECTX (UNIVERSAL AI UNIVERSITY) DESIGN SYSTEM ───────────────────────── */
 :root {
   --ai-lime: #CEFD46;
   --ai-lime-bright: #D4FF32;
@@ -1657,40 +1657,41 @@ html {
   background-size: 8px 8px;
 }
 
-/* ─── AI Connect X Custom Electric-Blue Cursor Effects ──────── */
 
-/* Suppress default browser cursor on fine pointer devices so only custom blue cursor is visible */
-@media (pointer: fine) {
-  html,
-  body,
-  *,
-  *::before,
-  *::after {
-    cursor: none !important;
-  }
+/* ─── Global Surrounding Dark Blur Effect for Website Typography ─── */
+/* Seamless cinematic text shadow that blends naturally with the canvas scene */
+h1, h2, h3, h4, h5, h6,
+.text-dark-blur {
+  text-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.85),
+    0 4px 24px rgba(0, 0, 0, 0.65),
+    0 0 40px rgba(0, 0, 0, 0.45);
 }
 
-@keyframes cursorRippleExpand {
-  0% {
-    transform: translate(-50%, -50%) scale(0.2);
-    opacity: 0.95;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(3.2);
-    opacity: 0;
-  }
+p,
+.subheading-dark-blur,
+.badge-dark-blur {
+  text-shadow:
+    0 1px 6px rgba(0, 0, 0, 0.85),
+    0 2px 16px rgba(0, 0, 0, 0.6);
 }
 
-.cursor-click-ripple {
+/* Surrounding natural dark blur atmosphere behind text blocks (No borders, pure atmospheric blur) */
+.dark-blur-halo {
+  position: relative;
+}
+
+.dark-blur-halo::before {
+  content: "";
   position: absolute;
-  width: 26px;
-  height: 26px;
+  inset: -1.25rem -2rem;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.25) 55%, transparent 85%);
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: 9999px;
+  z-index: -1;
   pointer-events: none;
-  border: 1.5px solid rgba(86, 184, 255, 0.85);
-  background: radial-gradient(circle, rgba(22, 139, 255, 0.35) 0%, rgba(86, 184, 255, 0.12) 45%, transparent 75%);
-  box-shadow: 0 0 16px rgba(22, 139, 255, 0.65), inset 0 0 6px rgba(86, 184, 255, 0.5);
-  animation: cursorRippleExpand 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  will-change: transform, opacity;
 }
 

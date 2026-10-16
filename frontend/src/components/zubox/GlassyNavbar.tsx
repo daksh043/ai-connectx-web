@@ -74,8 +74,8 @@ export default function GlassyNavbar({
     const sectionIds = [
       { id: "hero", label: "Home" },
       { id: "text-reveal", label: "About" },
-      { id: "spiral-3d", label: "Tools" },
-      { id: "team", label: "About" },
+      { id: "horizontal-scroll", label: "Tracks" },
+      { id: "team", label: "Team" },
       { id: "contact", label: "Contact" },
     ];
 
@@ -139,6 +139,7 @@ export default function GlassyNavbar({
     }
   }, [navigate, location.pathname, onNavClick]);
 
+  // Max 5 Focused Links in Menu (Directives Compliant)
   const menuStructure: MenuItem[] = [
     {
       id: "Home",
@@ -151,34 +152,31 @@ export default function GlassyNavbar({
       ],
     },
     {
-      id: "Services",
-      label: "Services",
-      hasChevron: true,
-      items: [
-        { title: "Industry AI Projects", desc: "Work on live partner solutions", target: "text-reveal", badge: "LIVE" },
-        { title: "Corporate AI Mentorship", desc: "1-on-1 guidance from AI engineers", target: "text-reveal" },
-        { title: "Hackathons & Ideathons", desc: "Collaborative prototyping sprints", target: "text-reveal" },
-        { title: "Applied Research Tours", desc: "Industry visits and masterclasses", target: "contact" },
-      ],
-    },
-    {
       id: "About",
       label: "About",
       hasChevron: true,
       items: [
-        { title: "Club Mission & Vision", desc: "Empowering student AI creators", href: "/overview" },
-        { title: "Core Editorial & Lead Team", desc: "Meet the minds behind AI ConnectX", target: "team", href: "/team" },
-        { title: "UAI Student Community", desc: "Collaborative labs and workshops", target: "text-reveal" },
+        { title: "Strategic Mission & Vision", desc: "Empowering student AI creators", href: "/overview" },
+        { title: "Universal AI Community", desc: "Collaborative labs and cohorts", target: "text-reveal" },
       ],
     },
     {
-      id: "Tools",
-      label: "Tools",
+      id: "Tracks",
+      label: "Tracks",
       hasChevron: true,
       items: [
-        { title: "3D Spiral Helix", desc: "Interactive Three.js double-helix", target: "spiral-3d" },
-        { title: "3D Spatial Gallery", desc: "Interactive 3D asset showcase", href: "/gallery-preview" },
-        { title: "CRM & Outreach Portal", desc: "Enterprise partnership dashboard", href: "/login", badge: "PORTAL" },
+        { title: "AI Engineering × Agentic Systems", desc: "Expert masterclass by Dipan Mehta", target: "horizontal-scroll" },
+        { title: "Live Industry Projects", desc: "Real enterprise deliverables & internships", target: "horizontal-scroll" },
+        { title: "3D Spatial Helix", desc: "Interactive Spatial Double-Helix", href: "/spiral-3d", badge: "3D" },
+      ],
+    },
+    {
+      id: "Team",
+      label: "Team",
+      hasChevron: true,
+      items: [
+        { title: "Core Faculty & Lead Team", desc: "Patron Pranav More & President Daksh", target: "team", href: "/team" },
+        { title: "Leadership Directory", desc: "Operations, tech, and student leads", href: "/team" },
       ],
     },
     {
@@ -186,9 +184,8 @@ export default function GlassyNavbar({
       label: "Contact",
       hasChevron: true,
       items: [
-        { title: "Join Ai ConnectX", desc: "Become a student member or contributor", target: "contact", href: "/contact" },
-        { title: "Corporate Sponsorship", desc: "Partner with our university talent pool", target: "contact" },
-        { title: "General Inquiries", desc: "Direct channel to the club leads", target: "contact" },
+        { title: "WhatsApp Direct Desk", desc: "Fast direct transmission line", target: "contact" },
+        { title: "Join AI ConnectX", desc: "Become a member or partner", target: "contact", href: "/contact" },
       ],
     },
   ];
@@ -204,26 +201,26 @@ export default function GlassyNavbar({
               : "bg-[#0c0d12]/75 backdrop-blur-md border border-white/12 shadow-[0_12px_32px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.15)]"
           }`}
         >
-          {/* ─── Left: Equalizer Bars (Pure CSS GPU Animation) + "Nav" Label ─── */}
+          {/* ─── Left: AI ConnectX Logo Emblem & Brand Typography ─── */}
           <button
             onClick={() => handleLinkClick({ target: "hero" })}
-            className="flex items-center gap-2.5 hover:opacity-95 transition-all cursor-pointer group"
+            className="flex items-center gap-2 hover:opacity-95 transition-all cursor-pointer group"
+            title="AI ConnectX - Home"
           >
-            {/* Pure CSS Equalizer: Runs on GPU compositor thread with 0 CPU overhead */}
-            <div className="flex items-end gap-[3px] h-3.5 w-3.5 justify-center py-0.5">
-              <span className="w-[2.5px] h-full bg-white rounded-full group-hover:bg-cyan-400 animate-pulse transition-colors" />
-              <span className="w-[2.5px] h-3/4 bg-white rounded-full group-hover:bg-cyan-300 animate-pulse [animation-delay:200ms] transition-colors" />
-              <span className="w-[2.5px] h-4/5 bg-white rounded-full group-hover:bg-teal-300 animate-pulse [animation-delay:400ms] transition-colors" />
+            <img
+              src="/ai-connectx-logo-transparent.png"
+              alt="AI ConnectX Official Logo"
+              className="w-6 h-6 sm:w-7 sm:h-7 object-contain drop-shadow-[0_0_10px_rgba(34,211,238,0.4)] group-hover:scale-105 transition-transform shrink-0"
+            />
+            <div className="flex items-baseline font-sans font-bold text-sm sm:text-base tracking-tight select-none">
+              <span className="text-white group-hover:text-cyan-200 transition-colors">AI</span>
+              <span className="text-[#0088ff] ml-1">Connect</span>
+              <span className="text-cyan-400 ml-0.5">X</span>
             </div>
-
-            {/* "Nav" typography matching screenshot */}
-            <span className="font-sans font-semibold text-sm sm:text-base text-white tracking-wide group-hover:text-cyan-200 transition-colors">
-              Nav
-            </span>
 
             {/* Active Section Tag on Scroll */}
             {scrolled && (
-              <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded-full bg-cyan-400/10 border border-cyan-400/30 text-[10px] font-mono text-cyan-300 font-bold uppercase tracking-wider transition-all">
+              <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded-full bg-cyan-400/10 border border-cyan-400/30 text-[10px] font-mono text-cyan-300 font-bold uppercase tracking-wider transition-all ml-1">
                 {activeSection}
               </span>
             )}
@@ -250,9 +247,9 @@ export default function GlassyNavbar({
                         setActiveDropdown(isDropdownOpen ? null : menu.id);
                       }
                     }}
-                    className={`relative flex items-center gap-1 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-colors duration-150 cursor-pointer ${
+                    className={`relative flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors duration-150 cursor-pointer ${
                       isActive
-                        ? "text-white font-semibold drop-shadow-[0_0_10px_rgba(255,255,255,0.6)]"
+                        ? "text-white font-semibold drop-shadow-[0_0_10px_rgba(255,255,255,0.6)] bg-white/[0.06]"
                         : "text-white/75 hover:text-white"
                     }`}
                   >
@@ -269,9 +266,9 @@ export default function GlassyNavbar({
                       />
                     )}
 
-                    {/* Active Underline Pill (like under 'Home' in reference image) */}
+                    {/* Active Underline Indicator */}
                     {isActive && (
-                      <div className="absolute bottom-0 left-3 right-3 h-[2px] bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
+                      <div className="absolute bottom-0 left-3 right-3 h-[2px] bg-cyan-400 rounded-full shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
                     )}
                   </button>
 
@@ -313,9 +310,9 @@ export default function GlassyNavbar({
             })}
           </nav>
 
-          {/* ─── Right: Log in Pill Button + Mobile Hamburger ─── */}
+          {/* ─── Right: Log in Button + Mobile Hamburger ─── */}
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* "Log in" Pill Button */}
+            {/* "Log in" Modern Geometric Button */}
             <button
               onClick={() => {
                 if (onLoginTrigger) {
@@ -324,7 +321,7 @@ export default function GlassyNavbar({
                   navigate("/login");
                 }
               }}
-              className="px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-full bg-white/[0.08] hover:bg-white/[0.18] border border-white/[0.14] hover:border-white/30 text-white text-xs sm:text-sm font-medium transition-all shadow-[0_2px_12px_rgba(0,0,0,0.3)] hover:scale-105 active:scale-95 cursor-pointer whitespace-nowrap"
+              className="px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-lg bg-white/[0.08] hover:bg-white/[0.18] border border-white/[0.14] hover:border-white/30 text-white text-xs sm:text-sm font-semibold transition-all shadow-[0_2px_12px_rgba(0,0,0,0.3)] hover:scale-[1.02] active:scale-95 cursor-pointer whitespace-nowrap"
             >
               Log in
             </button>
@@ -333,7 +330,7 @@ export default function GlassyNavbar({
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle navigation menu"
-              className="lg:hidden p-1.5 rounded-full bg-white/[0.05] border border-white/10 text-white/80 hover:text-white cursor-pointer ml-1"
+              className="lg:hidden p-1.5 rounded-lg bg-white/[0.05] border border-white/10 text-white/80 hover:text-white cursor-pointer ml-1"
             >
               {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
@@ -345,9 +342,16 @@ export default function GlassyNavbar({
       {mobileMenuOpen && (
         <div className="fixed top-20 left-4 right-4 z-50 rounded-2xl bg-[#0c0d14]/95 backdrop-blur-xl border border-white/15 p-5 shadow-2xl lg:hidden flex flex-col gap-3 animate-in fade-in slide-in-from-top-2 duration-150">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <span className="text-xs font-mono text-cyan-300 uppercase tracking-wider">
-              NAVIGATION
-            </span>
+            <div className="flex items-center gap-2">
+              <img
+                src="/ai-connectx-logo-transparent.png"
+                alt="AI ConnectX"
+                className="w-5 h-5 object-contain"
+              />
+              <span className="text-xs font-mono text-cyan-300 uppercase tracking-wider font-semibold">
+                AI CONNECTX
+              </span>
+            </div>
             <button
               onClick={() => setMobileMenuOpen(false)}
               className="text-white/60 hover:text-white"

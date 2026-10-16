@@ -19,9 +19,15 @@ import ClubPage from "./pages/ClubPage";
 import ContactUsPage from "./pages/ContactUsPage";
 import OverviewMissionPage from "./pages/OverviewMissionPage";
 import TeamPage from "./pages/TeamPage";
+import Spiral3DPage from "./pages/Spiral3DPage";
 import AIConnectX3DGallery from "./components/zubox/AIConnectX3DGallery";
 import AIConnectXEditorialTeam from "./components/zubox/AIConnectXEditorialTeam";
-import CustomCursor from "./components/ui/CustomCursor";
+import CookieConsentBanner from "./components/common/CookieConsentBanner";
+import PrivacyPolicyPage from "./pages/legal/PrivacyPolicyPage";
+import TermsOfServicePage from "./pages/legal/TermsOfServicePage";
+import CookiePolicyPage from "./pages/legal/CookiePolicyPage";
+import RefundPolicyPage from "./pages/legal/RefundPolicyPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 const queryClient = new QueryClient();
 
@@ -58,8 +64,9 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
-          {/* Premium Animated Electric-Blue Cursor */}
-          <CustomCursor />
+          {/* Compliant DPDP & Cookie Consent Banner */}
+          <CookieConsentBanner />
+
           <Routes>
             {/* Club Website (Public Landing Page) */}
             <Route path="/" element={<ClubPage />} />
@@ -71,6 +78,19 @@ export default function App() {
             <Route path="/our-team" element={<TeamPage />} />
             <Route path="/contact" element={<ContactUsPage />} />
             <Route path="/contact-us" element={<ContactUsPage />} />
+            <Route path="/spiral-3d" element={<Spiral3DPage />} />
+            <Route path="/spiral" element={<Spiral3DPage />} />
+
+            {/* Legal & Compliance Routes (DPDP Act, GDPR) */}
+            <Route path="/privacy" element={<PrivacyPolicyPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/terms" element={<TermsOfServicePage />} />
+            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+            <Route path="/cookie-policy" element={<CookiePolicyPage />} />
+            <Route path="/cookies" element={<CookiePolicyPage />} />
+            <Route path="/refund-policy" element={<RefundPolicyPage />} />
+            <Route path="/refund" element={<RefundPolicyPage />} />
+
             <Route
               path="/gallery-preview"
               element={
@@ -104,8 +124,9 @@ export default function App() {
               <Route path="/automations" element={<AutomationsPage />} />
             </Route>
 
-            {/* Catch all */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            {/* Branded 404 Route */}
+            <Route path="/404" element={<NotFoundPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>

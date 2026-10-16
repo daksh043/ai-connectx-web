@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "motion/react";
 import {
   Send,
@@ -6,10 +7,20 @@ import {
   Check,
   MapPin,
   Mail,
-  ArrowRight,
+  MessageSquare,
+  AlertCircle,
 } from "lucide-react";
+import { sanitizeInput, isValidEmail } from "../../utils/sanitize";
 
 // Social icon helpers for clean minimalist icons matching reference
+function LinkedInIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
+    </svg>
+  );
+}
+
 function FacebookIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -36,22 +47,17 @@ function InstagramIcon({ className = "w-5 h-5" }: { className?: string }) {
   );
 }
 
-function PinterestIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.631-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z" />
-    </svg>
-  );
-}
 
 export default function AIConnectXContactSection() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
+    consent: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   // Scroll-linked zoom in / grow larger effect
@@ -78,7 +84,32 @@ export default function AIConnectXContactSection() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email) return;
+    setErrorMessage(null);
+
+    const sanitizedName = sanitizeInput(formData.name);
+    const sanitizedEmail = sanitizeInput(formData.email).toLowerCase();
+    const sanitizedMessage = sanitizeInput(formData.message);
+
+    if (!sanitizedName) {
+      setErrorMessage("Please enter your name.");
+      return;
+    }
+    if (!isValidEmail(sanitizedEmail)) {
+      setErrorMessage("Please enter a valid email address.");
+      return;
+    }
+    if (!formData.consent) {
+      setErrorMessage("Please agree to the Privacy Policy & Terms of Service to proceed.");
+      return;
+    }
+
+    // Update with sanitized inputs before submission
+    setFormData({
+      name: sanitizedName,
+      email: sanitizedEmail,
+      message: sanitizedMessage,
+      consent: formData.consent,
+    });
 
     setIsSubmitting(true);
     setTimeout(() => {
@@ -86,23 +117,16 @@ export default function AIConnectXContactSection() {
       setSubmitted(true);
       setTimeout(() => {
         setSubmitted(false);
-        setFormData({ name: "", email: "", message: "" });
-      }, 4000);
+        setFormData({ name: "", email: "", message: "", consent: false });
+      }, 5000);
     }, 800);
-  };
-
-  const handleLearnMore = () => {
-    const el = document.getElementById("text-reveal");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
   };
 
   return (
     <section
       ref={sectionRef}
       id="contact"
-      className="relative w-full py-16 sm:py-24 z-10 select-none scroll-mt-20 font-['Outfit'] overflow-hidden"
+      className="relative w-full pt-14 sm:pt-20 pb-6 sm:pb-8 z-10 select-none scroll-mt-20 font-['Outfit'] overflow-hidden"
     >
       <div className="max-w-6xl mx-auto px-5 lg:px-8">
         {/* ─── Main Content Container (Sleek Glassmorphic Frame with Scroll Zoom-In Animation) ─── */}
@@ -121,39 +145,30 @@ export default function AIConnectXContactSection() {
             {/* ─── LEFT COLUMN: Brand Logo, "Welcome!", Mission & "Learn More" ─── */}
             <div className="lg:col-span-7 flex flex-col items-start pr-0 lg:pr-6">
               {/* Minimalist Brandmark Icon */}
-              <div className="mb-8 flex items-center gap-3">
-                <div className="flex items-end gap-1.5 p-1.5">
-                  <span className="w-3.5 h-8 rounded-sm bg-gradient-to-b from-teal-300 to-cyan-400 shadow-[0_0_12px_rgba(45,212,191,0.6)]" />
-                  <div className="flex flex-col gap-1">
-                    <span className="w-3.5 h-2.5 rounded-sm bg-gradient-to-b from-cyan-300 to-sky-400 shadow-[0_0_10px_rgba(56,189,248,0.6)]" />
-                    <span className="w-3.5 h-4.5 rounded-sm bg-gradient-to-b from-sky-400 to-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.6)]" />
-                  </div>
-                </div>
-                <span className="text-xs font-['Space_Grotesk'] font-bold tracking-widest text-cyan-200/90 uppercase">
-                  Ai ConnectX · Transmission Hub
+              <div className="mb-6 flex items-center gap-3">
+                <span className="text-xs font-mono font-bold tracking-[0.25em] text-cyan-400 uppercase">
+                  05 / TRANSMISSION HUB
                 </span>
               </div>
 
               {/* Bold Title: "Welcome!" */}
-              <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black text-white tracking-tight leading-none drop-shadow-[0_10px_35px_rgba(0,0,0,0.8)]">
+              <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black text-white tracking-tight leading-none">
                 Welcome!
               </h2>
 
-              {/* Horizontal Accent Line (Matching Theme Accent) */}
-              <div className="w-16 h-1 rounded-full bg-gradient-to-r from-teal-300 via-cyan-400 to-sky-400 mt-4 sm:mt-5 shadow-[0_0_12px_rgba(56,189,248,0.8)]" />
+              {/* Horizontal Accent Line */}
+              <div className="w-16 h-[2px] bg-cyan-400 mt-4 sm:mt-5" />
 
-              {/* Description Paragraph */}
-              <p className="text-sm sm:text-base text-slate-300/85 max-w-lg mt-6 leading-relaxed font-light">
-                Connect directly with the <span className="font-serif"><span className="italic text-cyan-300 font-bold">Ai</span> <span className="text-[#0088ff] font-bold">Connect</span><span className="text-cyan-300 font-bold">X</span></span> ecosystem. 
-                Whether you're an ambitious builder looking to deploy frontier autonomous agents, an industry mentor, 
-                or a hackathon sponsor—our transmission lines are open.
+              {/* Description Paragraph (Cut in half for maximum punch) */}
+              <p className="text-base sm:text-lg text-slate-100 max-w-lg mt-6 leading-relaxed font-light">
+                Connect directly with AI ConnectX at Universal AI University. Our transmission lines are open for builders, mentors, and corporate partners.
               </p>
 
               {/* Quick Contact Micro-Details */}
-              <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-slate-300/70 font-mono">
+              <div className="mt-6 flex flex-wrap items-center gap-4 text-xs text-slate-200 font-mono">
                 <div className="flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Hyderabad Campus Hub</span>
+                  <span>Universal AI University, Karjat, Mumbai, Maharashtra 410201, India</span>
                 </div>
                 <span>•</span>
                 <button
@@ -163,19 +178,21 @@ export default function AIConnectXContactSection() {
                 >
                   <Mail className="w-3.5 h-3.5 text-cyan-400" />
                   <span>connect@aiconnectx.club</span>
-                  {copiedKey === "email" && <Check className="w-3 h-3 text-teal-400" />}
+                  {copiedKey === "email" && <Check className="w-3 h-3 text-cyan-400" />}
                 </button>
               </div>
 
-              {/* "Learn More" Pill Button */}
+              {/* Single Primary Action Button (Unified Signature Style) */}
               <div className="mt-8 sm:mt-10">
-                <button
-                  onClick={handleLearnMore}
-                  className="px-8 py-3 rounded-full text-white font-bold text-xs sm:text-sm tracking-wide bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 hover:from-cyan-400 hover:to-sky-500 shadow-[0_6px_25px_rgba(14,165,233,0.45)] hover:shadow-[0_8px_32px_rgba(14,165,233,0.65)] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer flex items-center gap-2 group"
+                <a
+                  href="https://wa.me/917556789000?text=Hello%20AI%20ConnectX%20Team%2C%20I%20would%20like%20to%20connect%20regarding%20the%20club."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-sm tracking-wide bg-gradient-to-r from-cyan-400 to-[#0088ff] text-slate-950 hover:brightness-110 shadow-[0_4px_24px_rgba(0,229,255,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
                 >
-                  <span>Learn More</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
+                  <MessageSquare className="w-4 h-4 text-slate-950 stroke-[2]" />
+                  <span>Direct WhatsApp Channel</span>
+                </a>
               </div>
             </div>
 
@@ -193,14 +210,22 @@ export default function AIConnectXContactSection() {
 
                 <div className="relative z-10">
                   {/* Card Header: "Contact Us" (Matching Reference with Underline) */}
-                  <div className="text-center mb-7">
+                  <div className="text-center mb-6">
                     <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                       Contact <span className="underline decoration-cyan-400 decoration-2 underline-offset-4">Us</span>
                     </h3>
                   </div>
 
                   {/* Form with Rounded Capsule Input Fields */}
-                  <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-4">
+                  <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
+                    {/* Error Feedback Banner */}
+                    {errorMessage && (
+                      <div className="p-2.5 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4 shrink-0" />
+                        <span>{errorMessage}</span>
+                      </div>
+                    )}
+
                     {/* User Name */}
                     <div>
                       <label className="block text-xs font-medium text-slate-300 mb-1.5 ml-2">
@@ -211,7 +236,7 @@ export default function AIConnectXContactSection() {
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="TechTree"
+                        placeholder="Your Full Name"
                         className="w-full px-5 py-3 rounded-full bg-slate-950/50 backdrop-blur-md border border-sky-400/20 text-sm text-white placeholder-slate-400/60 outline-none transition-all duration-300 focus:border-cyan-400 focus:bg-slate-950/70 focus:shadow-[0_0_20px_rgba(56,189,248,0.3)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]"
                       />
                     </div>
@@ -245,19 +270,42 @@ export default function AIConnectXContactSection() {
                       />
                     </div>
 
-                    {/* Submit Pill Button */}
+                    {/* DPDP Act Explicit Consent Checkbox */}
+                    <div className="flex items-start gap-2 pt-1 text-left">
+                      <input
+                        type="checkbox"
+                        id="consent-checkbox"
+                        required
+                        checked={formData.consent}
+                        onChange={(e) => setFormData({ ...formData, consent: e.target.checked })}
+                        className="mt-0.5 rounded border-sky-400/30 text-cyan-400 focus:ring-cyan-400 bg-slate-950/70 cursor-pointer"
+                      />
+                      <label htmlFor="consent-checkbox" className="text-[11px] text-slate-300 leading-tight cursor-pointer select-none">
+                        I agree to the{" "}
+                        <Link to="/terms" className="text-cyan-300 underline hover:text-cyan-200">
+                          Terms of Service
+                        </Link>{" "}
+                        and{" "}
+                        <Link to="/privacy" className="text-cyan-300 underline hover:text-cyan-200">
+                          Privacy Policy
+                        </Link>
+                        .
+                      </label>
+                    </div>
+
+                    {/* Submit Button - Standardized Signature Button Style */}
                     <div className="pt-2">
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full py-3 rounded-full text-white font-bold text-sm tracking-wide bg-gradient-to-r from-teal-400 via-sky-500 to-blue-600 hover:from-teal-300 hover:to-sky-400 shadow-[0_6px_25px_rgba(14,165,233,0.45)] active:scale-95 transition-all duration-300 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                        className="w-full py-3.5 rounded-xl font-semibold text-sm tracking-wide bg-gradient-to-r from-cyan-400 to-[#0088ff] text-slate-950 hover:brightness-110 shadow-[0_4px_24px_rgba(0,229,255,0.3)] active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
                       >
                         {isSubmitting ? (
-                          <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          <div className="w-4 h-4 border-2 border-slate-950/30 border-t-slate-950 rounded-full animate-spin" />
                         ) : (
                           <>
-                            <span>Submit</span>
-                            <Send className="w-3.5 h-3.5 opacity-90" />
+                            <span>Submit Transmission</span>
+                            <Send className="w-4 h-4 text-slate-950 stroke-[2]" />
                           </>
                         )}
                       </button>
@@ -269,9 +317,9 @@ export default function AIConnectXContactSection() {
                           initial={{ opacity: 0, scale: 0.9 }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0 }}
-                          className="pt-1 flex items-center justify-center gap-1.5 text-teal-300 text-xs font-medium text-center"
+                          className="pt-1 flex items-center justify-center gap-1.5 text-cyan-300 text-xs font-medium text-center"
                         >
-                          <CheckCircle2 className="w-4 h-4 text-teal-400" />
+                          <CheckCircle2 className="w-4 h-4 text-cyan-400" />
                           <span>Message Transmitted Successfully!</span>
                         </motion.div>
                       )}
@@ -281,25 +329,40 @@ export default function AIConnectXContactSection() {
                   {/* Social Icon Row */}
                   <div className="mt-6 pt-5 border-t border-sky-400/15 flex items-center justify-center gap-6 text-sky-200/80">
                     <a
-                      href="#"
-                      aria-label="Facebook"
+                      href="https://www.linkedin.com/company/ai-connectx-ai/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn company page"
+                      className="hover:text-cyan-300 hover:scale-110 transition-all p-1"
+                    >
+                      <LinkedInIcon className="w-4 h-4 text-sky-300" />
+                    </a>
+                    <a
+                      href="https://facebook.com/aiconnectx"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Facebook community page"
                       className="hover:text-cyan-300 hover:scale-110 transition-all p-1"
                     >
                       <FacebookIcon className="w-4 h-4" />
                     </a>
                     <a
-                      href="#"
-                      aria-label="Instagram"
+                      href="https://instagram.com/aiconnectx.official"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Instagram profile"
                       className="hover:text-cyan-300 hover:scale-110 transition-all p-1"
                     >
                       <InstagramIcon className="w-4 h-4" />
                     </a>
                     <a
-                      href="#"
-                      aria-label="Pinterest"
-                      className="hover:text-cyan-300 hover:scale-110 transition-all p-1"
+                      href="https://wa.me/917556789000"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="WhatsApp direct transmission"
+                      className="hover:text-emerald-300 hover:scale-110 transition-all p-1"
                     >
-                      <PinterestIcon className="w-4 h-4" />
+                      <MessageSquare className="w-4 h-4 text-emerald-400" />
                     </a>
                   </div>
                 </div>

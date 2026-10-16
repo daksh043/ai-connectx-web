@@ -1,7 +1,22 @@
 """Pydantic schemas for all API request/response models."""
-from pydantic import BaseModel, EmailStr, Field
+import re
+import html
+from pydantic import BaseModel, EmailStr, Field, validator
 from typing import Optional, List
 from datetime import datetime
+
+
+def sanitize_input(value: Optional[str]) -> Optional[str]:
+    """Sanitize strings by stripping HTML script tags, event handlers, and trimming."""
+    if not value or not isinstance(value, str):
+        return value
+    # Remove script tags and contents
+    cleaned = re.sub(r"<script.*?>.*?</script>", "", value, flags=re.IGNORECASE | re.DOTALL)
+    # Remove javascript: pseudo-protocols
+    cleaned = re.sub(r"javascript:\s*", "", cleaned, flags=re.IGNORECASE)
+    # Remove inline event attributes (e.g. onload=, onerror=, onclick=)
+    cleaned = re.sub(r"on\w+\s*=\s*([\"'][^\"']*[\"']|[^\s>]+)", "", cleaned, flags=re.IGNORECASE)
+    return cleaned.strip()
 
 
 # ─── Auth ────────────────────────────────────────────────────────
@@ -12,15 +27,50 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     user_id: Optional[int] = None
 
+EMAIL_REGEX = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+
 class UserCreate(BaseModel):
-    name: str = Field(..., min_length=1, max_length=100)
-    email: str = Field(..., max_length=255)
-    password: str = Field(..., min_length=6)
+    name: str = Field(..., min_length=2, max_length=100)
+    email: str = Field(...)
+    password: str = Field(..., min_length=8, max_length=128)
     role: str = Field(default="team")
+
+    @validator("name")
+    def validate_name(cls, v):
+        sanitized = sanitize_input(v)
+        if not sanitized or len(sanitized) < 2:
+            raise ValueError("Name must be at least 2 characters long")
+        return sanitized
+
+    @validator("email")
+    def validate_email(cls, v):
+        cleaned = v.strip().lower()
+        if not re.match(EMAIL_REGEX, cleaned):
+            raise ValueError("Invalid email format")
+        return cleaned
+
+    @validator("password")
+    def validate_password_strength(cls, v):
+        if len(v) < 8:
+            raise ValueError("Password must be at least 8 characters long")
+        if not re.search(r"[A-Z]", v):
+            raise ValueError("Password must contain at least one uppercase letter (A-Z)")
+        if not re.search(r"[a-z]", v):
+            raise ValueError("Password must contain at least one lowercase letter (a-z)")
+        if not re.search(r"\d", v):
+            raise ValueError("Password must contain at least one number (0-9)")
+        return v
 
 class UserLogin(BaseModel):
     email: str
     password: str
+
+    @validator("email")
+    def validate_email(cls, v):
+        cleaned = v.strip().lower()
+        if not re.match(EMAIL_REGEX, cleaned):
+            raise ValueError("Invalid email format")
+        return cleaned
 
 class UserOut(BaseModel):
     id: int

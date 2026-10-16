@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 
 const TOTAL_FRAMES = 240;
 const getFrameSrc = (index: number) =>
-  `/frames/frame_${String(index).padStart(6, "0")}.jpg`;
+  `/frames/frame_${String(index).padStart(6, "0")}.png`;
 
 interface ScrollCanvasBackgroundProps {
   onProgressChange?: (progress: number, currentFrame: number) => void;
@@ -24,25 +24,83 @@ export default function ScrollCanvasBackground({
   const targetProgressRef = useRef(0);
   const currentProgressRef = useRef(0);
   const currentFrameRef = useRef(1);
+  const requestedRef = useRef<Set<number>>(new Set());
 
-  // Find nearest loaded frame if target is still buffering
-  const findClosestLoadedImage = useCallback((target: number): HTMLImageElement | null => {
-    const imgs = imagesRef.current;
-    if (imgs[target] && imgs[target]!.complete && imgs[target]!.naturalWidth > 0) {
-      return imgs[target];
-    }
-    for (let offset = 1; offset < TOTAL_FRAMES; offset++) {
-      const prev = target - offset;
-      if (prev >= 1 && imgs[prev] && imgs[prev]!.complete && imgs[prev]!.naturalWidth > 0) {
-        return imgs[prev];
+  // Function to load and pre-decode an individual frame
+  const loadSingleFrame = useCallback((frameIdx: number) => {
+    if (frameIdx < 1 || frameIdx > TOTAL_FRAMES || requestedRef.current.has(frameIdx)) return;
+    requestedRef.current.add(frameIdx);
+
+    const img = new Image();
+    img.src = getFrameSrc(frameIdx);
+
+    img.onload = async () => {
+      try {
+        if ("decode" in img) {
+          await img.decode();
+        }
+      } catch {
+        // Continue if decode throws (unsupported or aborted)
       }
-      const next = target + offset;
-      if (next <= TOTAL_FRAMES && imgs[next] && imgs[next]!.complete && imgs[next]!.naturalWidth > 0) {
-        return imgs[next];
+      imagesRef.current[frameIdx] = img;
+      setLoadedCount((c) => c + 1);
+
+      // If this is the current target frame, render immediately
+      const currentTarget = Math.round(
+        1 + currentProgressRef.current * (TOTAL_FRAMES - 1)
+      );
+      if (Math.abs(currentTarget - frameIdx) <= 1) {
+        renderFrame(currentTarget);
       }
-    }
-    return null;
+    };
   }, []);
+
+  // Pre-fetch frames surrounding the current scroll target
+  const prefetchAroundTarget = useCallback(
+    (targetFrame: number) => {
+      // Prioritize immediate next and previous frames
+      for (let offset = 0; offset <= 10; offset++) {
+        const next = targetFrame + offset;
+        const prev = targetFrame - offset;
+        if (next <= TOTAL_FRAMES) loadSingleFrame(next);
+        if (prev >= 1) loadSingleFrame(prev);
+      }
+    },
+    [loadSingleFrame]
+  );
+
+  // Radiating local search: checks closest neighbor frames within a tight range
+  // without jumping to far-away distant frames
+  const findClosestLoadedImage = useCallback(
+    (target: number): HTMLImageElement | null => {
+      const imgs = imagesRef.current;
+      if (imgs[target]?.complete && imgs[target]!.naturalWidth > 0) {
+        return imgs[target];
+      }
+
+      // Radiate outward within a local neighborhood of ±16 frames
+      for (let offset = 1; offset <= 16; offset++) {
+        const next = target + offset;
+        if (next <= TOTAL_FRAMES && imgs[next]?.complete && imgs[next]!.naturalWidth > 0) {
+          return imgs[next];
+        }
+        const prev = target - offset;
+        if (prev >= 1 && imgs[prev]?.complete && imgs[prev]!.naturalWidth > 0) {
+          return imgs[prev];
+        }
+      }
+
+      // Hold current frame if within range, avoiding jarring backwards jumps
+      const curr = currentFrameRef.current;
+      if (curr >= 1 && imgs[curr]?.complete && imgs[curr]!.naturalWidth > 0) {
+        return imgs[curr];
+      }
+
+      // Fallback to frame 1 if initial loading
+      return imgs[1] || null;
+    },
+    []
+  );
 
   // Direct aspect-ratio-preserving canvas render (cover)
   const renderFrame = useCallback(
@@ -55,7 +113,7 @@ export default function ScrollCanvasBackground({
       const img = findClosestLoadedImage(frameIndex);
       if (!img) return;
 
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       const displayWidth = window.innerWidth;
       const displayHeight = window.innerHeight;
 
@@ -90,92 +148,121 @@ export default function ScrollCanvasBackground({
         offsetY = 0;
       }
 
-      ctx.fillStyle = "#050507";
-      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+      // High quality smooth image interpolation without black background flash
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
       ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
     },
     [findClosestLoadedImage]
   );
 
-  // 1. Parallel Preload
+  // 1. Phased Priority Preload with Controlled Concurrency
   useEffect(() => {
     let isCancelled = false;
 
     // Load Frame 1 immediately
-    const firstImg = new Image();
-    firstImg.src = getFrameSrc(1);
-    firstImg.onload = () => {
-      if (isCancelled) return;
-      imagesRef.current[1] = firstImg;
-      setLoadedCount((c) => Math.max(c, 1));
-      renderFrame(1);
+    loadSingleFrame(1);
+
+    // Initial sequence (frames 1–20) for fluid startup
+    for (let i = 2; i <= 20; i++) {
+      loadSingleFrame(i);
+    }
+
+    // Keyframes stride across the entire 240 frames
+    const keyframes: number[] = [];
+    for (let i = 24; i <= TOTAL_FRAMES; i += 4) {
+      keyframes.push(i);
+    }
+
+    // Remaining in-between frames
+    const remaining: number[] = [];
+    for (let i = 21; i <= TOTAL_FRAMES; i++) {
+      if (i % 4 !== 0) remaining.push(i);
+    }
+
+    const queue = [...keyframes, ...remaining];
+    let qIdx = 0;
+    const CONCURRENCY = 6;
+
+    const worker = () => {
+      if (isCancelled || qIdx >= queue.length) return;
+      const idx = queue[qIdx++];
+      if (!requestedRef.current.has(idx)) {
+        const img = new Image();
+        img.src = getFrameSrc(idx);
+        img.onload = async () => {
+          if (isCancelled) return;
+          try {
+            if ("decode" in img) await img.decode();
+          } catch {}
+          imagesRef.current[idx] = img;
+          setLoadedCount((c) => c + 1);
+          worker();
+        };
+        img.onerror = () => {
+          if (isCancelled) return;
+          worker();
+        };
+      } else {
+        worker();
+      }
     };
 
-    let loaded = 0;
-    for (let i = 1; i <= TOTAL_FRAMES; i++) {
-      const img = new Image();
-      img.src = getFrameSrc(i);
-
-      img.onload = () => {
-        if (isCancelled) return;
-        imagesRef.current[i] = img;
-        loaded++;
-        setLoadedCount(loaded);
-
-        const currentTarget = Math.round(
-          1 + currentProgressRef.current * (TOTAL_FRAMES - 1)
-        );
-        if (Math.abs(currentTarget - i) <= 2) {
-          renderFrame(currentTarget);
-        }
-      };
-
-      img.onerror = () => {
-        if (isCancelled) return;
-        loaded++;
-        setLoadedCount(loaded);
-      };
+    for (let w = 0; w < CONCURRENCY; w++) {
+      worker();
     }
 
     return () => {
       isCancelled = true;
     };
-  }, [renderFrame]);
+  }, [loadSingleFrame]);
 
   // Sync with overrideProgress when provided (e.g. during loading slide)
   useEffect(() => {
     if (overrideProgress !== null && overrideProgress !== undefined) {
       targetProgressRef.current = overrideProgress;
+      const targetFrame = Math.round(1 + overrideProgress * (TOTAL_FRAMES - 1));
+      prefetchAroundTarget(targetFrame);
     }
-  }, [overrideProgress]);
+  }, [overrideProgress, prefetchAroundTarget]);
 
-  // 2. Global scroll progress tracking
+  // 2. Scroll progress tracking: frames end cleanly right above the footer
   useEffect(() => {
     const handleScroll = () => {
       if (overrideProgress !== null && overrideProgress !== undefined) return;
-      const docHeight = document.documentElement.scrollHeight;
+
+      const footerEl = document.getElementById("footer") || document.querySelector("footer");
+      const scrollY = window.scrollY;
       const winHeight = window.innerHeight;
-      const maxScroll = docHeight - winHeight;
+      let maxScroll = 0;
 
-      if (maxScroll <= 0) return;
+      if (footerEl) {
+        const footerTop = footerEl.getBoundingClientRect().top + scrollY;
+        // Frames lock in at 1.0 (Frame 240) above the footer
+        maxScroll = Math.max(1, footerTop - winHeight);
+      } else {
+        const docHeight = document.documentElement.scrollHeight;
+        maxScroll = Math.max(1, docHeight - winHeight);
+      }
 
-      const progress = Math.min(
-        1,
-        Math.max(0, window.scrollY / maxScroll)
-      );
+      const progress = Math.min(1, Math.max(0, scrollY / maxScroll));
 
       targetProgressRef.current = progress;
+      const targetFrame = Math.round(1 + progress * (TOTAL_FRAMES - 1));
+      prefetchAroundTarget(targetFrame);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
     handleScroll();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
     };
-  }, [overrideProgress]);
+  }, [overrideProgress, prefetchAroundTarget]);
 
-  // 3. Resilient lerp requestAnimationFrame loop
+  // 3. Fluid high-responsiveness lerp requestAnimationFrame loop
   useEffect(() => {
     let animId: number;
     let isActive = true;
@@ -184,8 +271,9 @@ export default function ScrollCanvasBackground({
       if (!isActive) return;
 
       const diff = targetProgressRef.current - currentProgressRef.current;
-      if (Math.abs(diff) > 0.0002) {
-        currentProgressRef.current += diff * 0.12;
+      if (Math.abs(diff) > 0.0001) {
+        // Fast, buttery lerp (0.24) that follows the scroll gesture closely
+        currentProgressRef.current += diff * 0.24;
       } else {
         currentProgressRef.current = targetProgressRef.current;
       }
@@ -235,9 +323,10 @@ export default function ScrollCanvasBackground({
           className="w-full h-full block object-cover select-none"
         />
 
-        {/* Cinematic Vignette & Readability Gradient Scrims */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/70 pointer-events-none" />
-        <div className="absolute inset-0 bg-radial-[circle_at_center,_transparent_40%,_rgba(0,0,0,0.5)_100%] pointer-events-none" />
+        {/* Cinematic Vignette & Readability Gradient Scrims (Naturally blended with background) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60 mix-blend-multiply pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/15 to-transparent mix-blend-multiply pointer-events-none" />
+        <div className="absolute inset-0 bg-radial-[circle_at_center,_transparent_45%,_rgba(0,0,0,0.45)_100%] pointer-events-none" />
       </div>
 
       {/* Subtle Top Loading Line (auto-hides when complete) */}

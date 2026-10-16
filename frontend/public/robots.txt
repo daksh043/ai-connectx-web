@@ -1,0 +1,9 @@
+# AI ConnectX Robots Policy
+# https://aiconnectx.club
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Sitemap Reference
+Sitemap: https://aiconnectx.club/sitemap.xml

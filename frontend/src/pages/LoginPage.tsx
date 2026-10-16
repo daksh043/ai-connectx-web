@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/auth-context";
 import { ArrowUpRight, Eye, EyeOff, ShieldCheck, Sparkles } from "lucide-react";
 import ZeroSevenLoadingScreen from "../components/zubox/ZeroSevenLoadingScreen";
 import ScrollCanvasBackground from "../components/zubox/ScrollCanvasBackground";
+import { sanitizeInput, isValidEmail } from "../utils/sanitize";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -29,10 +30,17 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    const cleanEmail = sanitizeInput(email).toLowerCase();
+    if (!cleanEmail || !isValidEmail(cleanEmail)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
     setLoading(true);
     setShow07Loader(true);
     try {
-      await login(email, password);
+      await login(cleanEmail, password);
       // ZeroSevenLoadingScreen plays out then onComplete will navigate to dashboard
     } catch (err: any) {
       setShow07Loader(false);
@@ -161,7 +169,8 @@ export default function LoginPage() {
             }}
             className="w-full mt-2 py-2 px-3 text-xs font-semibold rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/20 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
           >
-            <span>👑 Fill Admin Credentials</span>
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>Fill Admin Credentials</span>
           </button>
           </form>
 

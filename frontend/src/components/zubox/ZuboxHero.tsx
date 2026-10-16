@@ -1,7 +1,18 @@
+import { useRef } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 
 export default function AIConnectXHero() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  // Elegant scroll exit fade as user nears the end of the Hero pause
+  const contentOpacity = useTransform(scrollYProgress, [0.70, 0.95], [1, 0]);
+  const contentY = useTransform(scrollYProgress, [0.70, 0.95], [0, -35]);
+
   const handleScrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
@@ -12,115 +23,119 @@ export default function AIConnectXHero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen w-full flex flex-col justify-between pt-28 pb-16 px-6 lg:px-16 max-w-7xl mx-auto z-10 select-none"
+      ref={containerRef}
+      className="relative min-h-[220vh] w-full select-none z-10"
     >
-      {/* Main Hero Typography & Animated 4K Logo (Aligned Left with Futuristic Visuals) */}
-      <div className="my-auto py-8 relative flex flex-col items-start w-full text-left">
-        {/* Ambient Chromatic Glow Field */}
-        <div className="absolute -top-16 -left-16 w-[360px] sm:w-[560px] h-[360px] sm:h-[560px] bg-gradient-to-tr from-emerald-500/20 via-cyan-400/25 to-blue-600/25 rounded-full blur-[110px] -z-10 pointer-events-none animate-aurora-spin" />
-        <div className="absolute top-1/4 left-1/4 w-[260px] h-[260px] bg-cyan-500/20 rounded-full blur-[90px] -z-10 pointer-events-none animate-glow-pulse" />
+      {/* Sticky Viewport Stage - Perfectly locks and pauses at top-0 */}
+      <div className="sticky top-0 h-screen w-full flex flex-col justify-between pt-24 sm:pt-28 pb-12 px-6 sm:px-10 lg:px-12 text-left pointer-events-none">
+        {/* ─── Hero Left Content Cluster (Clean, fully left-aligned with zero background box) ─── */}
+        <motion.div
+          style={{ opacity: contentOpacity, y: contentY }}
+          className="my-auto py-6 sm:py-8 relative flex flex-col items-start w-full max-w-3xl text-left pointer-events-auto"
+        >
+          {/* Seamless Blended Dark Blur Atmosphere (Naturally feathered into canvas background) */}
+          <div
+            className="absolute -inset-x-12 -inset-y-10 -z-10 pointer-events-none rounded-3xl backdrop-blur-md"
+            style={{
+              background: "radial-gradient(ellipse at 20% 50%, rgba(0, 0, 0, 0.58) 0%, rgba(0, 0, 0, 0.25) 50%, transparent 80%)",
+              maskImage: "radial-gradient(ellipse at 25% 50%, black 25%, transparent 75%)",
+              WebkitMaskImage: "radial-gradient(ellipse at 25% 50%, black 25%, transparent 75%)",
+            }}
+          />
 
-        {/* Left-Aligned Clean Logo & Typographic Headline */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8 md:gap-10">
-          {/* Clean Logo without any effects */}
-          <div className="shrink-0">
-            <img
-              src="/ai-connectx-logo-transparent.png"
-              alt="Ai ConnectX Official Logo"
-              className="w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 object-contain"
-            />
-          </div>
+          {/* 1. Logo On Top & Headline Below (Left-Aligned) */}
+          <div className="flex flex-col items-start gap-3 sm:gap-4">
+            {/* Official Clean Transparent Logo (Lil Small) */}
+            <div className="shrink-0">
+              <img
+                src="/ai-connectx-logo-transparent.png"
+                alt="Ai ConnectX Official Logo"
+                className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 object-contain drop-shadow-[0_4px_20px_rgba(0,0,0,0.6)]"
+              />
+            </div>
 
-          {/* High-Impact Animated Typographic Headline */}
-          <div className="relative font-serif">
-            <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight leading-[0.9] flex items-center select-none drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
-              {/* "Ai" in Elegant Italic Cyan */}
-              <motion.span
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6 }}
-                className="italic text-cyan-300 mr-2 sm:mr-3 drop-shadow-[0_0_45px_rgba(34,211,238,0.85)] filter"
-              >
-                Ai
-              </motion.span>
+            {/* High-Impact Modern Typographic Headline (Below Logo) */}
+            <div className="relative font-sans">
+              <h1 className="text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] font-black tracking-tight leading-[0.9] flex items-center select-none text-white drop-shadow-[0_8px_32px_rgba(0,0,0,0.95)]">
+                {/* "AI" in Bold Crisp White */}
+                <motion.span
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-white mr-2 sm:mr-3 tracking-tighter"
+                >
+                  AI
+                </motion.span>
 
-              {/* "Connect" in Bold Royal Blue */}
-              <motion.span
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.12 }}
-                className="text-[#0088ff] drop-shadow-[0_0_50px_rgba(0,136,255,0.85)] mr-0.5 filter"
-              >
-                Connect
-              </motion.span>
+                {/* "Connect" in Electric Blue */}
+                <motion.span
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="text-[#0088ff] mr-0.5"
+                >
+                  Connect
+                </motion.span>
 
-              {/* "X" in Bold Cyan */}
-              <motion.span
-                initial={{ opacity: 0, scale: 0.7 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.24 }}
-                className="text-cyan-300 drop-shadow-[0_0_60px_rgba(34,211,238,0.95)] filter"
-              >
-                X
-              </motion.span>
-            </h1>
+                {/* "X" in Cyber Cyan */}
+                <motion.span
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="text-cyan-400 font-black ml-0.5"
+                >
+                  X
+                </motion.span>
+              </h1>
 
-            {/* Sleek High-Tech Accent Bar */}
-            <div className="relative mt-3 sm:mt-4 h-1 w-32 sm:w-48 rounded-full bg-gradient-to-r from-cyan-400 via-sky-400 to-transparent shadow-[0_0_15px_rgba(34,211,238,0.8)]">
-              <div className="absolute top-1/2 -translate-y-1/2 left-0 w-2.5 h-2.5 rounded-full bg-cyan-300 blur-[1px] animate-pulse" />
+              {/* Precision Underline */}
+              <div className="relative mt-3 sm:mt-5 h-[2.5px] w-28 sm:w-44 bg-gradient-to-r from-cyan-400 to-transparent shadow-[0_0_12px_#22d3ee]" />
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Bottom 2-Column Banner */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-end pt-6 border-t border-white/10">
-        {/* Left Narrative Subtitle */}
-        <div className="md:col-span-7 lg:col-span-7">
-          <p className="text-white/85 text-base sm:text-lg md:text-xl font-light leading-relaxed max-w-xl drop-shadow-sm">
-            A student-led initiative focused on bridging the gap between UAI students
-            and the Artificial Intelligence industry through live projects, internships,
-            mentorship, and applied innovation.
-          </p>
-          <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-teal-300/80 font-mono">
-            <span>TALENT.</span>
-            <span>•</span>
-            <span>TECHNOLOGY.</span>
-            <span>•</span>
-            <span>INDUSTRY.</span>
-            <span>•</span>
-            <span>GROW BEYOND CLASSROOM.</span>
+          {/* 2. Official Condensed Subtitle - Universal AI University */}
+          <div className="mt-6 sm:mt-8 max-w-2xl">
+            <p className="text-slate-100 text-lg sm:text-xl md:text-2xl font-normal leading-relaxed drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)]">
+              Connecting ambitious student builders at Universal AI University with frontier AI technology and industry leadership.
+            </p>
+
+            {/* Core Focus Badges - Strictly 2 Brand Colors (Cyan & White) */}
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-4 text-[11px] sm:text-xs text-cyan-300 font-mono tracking-wider font-semibold drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+              <span>CONNECTING TALENT</span>
+              <span className="text-white/40">•</span>
+              <span>AGENTIC SYSTEMS</span>
+              <span className="text-white/40">•</span>
+              <span>INDUSTRY CONDUITS</span>
+              <span className="text-white/40">•</span>
+              <span className="text-cyan-200">UNIVERSAL AI UNIVERSITY</span>
+            </div>
           </div>
-        </div>
 
-        {/* Right CTA Links */}
-        <div className="md:col-span-5 lg:col-span-5 flex flex-wrap md:justify-end items-center gap-4">
+          {/* 3. Single Primary CTA Button (Standardized Geometry & Style) */}
+          <div className="mt-8 sm:mt-10">
+            <button
+              onClick={() => handleScrollTo("text-reveal")}
+              className="group inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-sm tracking-wide bg-gradient-to-r from-cyan-400 to-[#0088ff] text-slate-950 hover:brightness-110 shadow-[0_4px_24px_rgba(0,229,255,0.35)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+            >
+              <span>Explore Ecosystem</span>
+              <ArrowRight className="w-4 h-4 text-slate-950 group-hover:translate-x-1 transition-transform stroke-[2]" />
+            </button>
+          </div>
+        </motion.div>
+
+        {/* Subtle Scroll Cue */}
+        <motion.div
+          style={{ opacity: contentOpacity }}
+          className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-70 hover:opacity-100 transition-opacity pointer-events-auto"
+        >
           <button
             onClick={() => handleScrollTo("text-reveal")}
-            className="group inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-teal-400 hover:bg-teal-300 text-black text-sm font-semibold tracking-wide transition-all shadow-lg shadow-teal-500/20 hover:scale-[1.02] cursor-pointer"
+            aria-label="Scroll down"
+            className="p-1 cursor-pointer"
           >
-            <span>Explore Mission &amp; Overview</span>
-            <ArrowRight className="w-4 h-4 text-black group-hover:translate-x-1 transition-transform" />
+            <ChevronDown className="w-5 h-5 text-white/60 animate-bounce" />
           </button>
-
-          <button
-            onClick={() => handleScrollTo("spiral-3d")}
-            className="group inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-black/40 hover:bg-white/10 border border-white/20 text-white text-sm font-medium tracking-wide transition-all cursor-pointer backdrop-blur-md"
-          >
-            <span>3D Spiral Helix</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Subtle Scroll Cue */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-70 hover:opacity-100 transition-opacity">
-        <button
-          onClick={() => handleScrollTo("text-reveal")}
-          aria-label="Scroll down"
-          className="p-1 cursor-pointer"
-        >
-          <ChevronDown className="w-5 h-5 text-white/60 animate-bounce" />
-        </button>
+        </motion.div>
       </div>
     </section>
   );

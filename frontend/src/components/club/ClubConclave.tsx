@@ -137,14 +137,14 @@ export default function ClubConclave({ onRegister }: ClubConclaveProps) {
                 </button>
 
                 <div
-                  className={`flex items-center gap-2 px-4 py-3 rounded-full border text-xs font-mono uppercase tracking-wider ${
+                  className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-xs font-mono uppercase tracking-wider ${
                     isDark
                       ? "border-zinc-700 bg-zinc-900/60 text-zinc-300"
                       : "border-zinc-300 bg-zinc-100 text-zinc-700"
                   }`}
                 >
-                  <span role="img" aria-label="hand pointer">👆</span>
-                  <span>(Limited Delegate Seats)</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                  <span>Limited Delegate Seats</span>
                 </div>
               </div>
             </div>

@@ -17,30 +17,107 @@ export default function TeamPage() {
   const [viewMode, setViewMode] = useState<"featured" | "all">("featured");
   const [hoveredDirectoryId, setHoveredDirectoryId] = useState<string | null>("daksh");
 
-  // 4 Core Featured Team Members
+  // Core Leadership Team Members from Official LinkedIn Roster
   const featuredTeam: TeamMember[] = [
     {
       id: "daksh",
       name: "DAKSH RAJESH KHANDAGALE",
-      role: "CLUB PRESIDENT & ARCHITECT",
+      role: "PRESIDENT & FOUNDER",
       title: "Lead Architect",
-      dept: "B.Tech · AI & Machine Learning",
+      dept: "Universal AI University · AI & ML",
       image: "/team/daksh.jpg",
-      bio: "Visionary founder and architect of Ai ConnectX. Specializes in autonomous multi-agent tool execution, edge model quantization, and production-grade intelligent machine learning systems.",
+      bio: "President and Founder of AI CONNECTX at Universal AI University. Pioneer in autonomous agentic loops, enterprise industry pipelines, edge model orchestration, and student-to-corporate engineering bridges.",
       contributions: [
-        "Architected core club web systems & 3D cinematic visualizers",
-        "Engineered the 240-frame smooth cinematic canvas animation",
-        "Designed the 3D curved parallax event gallery and design system",
+        "Founded and architected the AI CONNECTX organization and vision",
+        "Conducted industry masterclasses in Agentic AI & Frontier LLM workflows",
+        "Engineered the 240-frame high-performance cinematic visualizers",
       ],
-      skills: ["PyTorch", "System Architecture", "React & TypeScript", "Agentic Workflows"],
+      skills: ["PyTorch", "System Architecture", "Agentic Systems", "React & TypeScript"],
       badge: "PRESIDENT",
+    },
+    {
+      id: "pranav",
+      name: "MR. PRANAV MORE",
+      role: "PATRON, AI CONNECTX",
+      title: "Organization Patron",
+      dept: "Universal AI University",
+      image: "/team/pranav.jpg",
+      bio: "Distinguished Patron of AI CONNECTX at Universal AI University. Championing student innovation, strategic industry liaisons, and cross-disciplinary AI initiatives that bridge academic talent with real-world enterprise.",
+      contributions: [
+        "Executive patronage and institutional backing for AI CONNECTX initiatives",
+        "Strategic industry relationship curation and corporate masterclass oversight",
+        "Empowering student-led research and live hackathon deployments",
+      ],
+      skills: ["Strategic Leadership", "Corporate Liaisons", "Institutional Growth", "Mentorship"],
+      badge: "PATRON",
+    },
+    {
+      id: "ratnadeep",
+      name: "RATNADEEP PATIL",
+      role: "OPERATIONS & OUTREACH LEAD",
+      title: "Operations Lead",
+      dept: "Universal AI University",
+      image: "/team/daksh.jpg",
+      bio: "Directs organizational operations, industry outreach, external relations, and masterclass coordination across the AI ConnectX ecosystem.",
+      contributions: [
+        "Managed speaker logistics for AI Engineering & Agentic Systems sessions",
+        "Coordinated student participation and corporate partner engagement",
+        "Standardized operational workflows across active working tracks",
+      ],
+      skills: ["Operations", "Strategic Outreach", "Community Management", "Event Logistics"],
+      badge: "OPERATIONS",
+    },
+    {
+      id: "purna",
+      name: "PURNA SAI VENKAT GODAVARTHI",
+      role: "TECHNICAL SYSTEMS LEAD",
+      title: "Engineering Lead",
+      dept: "Universal AI University",
+      image: "/team/yusuf.jpg",
+      bio: "Spearheads technical infrastructure, developer tooling, and hands-on system benchmarks for student builders tackling enterprise AI challenges.",
+      contributions: [
+        "Built distributed compute workflows for student AI models",
+        "Led hands-on lab deployments during technical workshops",
+        "Authored system evaluation frameworks for project vetting",
+      ],
+      skills: ["Python", "Cloud Systems", "Model Optimization", "Distributed Inference"],
+      badge: "TECH LEAD",
+    },
+  ];
+
+  // Extended Directory Members (Matching the multi-column directory)
+  const directoryMembers: TeamMember[] = [
+    ...featuredTeam,
+    {
+      id: "hemanth",
+      name: "HEMANTH HARIHARAN MADDILA",
+      role: "AGENTIC ARCHITECTURE LEAD",
+      title: "Agentic Systems Specialist",
+      dept: "Universal AI University",
+      image: "/team/daksh.jpg",
+      bio: "Specializes in multi-agent tool execution loops, context grounding, and autonomous engineering frameworks.",
+      contributions: ["Designed agentic tool-calling prototypes", "Evaluated frontier LLM reasoning capabilities"],
+      skills: ["LangChain", "Autogen", "Python", "Vector Databases"],
+      badge: "AGENTIC AI",
+    },
+    {
+      id: "angad",
+      name: "ANGAD MISHRA",
+      role: "GROWTH & COMMUNITY LEAD",
+      title: "Community Director",
+      dept: "Universal AI University",
+      image: "/team/rhea.jpg",
+      bio: "Drives community engagement, hackathon registration pipelines, and corporate branding initiatives.",
+      contributions: ["Scaled active student membership across cohorts", "Curated visual identity and media communications"],
+      skills: ["Community Building", "Growth Strategy", "Content Curation", "Event Hosting"],
+      badge: "COMMUNITY",
     },
     {
       id: "yusuf",
       name: "YUSUF CHOUGLE",
       role: "TECHNICAL CO-LEAD & DEV",
       title: "Technical Co-Lead",
-      dept: "B.Tech · AI & Machine Learning",
+      dept: "Universal AI University · AI & ML",
       image: "/team/yusuf.jpg",
       bio: "Technical co-lead spearheading full-stack web integration, modern UI architecture, interactive 3D components, and high-performance frontend engineering workflows.",
       contributions: [
@@ -51,43 +128,6 @@ export default function TeamPage() {
       skills: ["Full-Stack Dev", "FastAPI & Python", "Tailwind CSS", "Data Structures"],
       badge: "CO-LEAD",
     },
-    {
-      id: "pranav",
-      name: "PRANAV SIR",
-      role: "FACULTY GUIDE & ADVISOR",
-      title: "Faculty Guide",
-      dept: "School of Computing Science · AI Systems",
-      image: "/team/pranav.jpg",
-      bio: "Distinguished academic advisor providing guidance across software engineering methodologies, AI curriculum standards, and intelligent interactive systems.",
-      contributions: [
-        "Academic supervision of AI ConnectX Club Initiatives",
-        "Advisory on ethical AI practices, open-source compliance, and student innovation",
-        "Course guidance on scalable web architecture and state management",
-      ],
-      skills: ["Web Programming", "Software Engineering", "System Design", "Academic Mentorship"],
-      badge: "MENTOR",
-    },
-    {
-      id: "rhea",
-      name: "RHEA SEN",
-      role: "HEAD OF RESEARCH & GENAI",
-      title: "Research Lead",
-      dept: "Computational Intelligence & AI",
-      image: "/team/rhea.jpg",
-      bio: "Leads the club's frontier research paper reading groups, benchmarking multimodal LLMs, and curating competitive student AI hackathon challenges.",
-      contributions: [
-        "Organized Genesis '24 LLM Quantization & Reasoning Masterclass",
-        "Curated evaluation rubrics for club technical interviews",
-        "Mentored student teams in national AI hackathons and paper submissions",
-      ],
-      skills: ["LLM Fine-Tuning", "TensorRT", "Vision-Language Models", "Prompt Synthesis"],
-      badge: "RESEARCH",
-    },
-  ];
-
-  // Extended Directory Members (Matching the multi-column directory from the video)
-  const directoryMembers: TeamMember[] = [
-    ...featuredTeam,
     {
       id: "aditya-sharma",
       name: "ADITYA SHARMA",
@@ -198,47 +238,31 @@ export default function TeamPage() {
           <span className="hover:text-cyan-300 transition-colors cursor-default">[ X ]</span>
         </div>
 
-        {/* ─── Editorial Header (Matching Video Frame 00:05) ─── */}
+        {/* ─── Editorial Header (Matching Clean Bespoke Aesthetic) ─── */}
         <div className="text-center mb-12 sm:mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 mb-3 px-3.5 py-1.5 rounded-full border border-white/15 bg-black/35 backdrop-blur-md shadow-[0_0_20px_rgba(0,0,0,0.4)]"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-            <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-white/90 font-medium">
-              CORE LEADERSHIP &amp; RESEARCH ARCHITECTS
-            </span>
-          </motion.div>
-
-          {/* Cyan 03 Counter */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-cyan-400 font-mono text-lg sm:text-xl tracking-[0.35em] font-bold mb-1 drop-shadow-[0_0_15px_rgba(34,211,238,0.7)]"
-          >
-            03
-          </motion.div>
+          <span className="text-xs font-mono tracking-[0.25em] text-cyan-400 font-semibold uppercase block mb-3">
+            03 / CORE LEADERSHIP
+          </span>
 
           {/* Brutalist Title: TEAM */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-6xl sm:text-8xl md:text-9xl font-bold tracking-tight text-white uppercase drop-shadow-[0_20px_50px_rgba(0,0,0,0.9)]"
+            className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tight text-white uppercase"
           >
             TEAM
           </motion.h1>
 
           <p className="mt-4 text-sm sm:text-base text-slate-300/80 max-w-xl mx-auto font-light">
-            The engineers, researchers, and student visionaries driving frontier autonomous intelligence across the <span className="font-serif"><span className="italic text-cyan-300 font-bold">Ai</span> <span className="text-[#0088ff] font-bold">Connect</span><span className="text-cyan-300 font-bold">X</span></span> ecosystem.
+            The engineers, researchers, and student visionaries driving frontier autonomous intelligence across the <span className="font-semibold text-white">AI</span> <span className="font-semibold text-[#0088ff]">Connect</span><span className="font-semibold text-cyan-400">X</span> ecosystem.
           </p>
 
           {/* View Mode Toggle Button: Featured vs Full Directory (Matching Video Interaction) */}
           <div className="mt-8 flex items-center justify-center gap-3">
             <button
               onClick={() => setViewMode(viewMode === "featured" ? "all" : "featured")}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/[0.04] hover:bg-white/[0.09] border border-white/15 hover:border-white/30 text-white/90 hover:text-white text-xs font-mono tracking-wider uppercase transition-all backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.3)] cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.09] border border-white/15 hover:border-white/30 text-white/90 hover:text-white text-xs font-mono tracking-wider uppercase transition-all backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.3)] cursor-pointer"
             >
               <span>{viewMode === "featured" ? "LOAD MORE DIRECTORY" : "SHOW FEATURED ONLY"}</span>
               <ChevronDown className={`w-3.5 h-3.5 text-cyan-400 transition-transform duration-300 ${viewMode === "all" ? "rotate-180" : ""}`} />

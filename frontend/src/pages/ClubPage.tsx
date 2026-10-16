@@ -1,14 +1,33 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, memo } from "react";
 import ScrollCanvasBackground from "../components/zubox/ScrollCanvasBackground";
 import AIConnectXNavbar from "../components/zubox/ZuboxNavbar";
 import AIConnectXHero from "../components/zubox/ZuboxHero";
 import ZeroSevenLoadingScreen from "../components/zubox/ZeroSevenLoadingScreen";
 
 import TextRevealScroll from "../components/scroll-effects/TextRevealScroll";
-import Spiral3DScrollAnimation from "../components/scroll-effects/Spiral3DScrollAnimation";
 import HorizontalScrollingSection from "../components/scroll-effects/HorizontalScrollingSection";
+import AIConnectXTestimonials from "../components/zubox/AIConnectXTestimonials";
 import AIConnectXEditorialTeam from "../components/zubox/AIConnectXEditorialTeam";
 import AIConnectXContactSection from "../components/zubox/AIConnectXContactSection";
+import AIConnectXFooter from "../components/zubox/AIConnectXFooter";
+
+const MainSections = memo(function MainSections() {
+  return (
+    <>
+      <main className="relative z-10 flex flex-col pb-0">
+        <AIConnectXHero />
+        <TextRevealScroll />
+        <div className="flex flex-col space-y-16 md:space-y-28">
+          <HorizontalScrollingSection />
+          <AIConnectXTestimonials />
+          <AIConnectXEditorialTeam />
+          <AIConnectXContactSection />
+        </div>
+      </main>
+      <AIConnectXFooter />
+    </>
+  );
+});
 
 export default function ClubPage() {
   const [showLoadingScreen, setShowLoadingScreen] = useState(true);
@@ -69,7 +88,7 @@ export default function ClubPage() {
         />
       )}
 
-      {/* 1. Cinematic 240-Frame Scroll Animation in the Background (Slides all down and back again during loading) */}
+      {/* 1. Cinematic 240-Frame Scroll Animation in the Background */}
       <ScrollCanvasBackground
         overrideProgress={bgProgress}
         slideOffset={slideOffset}
@@ -78,15 +97,8 @@ export default function ClubPage() {
       {/* 2. Fixed Top Navigation */}
       <AIConnectXNavbar onLoginTrigger={() => setShowLoadingScreen(true)} />
 
-      {/* 3. The Interactive Scroll Animations */}
-      <main className="relative z-10 flex flex-col space-y-16 md:space-y-28 pb-0">
-        <AIConnectXHero />
-        <TextRevealScroll />
-        <Spiral3DScrollAnimation />
-        <HorizontalScrollingSection />
-        <AIConnectXEditorialTeam />
-        <AIConnectXContactSection />
-      </main>
+      {/* 3. The Interactive Scroll Animations (Isolated from loading re-renders) */}
+      <MainSections />
     </div>
   );
 }
