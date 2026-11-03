@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, type CSSProperties } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -327,7 +327,7 @@ export default function AIConnectX3DGallery() {
                 }}
                 className={`absolute w-[280px] sm:w-[330px] md:w-[370px] lg:w-[400px] h-[460px] sm:h-[510px] md:h-[550px] lg:h-[580px] rounded-[28px] cursor-pointer shadow-2xl group ${
                   isCenter
-                    ? "shadow-[0_0_40px_rgba(20,184,166,0.35),0_25px_60px_rgba(0,0,0,0.9)]"
+                    ? "shadow-[0_0_50px_rgba(20,184,166,0.55),0_0_100px_rgba(56,189,248,0.3),0_25px_60px_rgba(0,0,0,0.95)]"
                     : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
                 }`}
               >
@@ -337,7 +337,28 @@ export default function AIConnectX3DGallery() {
                     colorVariant="colorful"
                     borderRadius={28}
                     strength={1}
-                    glowSize={1.2}
+                    brightness={2.5}
+                    saturation={2.2}
+                    glowSize={2.0}
+                    style={{
+                      "--beam-stroke-opacity": 3.8,
+                      "--beam-bloom-opacity": 3.5,
+                      "--beam-inner-opacity": 2.5,
+                    } as CSSProperties}
+                    css={`
+                      [data-beam="{id}"]::after {
+                        padding: 3px !important;
+                        opacity: 1 !important;
+                      }
+                      [data-beam="{id}"] [data-beam-bloom] {
+                        padding: 4px !important;
+                        opacity: 0.95 !important;
+                        filter: blur(14px) brightness(2.5) saturate(2.2) !important;
+                      }
+                      [data-beam="{id}"]::before {
+                        opacity: 0.9 !important;
+                      }
+                    `}
                     className="w-full h-full rounded-[28px] overflow-hidden"
                   >
                     <div className="relative w-full h-full rounded-[28px] overflow-hidden">
