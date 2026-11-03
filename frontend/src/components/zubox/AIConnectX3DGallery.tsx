@@ -7,6 +7,7 @@ import {
   Sparkles,
   ArrowUpRight,
 } from "lucide-react";
+import { BorderBeam } from "@/components/ui/border-beam";
 
 interface GalleryEvent {
   id: number;
@@ -236,27 +237,6 @@ export default function AIConnectX3DGallery() {
       ref={containerRef}
       className="relative w-full min-h-[160vh] bg-transparent text-neutral-900 select-none scroll-mt-0 font-sans z-30"
     >
-      <style>{`
-        @property --rgb-beam-angle {
-          syntax: "<angle>";
-          initial-value: 0deg;
-          inherits: true;
-        }
-
-        @keyframes rgb-beam-spin {
-          to {
-            --rgb-beam-angle: 360deg;
-          }
-        }
-
-        .rgb-beam-animated {
-          animation: rgb-beam-spin 7s linear infinite;
-        }
-
-        .group:hover .rgb-beam-animated {
-          animation-duration: 14s;
-        }
-      `}</style>
       <span id="chronicles" className="sr-only" />
 
       {/* ─── Fullscreen Sticky Stage (Creates the clean pause while scrolling) ─── */}
@@ -347,80 +327,26 @@ export default function AIConnectX3DGallery() {
                 }}
                 className={`absolute w-[280px] sm:w-[330px] md:w-[370px] lg:w-[400px] h-[460px] sm:h-[510px] md:h-[550px] lg:h-[580px] rounded-[28px] cursor-pointer shadow-2xl group ${
                   isCenter
-                    ? "z-30"
+                    ? "shadow-[0_25px_60px_rgba(0,0,0,0.85)]"
                     : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
                 }`}
               >
                 {isCenter ? (
-                  <div className="relative w-full h-full transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) group-hover:scale-[1.05]">
-                    {/* 1. Dynamic RGB Ambient Glow — Bleeds 28-32px outside the card, fading smoothly along the traveling RGB light */}
-                    <div
-                      className="rgb-beam-animated absolute -inset-7 sm:-inset-9 rounded-[52px] pointer-events-none z-0 transition-opacity duration-500 opacity-90 group-hover:opacity-100"
-                      style={{
-                        background: `conic-gradient(
-                          from var(--rgb-beam-angle, 0deg),
-                          transparent 0deg,
-                          transparent 165deg,
-                          rgba(255, 0, 85, 0) 185deg,
-                          rgba(255, 0, 85, 0.45) 220deg,
-                          rgba(255, 120, 0, 0.6) 250deg,
-                          rgba(0, 255, 100, 0.75) 280deg,
-                          rgba(0, 210, 255, 0.85) 315deg,
-                          rgba(40, 100, 255, 0.95) 345deg,
-                          rgba(255, 255, 255, 1) 360deg
-                        )`,
-                        filter: "blur(32px) saturate(2.5) brightness(1.7)",
-                      }}
-                    />
-
-                    {/* 2. Concentrated Soft Bloom — Atmospheric edge aura hugging the perimeter */}
-                    <div
-                      className="rgb-beam-animated absolute -inset-1.5 sm:-inset-2 rounded-[34px] pointer-events-none z-10 transition-opacity duration-500 opacity-95 group-hover:opacity-100"
-                      style={{
-                        background: `conic-gradient(
-                          from var(--rgb-beam-angle, 0deg),
-                          transparent 0deg,
-                          transparent 175deg,
-                          rgba(255, 0, 85, 0) 195deg,
-                          rgba(255, 0, 85, 0.7) 235deg,
-                          rgba(255, 140, 0, 0.85) 265deg,
-                          rgba(0, 255, 120, 0.92) 295deg,
-                          rgba(0, 220, 255, 0.98) 325deg,
-                          rgba(60, 120, 255, 1) 348deg,
-                          rgba(255, 255, 255, 1) 360deg
-                        )`,
-                        filter: "blur(12px) saturate(2.3) brightness(2.1)",
-                      }}
-                    />
-
-                    {/* 3. Razor-Sharp 3.5px Perimeter Stroke with Directional Faded Trail */}
-                    <div
-                      className="rgb-beam-animated absolute inset-0 rounded-[28px] p-[3.5px] pointer-events-none z-20"
-                      style={{
-                        background: `conic-gradient(
-                          from var(--rgb-beam-angle, 0deg),
-                          transparent 0deg,
-                          transparent 175deg,
-                          rgba(255, 0, 85, 0) 195deg,
-                          rgba(255, 0, 85, 0.85) 235deg,
-                          rgba(255, 130, 0, 0.95) 265deg,
-                          rgba(0, 255, 100, 1) 295deg,
-                          rgba(0, 220, 255, 1) 325deg,
-                          rgba(60, 120, 255, 1) 348deg,
-                          #ffffff 360deg
-                        )`,
-                        WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                        WebkitMaskComposite: "xor",
-                        mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                        maskComposite: "exclude",
-                      }}
-                    />
-
-                    {/* 4. Subtle Base Hairline Frame */}
-                    <div className="absolute inset-0 rounded-[28px] border border-white/15 pointer-events-none z-10" />
-
-                    {/* 5. Center Card Content */}
-                    <div className="relative w-full h-full rounded-[28px] overflow-hidden z-15 bg-[#121214] shadow-[0_25px_60px_rgba(0,0,0,0.95)]">
+                  <BorderBeam
+                    size="md"
+                    colorVariant="colorful"
+                    duration={3.5}
+                    borderRadius={28}
+                    css={`
+                      [data-beam="{id}"]:hover,
+                      [data-beam="{id}"]:hover::after,
+                      [data-beam="{id}"]:hover [data-beam-bloom] {
+                        animation-duration: 9s !important;
+                      }
+                    `}
+                    className="w-full h-full rounded-[28px] transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.05]"
+                  >
+                    <div className="relative w-full h-full rounded-[28px] overflow-hidden bg-[#121214]">
                       {/* Background Image */}
                       <img
                         src={evt.image}
@@ -434,8 +360,7 @@ export default function AIConnectX3DGallery() {
 
                       {/* Top Tag Pill */}
                       <div className="absolute top-5 left-5 z-10 pointer-events-none">
-                        <span className="px-3.5 py-1 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/75 backdrop-blur-md border border-white/20 text-white font-bold shadow-lg flex items-center gap-1.5">
-                          <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-red-500 via-green-400 to-blue-500 animate-pulse" />
+                        <span className="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/70 backdrop-blur-md border border-white/20 text-white/90 font-semibold shadow-md">
                           #{evt.tag}
                         </span>
                       </div>
@@ -446,7 +371,7 @@ export default function AIConnectX3DGallery() {
                           <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
                             {evt.title}
                           </h3>
-                          <p className="text-[11px] sm:text-xs font-mono font-bold tracking-wider mt-1 uppercase bg-gradient-to-r from-red-400 via-emerald-400 to-blue-400 bg-clip-text text-transparent">
+                          <p className="text-[11px] sm:text-xs font-mono font-bold text-white/70 tracking-wider mt-1 uppercase">
                             // {evt.subtitle}
                           </p>
                         </div>
@@ -461,17 +386,14 @@ export default function AIConnectX3DGallery() {
                             e.stopPropagation();
                             setSelectedEvent(evt);
                           }}
-                          className="relative group/btn w-full p-[1px] rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-[0_0_20px_rgba(255,0,85,0.25),0_0_25px_rgba(0,255,102,0.2),0_0_30px_rgba(0,102,255,0.25)]"
+                          className="inline-flex items-center justify-between w-full px-5 py-2.5 rounded-xl border border-white/20 bg-white/10 hover:bg-white/15 text-white text-xs font-bold tracking-wider uppercase transition-all shadow-sm hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
                         >
-                          <span className="absolute inset-0 bg-gradient-to-r from-red-500 via-emerald-400 to-blue-500 opacity-80 group-hover/btn:opacity-100 transition-opacity" />
-                          <div className="relative px-5 py-2.5 rounded-[11px] bg-zinc-950/90 group-hover/btn:bg-zinc-900/90 flex items-center justify-between transition-colors">
-                            <span className="text-white text-xs font-bold tracking-wider uppercase">View Event Story</span>
-                            <ArrowUpRight className="w-4 h-4 text-white/90 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
-                          </div>
+                          <span>View Event Story</span>
+                          <ArrowUpRight className="w-4 h-4 text-white/80" />
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </BorderBeam>
                 ) : (
                   <div className="w-full h-full rounded-[28px] overflow-hidden border border-white/15 hover:border-white/40 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.03] relative">
                     {/* Background Image */}
