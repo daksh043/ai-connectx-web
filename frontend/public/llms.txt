@@ -7,7 +7,7 @@ AI ConnectX is a student-led AI engineering community dedicated to democratizing
 
 ## Official Canonical URLs
 - Primary Gateway: https://aiconnectx.club/
-- Research & Mission: https://aiconnectx.club/overview
+- Featured Projects: https://aiconnectx.club/projects
 - Engineering Team & Leadership: https://aiconnectx.club/team
 - Contact & Transmission Hub: https://aiconnectx.club/contact
 - Privacy Policy (DPDP Act 2023 & GDPR Compliant): https://aiconnectx.club/privacy

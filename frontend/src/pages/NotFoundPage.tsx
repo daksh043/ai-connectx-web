@@ -47,11 +47,11 @@ export default function NotFoundPage() {
           </Link>
 
           <Link
-            to="/overview"
+            to="/projects"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/20 text-white font-semibold text-xs tracking-wider uppercase transition-all backdrop-blur-md"
           >
             <Compass className="w-4 h-4 text-cyan-300" />
-            <span>Explore Mission</span>
+            <span>Featured Projects</span>
           </Link>
 
           <Link

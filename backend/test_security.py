@@ -118,10 +118,25 @@ def test_rate_limiting():
         )
         if res.status_code == 429:
             hit_429 = True
-            assert "Retry-After" in res.headers
+            assert "Retry-After" in res.headers, "Missing Retry-After header on 429"
+            assert res.headers.get("x-content-type-options") == "nosniff", "429 missing x-content-type-options"
+            assert res.headers.get("x-frame-options") == "DENY", "429 missing x-frame-options"
             break
     assert hit_429, "Rate limiter did not throttle requests after threshold!"
-    print("  -> PASSED: Rate limiter triggered 429 Too Many Requests with Retry-After header.")
+    print("  -> PASSED: Rate limiter triggered 429 Too Many Requests with Retry-After and Security Headers.")
+
+def test_options_preflight_bypasses_rate_limit():
+    print("[TEST 7] Verifying CORS OPTIONS Preflights Bypass Rate Limiting...")
+    for _ in range(15):
+        res = client.options(
+            "/api/auth/login",
+            headers={
+                "Origin": "http://localhost:5173",
+                "Access-Control-Request-Method": "POST",
+            },
+        )
+        assert res.status_code == 200, f"Expected 200 for OPTIONS, got {res.status_code}"
+    print("  -> PASSED: OPTIONS preflights bypass rate limiting without 429.")
 
 if __name__ == "__main__":
     test_security_headers()
@@ -130,6 +145,8 @@ if __name__ == "__main__":
     test_password_strength_enforcement()
     test_admin_route_protection()
     test_rate_limiting()
+    test_options_preflight_bypasses_rate_limit()
     print("\n==========================================")
     print("ALL SECURITY VERIFICATION CHECKS PASSED!")
     print("==========================================")
+

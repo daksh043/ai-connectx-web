@@ -46,11 +46,17 @@ async def create_prospect(
     if existing.scalar_one_or_none():
         raise HTTPException(status_code=400, detail="Company already in this campaign")
 
+    # Lazy relationship loads during Pydantic response serialization raise
+    # MissingGreenlet with AsyncSession, so eagerly load company/contact.
     prospect = Prospect(**data.dict())
     db.add(prospect)
     await db.flush()
-    await db.refresh(prospect)
-    return prospect
+    result = await db.execute(
+        select(Prospect)
+        .options(selectinload(Prospect.company), selectinload(Prospect.contact))
+        .where(Prospect.id == prospect.id)
+    )
+    return result.scalar_one()
 
 
 @router.get("/", response_model=List[ProspectOut])
@@ -120,8 +126,12 @@ async def update_prospect(
     for key, value in data.dict(exclude_unset=True).items():
         setattr(prospect, key, value)
     await db.flush()
-    await db.refresh(prospect)
-    return prospect
+    result = await db.execute(
+        select(Prospect)
+        .options(selectinload(Prospect.company), selectinload(Prospect.contact))
+        .where(Prospect.id == prospect.id)
+    )
+    return result.scalar_one()
 
 
 @router.post("/{prospect_id}/qualify", response_model=ProspectOut)
@@ -133,7 +143,7 @@ async def qualify_prospect(
     """AI-qualify a prospect for a campaign."""
     result = await db.execute(
         select(Prospect)
-        .options(selectinload(Prospect.company), selectinload(Prospect.campaign))
+        .options(selectinload(Prospect.company), selectinload(Prospect.contact), selectinload(Prospect.campaign))
         .join(Campaign, Prospect.campaign_id == Campaign.id)
         .where(Prospect.id == prospect_id, Campaign.created_by == current_user.id)
     )

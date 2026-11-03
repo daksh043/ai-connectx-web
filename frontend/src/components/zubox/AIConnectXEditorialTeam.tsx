@@ -9,7 +9,6 @@ export default function AIConnectXEditorialTeam() {
   const [showDirectory, setShowDirectory] = useState(false);
   const [hoveredDirId, setHoveredDirId] = useState<string | null>("daksh");
   const [activeSpotlight, setActiveSpotlight] = useState(0);
-  const [scrollPct, setScrollPct] = useState(0);
 
   // ─── Scroll-Pinning & Animation Hook ───
   // Creates a pinned pause while the background canvas keeps moving
@@ -24,17 +23,12 @@ export default function AIConnectXEditorialTeam() {
   const cardsY = useTransform(scrollYProgress, [0, 0.5, 1], [30, 0, -25]);
   const headerScale = useTransform(scrollYProgress, [0, 0.35, 0.7, 1], [1.0, 0.95, 0.90, 0.86]);
   const headerOpacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0.85, 1, 1, 0.85]);
+  const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
-  const lastPctRef = useRef(0);
   const lastIdxRef = useRef(0);
 
   useEffect(() => {
     const unsub = scrollYProgress.on("change", (latest) => {
-      const pct = Math.min(100, Math.max(0, Math.round(latest * 100)));
-      if (pct !== lastPctRef.current) {
-        lastPctRef.current = pct;
-        setScrollPct(pct);
-      }
       const idx = Math.min(3, Math.max(0, Math.floor(latest * 4)));
       if (idx !== lastIdxRef.current) {
         lastIdxRef.current = idx;
@@ -235,13 +229,13 @@ export default function AIConnectXEditorialTeam() {
 
               <div className="flex items-center gap-3 text-white/50">
                 <div className="w-20 sm:w-28 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-teal-400 via-cyan-400 to-sky-400 transition-all duration-100"
-                    style={{ width: `${scrollPct}%` }}
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-teal-400 via-cyan-400 to-sky-400"
+                    style={{ width: progressWidth }}
                   />
                 </div>
-                <span className="text-cyan-300 font-bold font-mono">
-                  SYNC: {scrollPct}%
+                <span className="text-cyan-300 font-bold font-mono text-xs">
+                  {activeSpotlight + 1}/4
                 </span>
               </div>
             </div>

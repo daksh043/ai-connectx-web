@@ -5,6 +5,7 @@ All AI-powered features: Company Research, Relevance Scoring,
 Collaboration Ideas, Message Generation, Tone Engine, Quality Checker,
 Reply Classification.
 """
+import asyncio
 import json
 from typing import Optional
 from app.config import settings
@@ -80,9 +81,15 @@ async def _call_openai(system_prompt: str, user_prompt: str, json_mode: bool = F
     return response.choices[0].message.content
 
 
-async def _call_gemini(system_prompt: str, user_prompt: str, json_mode: bool = False) -> str:
-    """Call Google Gemini API."""
+def _gemini_generate_sync(system_prompt: str, user_prompt: str, json_mode: bool) -> str:
+    """Blocking Gemini call — always executed in a worker thread.
+
+    The first import of google.generativeai alone can take seconds, and
+    generate_content is synchronous; running any of this on the event loop
+    would freeze every concurrent request.
+    """
     import google.generativeai as genai
+
     genai.configure(api_key=settings.GEMINI_API_KEY)
     model = genai.GenerativeModel(
         settings.GEMINI_MODEL,
@@ -93,6 +100,11 @@ async def _call_gemini(system_prompt: str, user_prompt: str, json_mode: bool = F
         full_prompt += "\n\nIMPORTANT: Respond ONLY with valid JSON, no markdown."
     response = model.generate_content(full_prompt)
     return response.text
+
+
+async def _call_gemini(system_prompt: str, user_prompt: str, json_mode: bool = False) -> str:
+    """Call Google Gemini API without blocking the event loop."""
+    return await asyncio.to_thread(_gemini_generate_sync, system_prompt, user_prompt, json_mode)
 
 
 # ─── AI Connect X Knowledge Base ─────────────────────────────────

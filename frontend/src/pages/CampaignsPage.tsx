@@ -54,21 +54,8 @@ export default function CampaignsPage() {
   }, []);
 
   useEffect(() => {
-    let active = true;
-    campaignAPI.list().then((response) => {
-      if (!active) return;
-      setCampaigns(response.data);
-      setError("");
-      setRetryLoad(false);
-    }).catch(() => {
-      if (!active) return;
-      setError("Could not load campaigns.");
-      setRetryLoad(true);
-    }).finally(() => {
-      if (active) setLoading(false);
-    });
-    return () => { active = false; };
-  }, []);
+    void fetchCampaigns();
+  }, [fetchCampaigns]);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();

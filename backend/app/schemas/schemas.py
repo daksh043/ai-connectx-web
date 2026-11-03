@@ -239,6 +239,10 @@ class MessageCreate(BaseModel):
     body: str
     message_type: str = "initial"
 
+class MessageUpdate(BaseModel):
+    subject: Optional[str] = None
+    body: Optional[str] = None
+
 class MessageOut(BaseModel):
     id: int
     prospect_id: int

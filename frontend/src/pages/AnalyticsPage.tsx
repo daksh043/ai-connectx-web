@@ -45,16 +45,8 @@ export default function AnalyticsPage() {
   }, []);
 
   useEffect(() => {
-    let active = true;
-    campaignAPI.list().then((response) => {
-      if (!active) return;
-      setCampaigns(response.data);
-      setCampaignError("");
-    }).catch(() => {
-      if (active) setCampaignError("Could not load campaigns for analytics.");
-    });
-    return () => { active = false; };
-  }, []);
+    void fetchCampaigns();
+  }, [fetchCampaigns]);
 
   useEffect(() => () => {
     analyticsRequestId.current += 1;

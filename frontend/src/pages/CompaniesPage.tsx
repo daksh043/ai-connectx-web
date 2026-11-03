@@ -5,6 +5,7 @@ import {
   ExternalLink, Trash2, Beaker, Loader2,
 } from "lucide-react";
 import InlineError from "../components/InlineError";
+import { useDebouncedValue } from "../lib/utils";
 
 interface Company {
   id: number;
@@ -29,6 +30,7 @@ export default function CompaniesPage() {
   const [error, setError] = useState("");
   const [retryLoad, setRetryLoad] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearch = useDebouncedValue(searchQuery);
   const [showDiscover, setShowDiscover] = useState(false);
   const [showAdd, setShowAdd] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
@@ -39,7 +41,7 @@ export default function CompaniesPage() {
 
   const fetchCompanies = useCallback(() => {
     companyAPI
-      .list({ search: searchQuery || undefined })
+      .list({ search: debouncedSearch || undefined })
       .then((res) => {
         setCompanies(res.data);
         setError("");
@@ -50,7 +52,7 @@ export default function CompaniesPage() {
         setRetryLoad(true);
       })
       .finally(() => setLoading(false));
-  }, [searchQuery]);
+  }, [debouncedSearch]);
 
   useEffect(() => {
     fetchCompanies();

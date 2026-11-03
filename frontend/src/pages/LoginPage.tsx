@@ -161,17 +161,6 @@ export default function LoginPage() {
               "Sign in"
             )}
           </button>
-          <button
-            type="button"
-            onClick={() => {
-              setEmail("admin@example.com");
-              setPassword("password123");
-            }}
-            className="w-full mt-2 py-2 px-3 text-xs font-semibold rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/20 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-          >
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>Fill Admin Credentials</span>
-          </button>
           </form>
 
           <div className="auth-divider"><span>NEW TO THE WORKSPACE?</span></div>

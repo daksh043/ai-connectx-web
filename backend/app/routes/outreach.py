@@ -12,7 +12,7 @@ from app.models.campaign import Campaign
 from app.models.conversation import Conversation
 from app.models.followup import FollowUp
 from app.models.user import User
-from app.schemas.schemas import MessageOut, ConversationCreate, ConversationOut, FollowUpOut
+from app.schemas.schemas import MessageOut, MessageUpdate, ConversationCreate, ConversationOut, FollowUpOut
 from app.services.auth import get_current_user
 
 router = APIRouter(prefix="/api/outreach", tags=["Outreach"])
@@ -55,8 +55,7 @@ async def get_message(
 @router.put("/messages/{message_id}", response_model=MessageOut)
 async def update_message(
     message_id: int,
-    body: str = None,
-    subject: str = None,
+    data: MessageUpdate,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
@@ -64,10 +63,12 @@ async def update_message(
     message = result.scalar_one_or_none()
     if not message:
         raise HTTPException(status_code=404, detail="Message not found")
-    if body:
-        message.body = body
-    if subject:
-        message.subject = subject
+    if data.body is not None:
+        if not data.body.strip():
+            raise HTTPException(status_code=422, detail="Message body cannot be empty.")
+        message.body = data.body
+    if data.subject is not None:
+        message.subject = data.subject
     await db.flush()
     await db.refresh(message)
     return message

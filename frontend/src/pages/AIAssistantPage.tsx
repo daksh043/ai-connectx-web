@@ -56,9 +56,6 @@ export default function AIAssistantPage() {
           <h1 className="mt-2 text-3xl font-bold text-dark-100">AI Assistant</h1>
           <p className="mt-2 max-w-2xl text-sm text-dark-400">Turn a plain-language goal into a sharper next move across your outreach workspace.</p>
         </div>
-        <div className="hidden items-center gap-2 rounded-full border border-success-400/20 bg-success-400/5 px-3 py-2 text-xs text-success-400 sm:flex">
-          <span className="h-2 w-2 rounded-full bg-success-400 shadow-[0_0_12px_rgba(74,222,128,0.8)]" /> Provider connected
-        </div>
       </header>
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_300px]">

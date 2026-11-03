@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { contactAPI, companyAPI } from "../lib/api";
 import { Users, Plus, Search, Mail, ExternalLink, Trash2, Building2 } from "lucide-react";
 import InlineError from "../components/InlineError";
+import { useDebouncedValue } from "../lib/utils";
 
 interface Contact {
   id: number;
@@ -27,11 +28,12 @@ export default function ContactsPage() {
   const [companiesError, setCompaniesError] = useState("");
   const [retryLoad, setRetryLoad] = useState(false);
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebouncedValue(search);
   const [showAdd, setShowAdd] = useState(false);
   const [form, setForm] = useState({ company_id: "" as number | "", name: "", title: "", linkedin_url: "", business_email: "" });
 
   const fetchContacts = useCallback(() => {
-    contactAPI.list({ search: search || undefined }).then((r) => {
+    contactAPI.list({ search: debouncedSearch || undefined }).then((r) => {
       setContacts(r.data);
       setContactsError("");
       setRetryLoad(false);
@@ -39,7 +41,7 @@ export default function ContactsPage() {
       setContactsError("Could not load contacts.");
       setRetryLoad(true);
     }).finally(() => setLoading(false));
-  }, [search]);
+  }, [debouncedSearch]);
 
   useEffect(() => { fetchContacts(); }, [fetchContacts]);
   useEffect(() => {

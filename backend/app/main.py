@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from app.config import settings
 from app.database import init_db
 from app.middleware import SecurityHeadersMiddleware, RateLimiterMiddleware
@@ -43,11 +44,14 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# 1. Security Headers Middleware (Outer layer)
-app.add_middleware(SecurityHeadersMiddleware)
+# 0. API Payload Compression (Compresses responses >= 1000 bytes)
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
-# 2. Rate Limiting Middleware (Protects against brute force and DDoS)
+# 1. Rate Limiting Middleware (Protects against brute force and DDoS)
 app.add_middleware(RateLimiterMiddleware)
+
+# 2. Security Headers Middleware (Outer layer — wraps all responses including 429s)
+app.add_middleware(SecurityHeadersMiddleware)
 
 # 3. Hardened CORS Configuration
 app.add_middleware(

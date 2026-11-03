@@ -44,6 +44,39 @@ const testimonials: Testimonial[] = [
   },
 ];
 
+// Jitter "slideAndMask" kinetic typography word-by-word reveal
+function SlideAndMaskText({
+  text,
+  delay = 0.2,
+}: {
+  text: string;
+  delay?: number;
+}) {
+  const words = text.split(" ");
+
+  return (
+    <span className="inline-flex flex-wrap gap-x-[0.28em] gap-y-1">
+      {words.map((word, i) => (
+        <span key={i} className="inline-block overflow-hidden py-0.5">
+          <motion.span
+            className="inline-block"
+            initial={{ y: "115%", opacity: 0 }}
+            whileInView={{ y: "0%", opacity: 1 }}
+            viewport={{ once: true, margin: "-30px" }}
+            transition={{
+              duration: 0.607, // 607ms from Jitter spec
+              delay: delay + i * 0.048, // 61ms offset from Jitter spec
+              ease: [0.25, 0.1, 0.25, 1], // smooth:standard:v1 easing
+            }}
+          >
+            {word}
+          </motion.span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
 export default function AIConnectXTestimonials() {
   return (
     <section
@@ -54,13 +87,13 @@ export default function AIConnectXTestimonials() {
         {/* Section Header with Generous White Space & Big Headlines */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16">
           <div className="max-w-2xl">
-            <span className="text-xs font-mono tracking-[0.25em] text-cyan-400 font-semibold uppercase block mb-3">
+            <span className="text-xs font-mono tracking-[0.25em] text-cyan-400 font-semibold uppercase block mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               03 / ENDORSEMENTS &amp; IMPACT
             </span>
-            <h2 className="text-4xl sm:text-6xl md:text-7xl font-black text-white tracking-tight leading-[1.05]">
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-black text-white tracking-tight leading-[1.05] drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)]">
               Industry Voices
             </h2>
-            <p className="mt-4 text-base sm:text-lg text-slate-200 font-light leading-relaxed">
+            <p className="mt-4 text-base sm:text-lg text-slate-100 font-light leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               Authentic feedback from our patron, guest masterclass leaders, and founding architects.
             </p>
           </div>
@@ -84,33 +117,51 @@ export default function AIConnectXTestimonials() {
           {testimonials.map((item, idx) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="relative rounded-3xl p-8 sm:p-9 bg-slate-950/75 backdrop-blur-2xl border border-white/10 hover:border-cyan-400/40 shadow-[0_20px_60px_rgba(0,0,0,0.7)] transition-all duration-300 flex flex-col justify-between group overflow-hidden"
+              initial={{ opacity: 0, scale: 0.94, y: 24 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{
+                duration: 0.7,
+                delay: idx * 0.12,
+                ease: [0.16, 1, 0.3, 1], // smooth expansion
+              }}
+              className="relative rounded-3xl p-8 sm:p-9 bg-slate-950/30 backdrop-blur-[6px] border border-white/20 hover:border-cyan-400/60 shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.25)] hover:shadow-[0_12px_40px_0_rgba(0,229,255,0.2),inset_0_1px_2px_0_rgba(255,255,255,0.4)] transition-all duration-300 flex flex-col justify-between group overflow-hidden before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-b before:from-white/[0.12] before:via-white/[0.02] before:to-transparent before:pointer-events-none before:z-10"
             >
               {/* Subtle Ambient Glow */}
-              <div className="absolute -top-24 -right-24 w-48 h-48 bg-cyan-400/10 rounded-full blur-3xl pointer-events-none group-hover:bg-cyan-400/15 transition-all" />
+              <div className="absolute -top-24 -right-24 w-48 h-48 bg-cyan-400/10 rounded-full blur-3xl pointer-events-none group-hover:bg-cyan-400/20 transition-all z-0" />
 
-              <div>
-                {/* Header Tag & Quote Icon */}
-                <div className="flex items-center justify-between pb-6 border-b border-white/10 mb-6">
-                  <span className="text-[10px] font-mono text-cyan-300 font-semibold tracking-wider uppercase px-2.5 py-1 rounded-md bg-cyan-400/10 border border-cyan-400/20">
+              <div className="relative z-20">
+                {/* Header Tag & Quote Icon with Fade In */}
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.45, delay: 0.15 + idx * 0.12 }}
+                  className="flex items-center justify-between pb-6 border-b border-white/15 mb-6"
+                >
+                  <span className="text-[10px] font-mono text-cyan-300 font-semibold tracking-wider uppercase px-2.5 py-1 rounded-md bg-slate-950/40 backdrop-blur-sm border border-cyan-400/30 shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
                     {item.highlight}
                   </span>
-                  <Quote className="w-5 h-5 text-cyan-400/60 stroke-[1.5]" />
-                </div>
+                  <Quote className="w-5 h-5 text-cyan-400/70 stroke-[1.5] drop-shadow-[0_2px_8px_rgba(0,229,255,0.3)]" />
+                </motion.div>
 
-                {/* Tight, Punchy Testimonial Quote */}
-                <p className="text-base sm:text-lg text-white font-normal leading-relaxed mb-8">
-                  &ldquo;{item.quote}&rdquo;
+                {/* Tight, Punchy Testimonial Quote with Jitter slideAndMask kinetic reveal */}
+                <p className="text-base sm:text-lg text-white font-normal leading-relaxed mb-8 drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)]">
+                  <span className="text-cyan-400 font-serif mr-1">&ldquo;</span>
+                  <SlideAndMaskText text={item.quote} delay={0.25 + idx * 0.12} />
+                  <span className="text-cyan-400 font-serif ml-1">&rdquo;</span>
                 </p>
               </div>
 
-              {/* Author Attribution Block */}
-              <div className="flex items-center gap-4 pt-6 border-t border-white/10">
-                <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-cyan-400/30">
+              {/* Author Attribution Block with Delayed Fade In */}
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.4 + idx * 0.12, ease: "easeOut" }}
+                className="relative z-20 flex items-center gap-4 pt-6 border-t border-white/15"
+              >
+                <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-cyan-400/40 shadow-[0_2px_12px_rgba(0,229,255,0.2)]">
                   <img
                     src={item.image}
                     alt={item.name}
@@ -118,7 +169,7 @@ export default function AIConnectXTestimonials() {
                   />
                 </div>
                 <div>
-                  <h3 className="text-sm sm:text-base font-bold text-white tracking-tight">
+                  <h3 className="text-sm sm:text-base font-bold text-white tracking-tight drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">
                     {item.name}
                   </h3>
                   <p className="text-xs text-cyan-300 font-mono">
@@ -128,7 +179,7 @@ export default function AIConnectXTestimonials() {
                     {item.organization}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           ))}
         </div>

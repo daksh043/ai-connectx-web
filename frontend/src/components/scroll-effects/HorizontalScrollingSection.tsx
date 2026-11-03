@@ -68,21 +68,19 @@ export default function HorizontalScrollingSection() {
     >
       {/* Pinned Sticky Rail Container */}
       <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden px-6 lg:px-16">
-        {/* Section Header with Surrounding Dark Blur Aura */}
+        {/* Section Header */}
         <div className="relative flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-8 max-w-7xl">
           <div
-            className="absolute -inset-x-12 -inset-y-8 -z-10 pointer-events-none rounded-3xl backdrop-blur-md"
+            className="absolute -inset-x-12 -inset-y-8 -z-10 pointer-events-none rounded-3xl opacity-30"
             style={{
-              background: "radial-gradient(ellipse at 25% 50%, rgba(0, 0, 0, 0.58) 0%, rgba(0, 0, 0, 0.2) 55%, transparent 85%)",
-              maskImage: "radial-gradient(ellipse at 25% 50%, black 30%, transparent 80%)",
-              WebkitMaskImage: "radial-gradient(ellipse at 25% 50%, black 30%, transparent 80%)",
+              background: "radial-gradient(ellipse at 25% 50%, rgba(0, 0, 0, 0.4) 0%, transparent 75%)",
             }}
           />
           <div>
-            <span className="text-xs font-mono tracking-[0.25em] text-cyan-400 font-semibold uppercase block mb-2">
+            <span className="text-xs font-mono tracking-[0.25em] text-cyan-400 font-semibold uppercase block mb-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
               02 / INNOVATION LABS
             </span>
-            <h2 className="text-4xl sm:text-6xl md:text-7xl font-black text-white tracking-tight">
+            <h2 className="text-4xl sm:text-6xl md:text-7xl font-black text-white tracking-tight drop-shadow-[0_4px_24px_rgba(0,0,0,0.9)]">
               Featured Projects
             </h2>
           </div>
@@ -103,11 +101,11 @@ export default function HorizontalScrollingSection() {
 
         {/* Horizontal Track */}
         <div className="w-full overflow-hidden">
-          <motion.div style={{ x }} className="flex gap-6 shrink-0 py-4">
+          <motion.div style={{ x }} className="flex gap-6 shrink-0 py-4 will-change-transform">
             {projects.map((item) => (
               <div
                 key={item.id}
-                className="w-[320px] sm:w-[420px] rounded-3xl overflow-hidden bg-slate-950/85 backdrop-blur-xl border border-white/10 hover:border-cyan-400/50 shadow-2xl transition-all duration-300 group flex flex-col justify-between shrink-0"
+                className="relative w-[320px] sm:w-[420px] rounded-3xl overflow-hidden bg-slate-950/30 backdrop-blur-[6px] border border-white/20 hover:border-cyan-400/60 shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.25)] hover:shadow-[0_12px_40px_0_rgba(0,229,255,0.2),inset_0_1px_2px_0_rgba(255,255,255,0.4)] transition-all duration-300 group flex flex-col justify-between shrink-0 before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-b before:from-white/[0.12] before:via-white/[0.02] before:to-transparent before:pointer-events-none before:z-20"
               >
                 {/* Image Header */}
                 <div className="relative h-48 sm:h-56 w-full overflow-hidden">
@@ -116,31 +114,33 @@ export default function HorizontalScrollingSection() {
                     alt={item.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md border border-white/15 text-[10px] font-mono text-cyan-300 uppercase tracking-wider">
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-black/20 to-transparent" />
+                  <div className="absolute top-3 left-3 z-30 px-2.5 py-1 rounded-md bg-slate-950/50 backdrop-blur-sm border border-white/20 text-[10px] font-mono text-cyan-300 uppercase tracking-wider shadow-[0_2px_8px_rgba(0,0,0,0.4)]">
                     {item.tag}
                   </div>
-                  <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/70 backdrop-blur-md border border-white/15 text-[10px] font-mono text-cyan-300">
+                  <div className="absolute top-3 right-3 z-30 flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-950/50 backdrop-blur-sm border border-white/20 text-[10px] font-mono text-cyan-300 shadow-[0_2px_8px_rgba(0,0,0,0.4)]">
                     <Terminal className="w-3 h-3 text-cyan-400" />
                     <span>{item.status}</span>
                   </div>
                 </div>
 
                 {/* Body Content */}
-                <div className="p-6">
-                  <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-2 group-hover:text-cyan-300 transition-colors">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-200 font-light leading-relaxed mb-6">
-                    {item.summary}
-                  </p>
+                <div className="relative z-20 p-6 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-2 group-hover:text-cyan-300 transition-colors drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)]">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-100 font-light leading-relaxed mb-6 drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]">
+                      {item.summary}
+                    </p>
+                  </div>
 
                   {/* Tech Tags */}
-                  <div className="flex flex-wrap gap-2 pt-4 border-t border-white/10">
+                  <div className="flex flex-wrap gap-2 pt-4 border-t border-white/15">
                     {item.tech.map((t, idx) => (
                       <span
                         key={idx}
-                        className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 font-mono text-[10px] text-slate-200"
+                        className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/15 backdrop-blur-sm border border-white/15 font-mono text-[10px] text-slate-100 shadow-[inset_0_1px_1px_0_rgba(255,255,255,0.15)] transition-colors"
                       >
                         {t}
                       </span>

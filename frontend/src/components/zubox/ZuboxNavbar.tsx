@@ -1,4 +1,4 @@
-import GlassyNavbar from "./GlassyNavbar";
+import AskPhillNavbar from "./AskPhillNavbar";
 
 interface AIConnectXNavbarProps {
   onNavClick?: (sectionId: string) => void;
@@ -6,15 +6,14 @@ interface AIConnectXNavbarProps {
 }
 
 export default function AIConnectXNavbar({
-  onNavClick,
-  onLoginTrigger,
 }: AIConnectXNavbarProps) {
   return (
-    <GlassyNavbar
-      onNavClick={onNavClick}
-      onLoginTrigger={onLoginTrigger}
+    <AskPhillNavbar
+      brandName="AI ConnectX"
+      themeColor="#00b4d8"
+      accentColor="#050507"
     />
   );
 }
 
-export { GlassyNavbar };
+export { AskPhillNavbar };

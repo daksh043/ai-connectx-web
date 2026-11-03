@@ -40,13 +40,12 @@ export default function AIConnectXFooter() {
                 </div>
               </Link>
               <div className="h-6 w-[1px] bg-white/20" />
-              <div className="flex items-center px-2.5 py-1 rounded-lg bg-white/95">
-                <img
-                  src="/universal-ai-university-logo.png"
-                  alt="Universal AI University"
-                  className="h-5 object-contain"
-                />
-              </div>
+              <img
+                src="/universal-ai-university-logo.png"
+                alt="Universal AI University"
+                className="h-7 object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
+                title="Universal AI University"
+              />
             </div>
 
             <p className="text-sm text-slate-200 leading-relaxed max-w-sm font-light">
@@ -105,8 +104,13 @@ export default function AIConnectXFooter() {
                 </Link>
               </li>
               <li>
-                <Link to="/overview" className="hover:text-cyan-300 transition-colors">
-                  Mission &amp; Vision
+                <Link to="/projects" className="hover:text-cyan-300 transition-colors">
+                  Featured Projects
+                </Link>
+              </li>
+              <li>
+                <Link to="/industry-voices" className="hover:text-cyan-300 transition-colors">
+                  Industry Voices
                 </Link>
               </li>
               <li>

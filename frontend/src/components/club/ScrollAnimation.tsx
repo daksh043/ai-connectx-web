@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 
 const TOTAL_FRAMES = 240;
 const getFrameSrc = (index: number) =>
-  `/frames/frame_${String(index).padStart(6, "0")}.png`;
+  `/frames/frame_${String(index).padStart(6, "0")}.jpg`;
 
 export default function ScrollAnimation() {
   const containerRef = useRef<HTMLDivElement>(null);

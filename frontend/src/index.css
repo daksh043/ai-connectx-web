@@ -36,7 +36,97 @@
   --color-dark-800: #2d4f74;
   --color-dark-850: #1f3d5e;
   --color-dark-900: #142d4d;
-  --color-dark-950: #0d213c;
+  --color-royal-50: #f0f4ff;
+  --color-royal-100: #e0e8ff;
+  --color-royal-200: #c7d5fe;
+  --color-royal-300: #a4bcfc;
+  --color-royal-400: #7a9df9;
+  --color-royal-500: #4169e1;
+  --color-royal-600: #2b4cd6;
+  --color-royal-700: #1d3cb5;
+  --color-royal-800: #172f8f;
+  --color-royal-900: #17296f;
+  --color-royal-950: #0f1842;
+  --color-royal: #4169e1;
+  --color-royal-blue: #4169e1;
+
+  --color-color-1: hsl(var(--color-1));
+  --color-color-2: hsl(var(--color-2));
+  --color-color-3: hsl(var(--color-3));
+  --color-color-4: hsl(var(--color-4));
+  --color-color-5: hsl(var(--color-5));
+}
+
+@layer base {
+  :root {
+    --color-1: 330 100% 40%;
+    --color-2: 140 100% 55%;
+    --color-3: 210 100% 30%;
+    --color-4: 60 100% 70%;
+    --color-5: 295 100% 45%;
+    --brand: 50 100% 50%;
+  }
+
+  .dark {
+    --color-1: 330 100% 40%;
+    --color-2: 140 100% 55%;
+    --color-3: 210 100% 30%;
+    --color-4: 60 100% 70%;
+    --color-5: 295 100% 45%;
+    --brand: 50 100% 50%;
+  }
+}
+
+@keyframes gradient-border {
+  0%, 100% { border-radius: 37% 29% 27% 27% / 28% 25% 41% 37%; }
+  25% { border-radius: 47% 29% 39% 49% / 61% 19% 66% 26%; }
+  50% { border-radius: 57% 23% 47% 72% / 63% 17% 66% 33%; }
+  75% { border-radius: 28% 49% 29% 100% / 93% 20% 64% 25%; }
+}
+
+@keyframes gradient-1 {
+  0%, 100% { top: 0; right: 0; }
+  50% { top: 50%; right: 25%; }
+  75% { top: 25%; right: 50%; }
+}
+
+@keyframes gradient-2 {
+  0%, 100% { top: 0; left: 0; }
+  60% { top: 75%; left: 25%; }
+  85% { top: 50%; left: 50%; }
+}
+
+@keyframes gradient-3 {
+  0%, 100% { bottom: 0; left: 0; }
+  40% { bottom: 50%; left: 25%; }
+  65% { bottom: 25%; left: 50%; }
+}
+
+@keyframes gradient-4 {
+  0%, 100% { bottom: 0; right: 0; }
+  50% { bottom: 25%; right: 40%; }
+  90% { bottom: 50%; right: 25%; }
+}
+
+:root {
+  --theme-royal-blue: #4169e1;
+  --theme-royal-glow: rgba(65, 105, 225, 0.55);
+}
+
+.text-royal {
+  color: #4169e1;
+}
+
+.bg-royal {
+  background-color: #4169e1;
+}
+
+.border-royal {
+  border-color: #4169e1;
+}
+
+.shadow-royal-glow {
+  box-shadow: 0 0 24px rgba(65, 105, 225, 0.5);
 }
 
 @keyframes shimmerGradientFlow {
@@ -151,16 +241,50 @@
 
 /* ─── Base Styles ──────────────────────────────────────────────── */
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
+html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+  touch-action: pan-y;
+  scrollbar-gutter: stable;
+}
+
 body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  position: relative;
+  overscroll-behavior-x: none;
+  touch-action: pan-y;
   font-family: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
   background: linear-gradient(135deg, #f8fbff 0%, #edf5ff 52%, #f2f8ff 100%);
   color: #0f172a;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  position: relative;
+}
+
+/* Eliminate horizontal shifting / moving left or right on hover */
+.group:hover [class*="group-hover:translate-x-"],
+.group:hover [class*="group-hover:-translate-x-"],
+[class*="group-hover/item:translate-x-"],
+[class*="group-hover/btn:translate-x-"],
+[class*="hover:translate-x-"]:hover,
+[class*="hover:-translate-x-"]:hover {
+  transform: none !important;
 }
 
 /* ─── Startup Auth Experience ─────────────────────────────────── */
@@ -744,7 +868,7 @@ body { background: #f8fbff; }
   transition: left 500ms ease;
 }
 
-.sidebar-link:hover { transform: translateX(3px); }
+.sidebar-link:hover { transform: none; }
 .sidebar-link:hover::after { left: 130%; }
 .sidebar-link:nth-child(1) { animation-delay: 80ms; }
 .sidebar-link:nth-child(2) { animation-delay: 120ms; }
@@ -1555,6 +1679,12 @@ html {
   scroll-behavior: smooth;
 }
 
+html.lenis,
+html.lenis body {
+  height: auto;
+  scroll-behavior: auto !important;
+}
+
 /* ─── AI CONNECTX (UNIVERSAL AI UNIVERSITY) DESIGN SYSTEM ───────────────────────── */
 :root {
   --ai-lime: #CEFD46;
@@ -1676,6 +1806,20 @@ p,
     0 2px 16px rgba(0, 0, 0, 0.6);
 }
 
+/* Light / cream background sections must never have dark blur text shadows */
+.bg-\[\#FAF6EE\],
+.bg-\[\#FAF6EE\] h1,
+.bg-\[\#FAF6EE\] h2,
+.bg-\[\#FAF6EE\] h3,
+.bg-\[\#FAF6EE\] h4,
+.bg-\[\#FAF6EE\] h5,
+.bg-\[\#FAF6EE\] h6,
+.bg-\[\#FAF6EE\] p,
+.bg-\[\#FAF6EE\] span,
+.bg-\[\#FAF6EE\] button {
+  text-shadow: none !important;
+}
+
 /* Surrounding natural dark blur atmosphere behind text blocks (No borders, pure atmospheric blur) */
 .dark-blur-halo {
   position: relative;
@@ -1695,3 +1839,182 @@ p,
   pointer-events: none;
 }
 
+/* ─── Media Modal / Photo / Video Fullscreen: Hide Taskbar / Navbar ─── */
+body.media-modal-open header,
+body.media-modal-open nav[data-navbar="true"],
+body.media-modal-open [data-navbar="true"],
+body:has([data-media-modal="true"]) header,
+body:has(.media-modal-active) header,
+body:has([data-media-modal="true"]) [data-navbar="true"],
+body:has(.media-modal-active) [data-navbar="true"],
+body:fullscreen header,
+:fullscreen header {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(-120px) !important;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+
+/* ─── Navbar Dark -> Light Theme Morph (ScrollTrigger 0.4s ease) ─── */
+body.nav-light-mode header span {
+  color: #0f172a !important;
+  transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.nav-light-mode .askphill-menu-btn {
+  background-color: #0f172a !important;
+  color: #00b4d8 !important;
+  box-shadow: 0px 4px 22px rgba(15, 23, 42, 0.3) !important;
+  transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.nav-light-mode .askphill-menu-circle {
+  background-color: #00b4d8 !important;
+  transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.nav-light-mode .askphill-menu-circle svg {
+  color: #0f172a !important;
+}
+
+body.nav-light-mode .askphill-menu-label {
+  color: #ffffff !important;
+  transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+/* ─── TextColor Component Keyframes & Gradient Utilities ─── */
+@keyframes gradient-foreground-1 {
+  from,
+  16.667%,
+  to {
+    opacity: 1;
+  }
+  33.333%,
+  83.333% {
+    opacity: 0;
+  }
+}
+
+.animate-gradient-foreground-1 {
+  animation: gradient-foreground-1 8s infinite;
+}
+
+@keyframes gradient-foreground-2 {
+  from,
+  to {
+    opacity: 0;
+  }
+  33.333%,
+  50% {
+    opacity: 1;
+  }
+  16.667%,
+  66.667% {
+    opacity: 0;
+  }
+}
+
+.animate-gradient-foreground-2 {
+  animation: gradient-foreground-2 8s infinite;
+}
+
+@keyframes gradient-foreground-3 {
+  from,
+  50%,
+  to {
+    opacity: 0;
+  }
+  66.667%,
+  83.333% {
+    opacity: 1;
+  }
+}
+
+.animate-gradient-foreground-3 {
+  animation: gradient-foreground-3 8s infinite;
+}
+
+/* Neon-style gradients for TextColor */
+.from-gradient-1-start {
+  background-image: linear-gradient(to right, #39ff14, #00ffff) !important;
+}
+
+.from-gradient-2-start {
+  background-image: linear-gradient(to right, #ff073a, #ff6ec7) !important;
+}
+
+.from-gradient-3-start {
+  background-image: linear-gradient(to right, #faff00, #00f0ff) !important;
+}
+
+/* AI Variants */
+.from-gradient-1-ai {
+  background-image: linear-gradient(to right, #39ff14, #ff00ff) !important;
+}
+
+.from-gradient-2-ai {
+  background-image: linear-gradient(to right, #ff6ec7, #00fffb) !important;
+}
+
+.from-gradient-3-ai {
+  background-image: linear-gradient(to right, #faff00, #00f0ff) !important;
+}
+
+@keyframes gradient-background-1 {
+  from,
+  16.667%,
+  to {
+    opacity: 0;
+  }
+  25%,
+  91.667% {
+    opacity: 1;
+  }
+}
+
+.before\:animate-gradient-background-1::before {
+  content: attr(data-content);
+  animation: gradient-background-1 8s infinite;
+}
+
+@keyframes gradient-background-2 {
+  from,
+  to {
+    opacity: 1;
+  }
+  33.333%,
+  50% {
+    opacity: 0;
+  }
+  25%,
+  58.333% {
+    opacity: 1;
+  }
+}
+
+.before\:animate-gradient-background-2::before {
+  content: attr(data-content);
+  animation: gradient-background-2 8s infinite;
+}
+
+@keyframes gradient-background-3 {
+  from,
+  58.333%,
+  91.667%,
+  to {
+    opacity: 1;
+  }
+  66.667%,
+  83.333% {
+    opacity: 0;
+  }
+}
+
+.before\:animate-gradient-background-3::before {
+  content: attr(data-content);
+  animation: gradient-background-3 8s infinite;
+}

@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   ChevronDown,
-  ChevronUp,
   X,
   ArrowRight,
   Menu,
@@ -40,14 +39,70 @@ export default function GlassyNavbar({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("Home");
+  const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
+
+  // Monitor DOM for active photo/video modals and fullscreen state
+  useEffect(() => {
+    const checkMediaOpen = () => {
+      const hasMediaOpen =
+        document.body.classList.contains("media-modal-open") ||
+        Boolean(document.querySelector('[data-media-modal="true"]')) ||
+        Boolean(document.querySelector('.media-modal-active')) ||
+        Boolean(document.fullscreenElement);
+      setIsMediaModalOpen(hasMediaOpen);
+    };
+
+    checkMediaOpen();
+
+    const observer = new MutationObserver(() => {
+      checkMediaOpen();
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["class", "data-media-modal"],
+    });
+
+    const onFullscreenChange = () => checkMediaOpen();
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+    };
+  }, []);
 
   // Keep a ref to avoid stale state in scroll listeners
   const scrolledRef = useRef(false);
   const tickingRef = useRef(false);
 
-  // 120 FPS High-Performance Passive Scroll Listener
-  // Only updates boolean React state when scroll threshold crosses (prevents 99% of useless re-renders)
+  // 120 FPS High-Performance Passive Scroll Listener with direct section geometry tracking
   useEffect(() => {
+    const sectionIds = [
+      { id: "hero", label: "Home" },
+      { id: "text-reveal", label: "About" },
+      { id: "team", label: "Team" },
+      { id: "cylinder", label: "Team" },
+      { id: "contact", label: "Contact" },
+    ];
+
+    const checkActiveSection = () => {
+      const vh = window.innerHeight;
+      const targetY = vh * 0.45; // optical center
+      for (const s of sectionIds) {
+        const el = document.getElementById(s.id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= targetY && rect.bottom >= targetY) {
+            setActiveSection(s.label);
+            return;
+          }
+        }
+      }
+    };
+
     const onScroll = () => {
       if (!tickingRef.current) {
         window.requestAnimationFrame(() => {
@@ -56,6 +111,7 @@ export default function GlassyNavbar({
             scrolledRef.current = isScrolled;
             setScrolled(isScrolled);
           }
+          checkActiveSection();
           tickingRef.current = false;
         });
         tickingRef.current = true;
@@ -67,42 +123,6 @@ export default function GlassyNavbar({
     onScroll();
 
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // High-performance IntersectionObserver for active section (Zero layout thrashing, 0 getBoundingClientRect on scroll)
-  useEffect(() => {
-    const sectionIds = [
-      { id: "hero", label: "Home" },
-      { id: "text-reveal", label: "About" },
-      { id: "horizontal-scroll", label: "Tracks" },
-      { id: "team", label: "Team" },
-      { id: "contact", label: "Contact" },
-    ];
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const match = sectionIds.find((s) => s.id === entry.target.id);
-            if (match) {
-              setActiveSection(match.label);
-            }
-          }
-        }
-      },
-      {
-        root: null,
-        rootMargin: "-20% 0px -60% 0px",
-        threshold: 0,
-      }
-    );
-
-    sectionIds.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
   }, []);
 
   // Keyboard shortcut (Escape) to close open menus
@@ -144,29 +164,27 @@ export default function GlassyNavbar({
     {
       id: "Home",
       label: "Home",
-      hasChevron: true,
-      isOpenUp: true,
-      items: [
-        { title: "Hero Landing", desc: "Frontier AI & Neural Canvas", target: "hero" },
-        { title: "Overview & Mission", desc: "Bridging Students With Industry", target: "text-reveal" },
-      ],
+      hasChevron: false,
+      items: [],
     },
     {
       id: "About",
       label: "About",
       hasChevron: true,
       items: [
-        { title: "Strategic Mission & Vision", desc: "Empowering student AI creators", href: "/overview" },
+        { title: "Industry Voices & Endorsements", desc: "Patron & guest speaker perspectives", href: "/industry-voices", badge: "Voices" },
         { title: "Universal AI Community", desc: "Collaborative labs and cohorts", target: "text-reveal" },
       ],
     },
     {
-      id: "Tracks",
-      label: "Tracks",
+      id: "Projects",
+      label: "Projects",
       hasChevron: true,
       items: [
-        { title: "AI Engineering × Agentic Systems", desc: "Expert masterclass by Dipan Mehta", target: "horizontal-scroll" },
-        { title: "Live Industry Projects", desc: "Real enterprise deliverables & internships", target: "horizontal-scroll" },
+        { title: "Featured Projects & Tracks", desc: "Flagship masterclasses & research tracks", href: "/projects", badge: "Live" },
+        { title: "3D Cylinder Reel Wall", desc: "16-card living cylinder & 48-reel library", href: "/cylinder", badge: "New 3D" },
+        { title: "AI Engineering × Agentic Systems", desc: "Expert masterclass by Dipan Mehta", href: "/projects" },
+        { title: "Live Industry Projects", desc: "Real enterprise deliverables & internships", href: "/projects" },
         { title: "3D Spatial Helix", desc: "Interactive Spatial Double-Helix", href: "/spiral-3d", badge: "3D" },
       ],
     },
@@ -175,8 +193,8 @@ export default function GlassyNavbar({
       label: "Team",
       hasChevron: true,
       items: [
-        { title: "Core Faculty & Lead Team", desc: "Patron Pranav More & President Daksh", target: "team", href: "/team" },
-        { title: "Leadership Directory", desc: "Operations, tech, and student leads", href: "/team" },
+        { title: "Core Faculty & Lead Team", desc: "Patron Pranav More & President Daksh", target: "team" },
+        { title: "3D Spatial Team Cylinder", desc: "16 Core Leaders & Researchers", target: "team", badge: "3D" },
       ],
     },
     {
@@ -193,7 +211,14 @@ export default function GlassyNavbar({
   return (
     <>
       {/* ─── Floating Glassy Navbar Container (GPU Accelerated, Zero-Lag) ─── */}
-      <header className="fixed top-5 left-0 right-0 z-50 flex justify-center px-4 sm:px-6 pointer-events-none select-none">
+      <header
+        data-navbar="true"
+        className={`fixed top-5 left-0 right-0 z-40 flex justify-center px-4 sm:px-6 pointer-events-none select-none transition-all duration-300 transform-gpu ${
+          isMediaModalOpen
+            ? "opacity-0 -translate-y-24 pointer-events-none"
+            : "opacity-100 translate-y-0"
+        }`}
+      >
         <div
           className={`pointer-events-auto relative flex items-center justify-between gap-3 sm:gap-6 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full transform-gpu transition-all duration-200 ${
             scrolled
@@ -223,16 +248,9 @@ export default function GlassyNavbar({
             <img
               src="/universal-ai-university-logo.png"
               alt="Universal AI University"
-              className="hidden sm:block h-4.5 rounded px-1.5 py-0.5 bg-white/95 object-contain shrink-0"
+              className="hidden sm:block h-5 object-contain shrink-0 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
               title="Universal AI University"
             />
-
-            {/* Active Section Tag on Scroll */}
-            {scrolled && (
-              <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded-full bg-cyan-400/10 border border-cyan-400/30 text-[10px] font-mono text-cyan-300 font-bold uppercase tracking-wider transition-all ml-1">
-                {activeSection}
-              </span>
-            )}
           </button>
 
           {/* ─── Center: Navigation Links ─── */}
@@ -252,6 +270,12 @@ export default function GlassyNavbar({
                     onClick={() => {
                       if (menu.id === "Home") {
                         handleLinkClick({ target: "hero" });
+                      } else if (menu.id === "About") {
+                        handleLinkClick({ target: "text-reveal" });
+                      } else if (menu.id === "Team") {
+                        handleLinkClick({ target: "team" });
+                      } else if (menu.id === "Contact") {
+                        handleLinkClick({ target: "contact" });
                       } else {
                         setActiveDropdown(isDropdownOpen ? null : menu.id);
                       }
@@ -264,10 +288,8 @@ export default function GlassyNavbar({
                   >
                     <span>{menu.label}</span>
 
-                    {/* Chevron (Up caret for Home like in reference image, down chevron for others) */}
-                    {menu.id === "Home" ? (
-                      <ChevronUp className="w-3.5 h-3.5 opacity-80" />
-                    ) : (
+                    {/* Chevron (only if menu has items) */}
+                    {menu.hasChevron && menu.items.length > 0 && (
                       <ChevronDown
                         className={`w-3.5 h-3.5 transition-transform duration-150 opacity-70 ${
                           isDropdownOpen ? "rotate-180 text-cyan-300" : ""
@@ -277,12 +299,12 @@ export default function GlassyNavbar({
 
                     {/* Active Underline Indicator */}
                     {isActive && (
-                      <div className="absolute bottom-0 left-3 right-3 h-[2px] bg-cyan-400 rounded-full shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
+                      <div className="absolute bottom-0 left-3 right-3 h-[2px] bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 rounded-full shadow-[0_0_10px_rgba(65,105,225,0.7)]" />
                     )}
                   </button>
 
                   {/* Glassy Dropdown Menu */}
-                  {isDropdownOpen && (
+                  {isDropdownOpen && menu.items.length > 0 && (
                     <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50 min-w-[260px] animate-in fade-in duration-150">
                       <div className="p-2 rounded-2xl bg-[#0c0d15]/95 backdrop-blur-xl border border-white/12 shadow-[0_20px_50px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.18)] flex flex-col gap-1">
                         {menu.items.map((item, idx) => (
@@ -293,11 +315,11 @@ export default function GlassyNavbar({
                           >
                             <div>
                               <div className="flex items-center gap-2">
-                                <span className="text-xs font-semibold text-white group-hover/item:text-cyan-200 transition-colors">
+                                <span className="text-xs font-semibold text-white group-hover/item:text-blue-300 transition-colors">
                                   {item.title}
                                 </span>
                                 {item.badge && (
-                                  <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-cyan-400/20 text-cyan-300 border border-cyan-400/30">
+                                  <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300 border border-blue-500/35 shadow-[0_0_8px_rgba(65,105,225,0.3)]">
                                     {item.badge}
                                   </span>
                                 )}
@@ -382,14 +404,16 @@ export default function GlassyNavbar({
                 className="flex items-center justify-between py-2 text-sm text-white/90 font-medium hover:text-white"
               >
                 <span>{menu.label}</span>
-                <ChevronDown
-                  className={`w-4 h-4 text-white/50 transition-transform ${
-                    activeDropdown === menu.id ? "rotate-180 text-cyan-300" : ""
-                  }`}
-                />
+                {menu.items.length > 0 && (
+                  <ChevronDown
+                    className={`w-4 h-4 text-white/50 transition-transform ${
+                      activeDropdown === menu.id ? "rotate-180 text-cyan-300" : ""
+                    }`}
+                  />
+                )}
               </button>
 
-              {activeDropdown === menu.id && (
+              {activeDropdown === menu.id && menu.items.length > 0 && (
                 <div className="pl-3 py-1 flex flex-col gap-1.5 border-l border-cyan-400/30 ml-2">
                   {menu.items.map((sub, i) => (
                     <button

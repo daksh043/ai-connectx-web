@@ -58,18 +58,8 @@ export default function DashboardPage() {
   }, []);
 
   useEffect(() => {
-    let active = true;
-    dashboardAPI.stats().then((response) => {
-      if (!active) return;
-      setStats(response.data);
-      setLoadError("");
-    }).catch(() => {
-      if (active) setLoadError("Could not load dashboard data.");
-    }).finally(() => {
-      if (active) setLoading(false);
-    });
-    return () => { active = false; };
-  }, []);
+    void fetchStats();
+  }, [fetchStats]);
 
   if (loading) {
     return (
