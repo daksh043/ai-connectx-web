@@ -327,7 +327,7 @@ export default function AIConnectX3DGallery() {
                 }}
                 className={`absolute w-[280px] sm:w-[330px] md:w-[370px] lg:w-[400px] h-[460px] sm:h-[510px] md:h-[550px] lg:h-[580px] rounded-[28px] cursor-pointer shadow-2xl group ${
                   isCenter
-                    ? "shadow-[0_0_50px_rgba(20,184,166,0.55),0_0_100px_rgba(56,189,248,0.3),0_25px_60px_rgba(0,0,0,0.95)]"
+                    ? "shadow-[0_0_60px_rgba(20,184,166,0.7),0_0_120px_rgba(56,189,248,0.5),0_0_180px_rgba(168,85,247,0.35),0_25px_60px_rgba(0,0,0,0.95)]"
                     : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
                 }`}
               >
@@ -335,36 +335,48 @@ export default function AIConnectX3DGallery() {
                   <BorderBeam
                     size="md"
                     colorVariant="colorful"
-                    duration={7}
+                    duration={9}
                     borderRadius={28}
                     strength={1}
-                    brightness={2.5}
-                    saturation={2.2}
-                    glowSize={2.0}
+                    brightness={3.2}
+                    saturation={2.5}
+                    glowSize={3.5}
                     style={{
-                      "--beam-stroke-opacity": 3.8,
-                      "--beam-bloom-opacity": 3.5,
-                      "--beam-inner-opacity": 2.5,
+                      "--beam-stroke-opacity": 4.5,
+                      "--beam-bloom-opacity": 4.0,
+                      "--beam-inner-opacity": 3.0,
                     } as CSSProperties}
                     css={`
+                      [data-beam="{id}"] {
+                        overflow: visible !important;
+                        isolation: isolate !important;
+                      }
                       [data-beam="{id}"]::after {
-                        padding: 3.5px !important;
+                        inset: -2px !important;
+                        padding: 6px !important;
+                        border-radius: 30px !important;
+                        clip-path: none !important;
                         opacity: 1 !important;
+                        filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.95)) drop-shadow(0 0 20px rgba(168, 85, 247, 0.85)) !important;
                       }
                       [data-beam="{id}"] [data-beam-bloom] {
-                        padding: 4.5px !important;
-                        opacity: 0.95 !important;
-                        filter: blur(14px) brightness(2.5) saturate(2.2) !important;
+                        inset: -24px !important;
+                        padding: 28px !important;
+                        border-radius: 52px !important;
+                        clip-path: none !important;
+                        opacity: 1 !important;
+                        filter: blur(24px) brightness(3.5) saturate(2.5) !important;
                       }
                       [data-beam="{id}"]::before {
-                        opacity: 0.9 !important;
+                        opacity: 1 !important;
+                        box-shadow: inset 0 0 20px 4px rgba(255, 255, 255, 0.5) !important;
                       }
                       [data-beam="{id}"]:hover::after,
                       [data-beam="{id}"]:hover [data-beam-bloom] {
-                        animation-duration: 12s !important;
+                        animation-duration: 18s !important;
                       }
                     `}
-                    className="w-full h-full rounded-[28px] overflow-hidden transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.05] hover:shadow-[0_0_70px_rgba(20,184,166,0.7),0_0_120px_rgba(56,189,248,0.45),0_35px_80px_rgba(0,0,0,0.95)]"
+                    className="w-full h-full rounded-[28px] overflow-visible transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.06] hover:shadow-[0_0_90px_rgba(20,184,166,0.9),0_0_160px_rgba(56,189,248,0.7),0_0_220px_rgba(168,85,247,0.5),0_35px_80px_rgba(0,0,0,0.95)]"
                   >
                     <div className="relative w-full h-full rounded-[28px] overflow-hidden">
                       {/* Background Image */}
