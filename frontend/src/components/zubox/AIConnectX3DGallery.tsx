@@ -335,6 +335,7 @@ export default function AIConnectX3DGallery() {
                   <BorderBeam
                     size="md"
                     colorVariant="colorful"
+                    duration={7}
                     borderRadius={28}
                     strength={1}
                     brightness={2.5}
@@ -347,19 +348,23 @@ export default function AIConnectX3DGallery() {
                     } as CSSProperties}
                     css={`
                       [data-beam="{id}"]::after {
-                        padding: 3px !important;
+                        padding: 3.5px !important;
                         opacity: 1 !important;
                       }
                       [data-beam="{id}"] [data-beam-bloom] {
-                        padding: 4px !important;
+                        padding: 4.5px !important;
                         opacity: 0.95 !important;
                         filter: blur(14px) brightness(2.5) saturate(2.2) !important;
                       }
                       [data-beam="{id}"]::before {
                         opacity: 0.9 !important;
                       }
+                      [data-beam="{id}"]:hover::after,
+                      [data-beam="{id}"]:hover [data-beam-bloom] {
+                        animation-duration: 12s !important;
+                      }
                     `}
-                    className="w-full h-full rounded-[28px] overflow-hidden"
+                    className="w-full h-full rounded-[28px] overflow-hidden transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.05] hover:shadow-[0_0_70px_rgba(20,184,166,0.7),0_0_120px_rgba(56,189,248,0.45),0_35px_80px_rgba(0,0,0,0.95)]"
                   >
                     <div className="relative w-full h-full rounded-[28px] overflow-hidden">
                       {/* Background Image */}
@@ -367,7 +372,7 @@ export default function AIConnectX3DGallery() {
                         src={evt.image}
                         alt={evt.title}
                         draggable={false}
-                        className="w-full h-full object-cover pointer-events-none"
+                        className="w-full h-full object-cover pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105"
                       />
 
                       {/* Cybernetic Dark Gradient Scrim */}
@@ -410,13 +415,13 @@ export default function AIConnectX3DGallery() {
                     </div>
                   </BorderBeam>
                 ) : (
-                  <div className="w-full h-full rounded-[28px] overflow-hidden border border-white/15 hover:border-white/30 relative">
+                  <div className="w-full h-full rounded-[28px] overflow-hidden border border-white/15 hover:border-white/40 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.03] relative">
                     {/* Background Image */}
                     <img
                       src={evt.image}
                       alt={evt.title}
                       draggable={false}
-                      className="w-full h-full object-cover pointer-events-none"
+                      className="w-full h-full object-cover pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105"
                     />
 
                     {/* Cybernetic Dark Gradient Scrim */}
