@@ -7,6 +7,7 @@ import {
   Sparkles,
   ArrowUpRight,
 } from "lucide-react";
+import { BorderBeam } from "@/components/ui/border-beam";
 
 interface GalleryEvent {
   id: number;
@@ -324,63 +325,110 @@ export default function AIConnectX3DGallery() {
                     ? "opacity 0.15s ease-out, transform 0.04s ease-out"
                     : "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
-                className={`absolute w-[280px] sm:w-[330px] md:w-[370px] lg:w-[400px] h-[460px] sm:h-[510px] md:h-[550px] lg:h-[580px] rounded-[28px] overflow-hidden cursor-pointer shadow-2xl group border ${
+                className={`absolute w-[280px] sm:w-[330px] md:w-[370px] lg:w-[400px] h-[460px] sm:h-[510px] md:h-[550px] lg:h-[580px] rounded-[28px] cursor-pointer shadow-2xl group ${
                   isCenter
-                    ? "border-[2px] border-teal-400 shadow-[0_0_35px_rgba(20,184,166,0.35),0_25px_60px_rgba(0,0,0,0.9)]"
-                    : "border-white/15 hover:border-white/30 shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
+                    ? "shadow-[0_0_40px_rgba(20,184,166,0.35),0_25px_60px_rgba(0,0,0,0.9)]"
+                    : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
                 }`}
               >
-                {/* Background Image */}
-                <img
-                  src={evt.image}
-                  alt={evt.title}
-                  draggable={false}
-                  className="w-full h-full object-cover pointer-events-none"
-                />
+                {isCenter ? (
+                  <BorderBeam
+                    size="md"
+                    colorVariant="colorful"
+                    borderRadius={28}
+                    strength={1}
+                    glowSize={1.2}
+                    className="w-full h-full rounded-[28px] overflow-hidden"
+                  >
+                    <div className="relative w-full h-full rounded-[28px] overflow-hidden">
+                      {/* Background Image */}
+                      <img
+                        src={evt.image}
+                        alt={evt.title}
+                        draggable={false}
+                        className="w-full h-full object-cover pointer-events-none"
+                      />
 
-                {/* Cybernetic Dark Gradient Scrim */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none" />
+                      {/* Cybernetic Dark Gradient Scrim */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none" />
 
-                {/* Top Tag Pill */}
-                <div className="absolute top-5 left-5 z-10 pointer-events-none">
-                  <span className="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/60 backdrop-blur-md border border-teal-400/40 text-teal-300 font-semibold shadow-md">
-                    #{evt.tag}
-                  </span>
-                </div>
+                      {/* Top Tag Pill */}
+                      <div className="absolute top-5 left-5 z-10 pointer-events-none">
+                        <span className="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/60 backdrop-blur-md border border-teal-400/40 text-teal-300 font-semibold shadow-md">
+                          #{evt.tag}
+                        </span>
+                      </div>
 
-                {/* Bottom Editorial Content Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 flex flex-col justify-end z-10">
-                  <div className="mb-2">
-                    <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
-                      {evt.title}
-                    </h3>
-                    <p className="text-[11px] sm:text-xs font-mono font-bold text-teal-400 tracking-wider mt-1 uppercase">
-                      // {evt.subtitle}
-                    </p>
+                      {/* Bottom Editorial Content Overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 flex flex-col justify-end z-10">
+                        <div className="mb-2">
+                          <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
+                            {evt.title}
+                          </h3>
+                          <p className="text-[11px] sm:text-xs font-mono font-bold text-teal-400 tracking-wider mt-1 uppercase">
+                            // {evt.subtitle}
+                          </p>
+                        </div>
+
+                        <p className="text-xs sm:text-[13px] text-white/75 line-clamp-3 leading-relaxed font-light mb-4 drop-shadow-sm">
+                          {evt.description}
+                        </p>
+
+                        {/* Action CTA Button */}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedEvent(evt);
+                          }}
+                          className="inline-flex items-center justify-between w-full px-5 py-2.5 rounded-xl border border-teal-400/50 bg-[#04282b]/80 hover:bg-teal-900/60 text-teal-300 text-xs font-bold tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(20,184,166,0.25)] hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
+                        >
+                          <span>View Event Story</span>
+                          <ArrowUpRight className="w-4 h-4 text-teal-400" />
+                        </button>
+                      </div>
+                    </div>
+                  </BorderBeam>
+                ) : (
+                  <div className="w-full h-full rounded-[28px] overflow-hidden border border-white/15 hover:border-white/30 relative">
+                    {/* Background Image */}
+                    <img
+                      src={evt.image}
+                      alt={evt.title}
+                      draggable={false}
+                      className="w-full h-full object-cover pointer-events-none"
+                    />
+
+                    {/* Cybernetic Dark Gradient Scrim */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none" />
+
+                    {/* Top Tag Pill */}
+                    <div className="absolute top-5 left-5 z-10 pointer-events-none">
+                      <span className="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/60 backdrop-blur-md border border-teal-400/40 text-teal-300 font-semibold shadow-md">
+                        #{evt.tag}
+                      </span>
+                    </div>
+
+                    {/* Bottom Editorial Content Overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 flex flex-col justify-end z-10">
+                      <div className="mb-2">
+                        <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
+                          {evt.title}
+                        </h3>
+                        <p className="text-[11px] sm:text-xs font-mono font-bold text-teal-400 tracking-wider mt-1 uppercase">
+                          // {evt.subtitle}
+                        </p>
+                      </div>
+
+                      <p className="text-xs sm:text-[13px] text-white/75 line-clamp-3 leading-relaxed font-light mb-4 drop-shadow-sm">
+                        {evt.description}
+                      </p>
+
+                      <span className="text-[10px] text-white/40 font-mono tracking-wider uppercase">
+                        Click to Focus
+                      </span>
+                    </div>
                   </div>
-
-                  <p className="text-xs sm:text-[13px] text-white/75 line-clamp-3 leading-relaxed font-light mb-4 drop-shadow-sm">
-                    {evt.description}
-                  </p>
-
-                  {/* Action CTA Button */}
-                  {isCenter ? (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedEvent(evt);
-                      }}
-                      className="inline-flex items-center justify-between w-full px-5 py-2.5 rounded-xl border border-teal-400/50 bg-[#04282b]/80 hover:bg-teal-900/60 text-teal-300 text-xs font-bold tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(20,184,166,0.25)] hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
-                    >
-                      <span>View Event Story</span>
-                      <ArrowUpRight className="w-4 h-4 text-teal-400" />
-                    </button>
-                  ) : (
-                    <span className="text-[10px] text-white/40 font-mono tracking-wider uppercase">
-                      Click to Focus
-                    </span>
-                  )}
-                </div>
+                )}
               </div>
             );
           })}
