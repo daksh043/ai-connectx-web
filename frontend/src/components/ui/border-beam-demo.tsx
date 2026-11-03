@@ -1,4 +1,4 @@
-import React from "react";
+import type { CSSProperties } from "react";
 import { BorderBeam } from "@/components/ui/border-beam";
 
 function AtSignIcon() {
@@ -31,7 +31,7 @@ function ArrowUpIcon() {
   );
 }
 
-const CHIP: React.CSSProperties = {
+const CHIP: CSSProperties = {
   borderRadius: 36,
   background: "rgba(255,255,255,0.04)",
   boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.02), inset 0 1px 0 0 rgba(255,255,255,0.04)",
