@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
+import { BorderBeam } from "@/components/ui/border-beam";
 import { motion, useScroll, useTransform } from "motion/react";
 
 export default function AIConnectXHero() {
@@ -126,13 +127,15 @@ export default function AIConnectXHero() {
 
           {/* 3. Single Primary CTA Button (Standardized Geometry & Style) */}
           <div className="mt-8 sm:mt-10">
-            <button
-              onClick={() => handleScrollTo("cylinder")}
-              className="group inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-sm tracking-wide bg-gradient-to-r from-cyan-400 via-sky-400 to-[#4169e1] text-slate-950 hover:brightness-110 shadow-[0_4px_24px_rgba(65,105,225,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
-            >
-              <span>Explore Ecosystem</span>
-              <ArrowRight className="w-4 h-4 text-slate-950 group-hover:translate-x-1 transition-transform stroke-[2]" />
-            </button>
+            <BorderBeam size="md" colorVariant="colorful">
+              <button
+                onClick={() => handleScrollTo("cylinder")}
+                className="group inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-sm tracking-wide bg-gradient-to-r from-cyan-400 via-sky-400 to-[#4169e1] text-slate-950 hover:brightness-110 shadow-[0_4px_24px_rgba(65,105,225,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+              >
+                <span>Explore Ecosystem</span>
+                <ArrowRight className="w-4 h-4 text-slate-950 group-hover:translate-x-1 transition-transform stroke-[2]" />
+              </button>
+            </BorderBeam>
           </div>
         </motion.div>
 
