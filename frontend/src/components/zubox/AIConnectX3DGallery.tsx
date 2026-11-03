@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, type CSSProperties } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -7,7 +7,7 @@ import {
   Sparkles,
   ArrowUpRight,
 } from "lucide-react";
-import { BorderBeam } from "@/components/ui/border-beam";
+import { ChromaticBorderBeam } from "@/components/ui/chromatic-border-beam";
 
 interface GalleryEvent {
   id: number;
@@ -325,60 +325,24 @@ export default function AIConnectX3DGallery() {
                     ? "opacity 0.15s ease-out, transform 0.04s ease-out"
                     : "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
-                className={`absolute w-[280px] sm:w-[330px] md:w-[370px] lg:w-[400px] h-[460px] sm:h-[510px] md:h-[550px] lg:h-[580px] rounded-[28px] cursor-pointer shadow-2xl group ${
+                className={`absolute w-[280px] sm:w-[330px] md:w-[370px] lg:w-[400px] h-[460px] sm:h-[510px] md:h-[550px] lg:h-[580px] rounded-[28px] cursor-pointer group ${
                   isCenter
-                    ? "shadow-[0_0_60px_rgba(20,184,166,0.7),0_0_120px_rgba(56,189,248,0.5),0_0_180px_rgba(168,85,247,0.35),0_25px_60px_rgba(0,0,0,0.95)]"
+                    ? "shadow-[0_25px_65px_rgba(0,0,0,0.95)]"
                     : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
                 }`}
               >
                 {isCenter ? (
-                  <BorderBeam
-                    size="md"
-                    colorVariant="colorful"
-                    duration={9}
+                  <ChromaticBorderBeam
+                    duration={8.5}
+                    hoverDuration={13.5}
                     borderRadius={28}
-                    strength={1}
-                    brightness={3.2}
-                    saturation={2.5}
-                    glowSize={3.5}
-                    style={{
-                      "--beam-stroke-opacity": 4.5,
-                      "--beam-bloom-opacity": 4.0,
-                      "--beam-inner-opacity": 3.0,
-                    } as CSSProperties}
-                    css={`
-                      [data-beam="{id}"] {
-                        overflow: visible !important;
-                        isolation: isolate !important;
-                      }
-                      [data-beam="{id}"]::after {
-                        inset: -2px !important;
-                        padding: 6px !important;
-                        border-radius: 30px !important;
-                        clip-path: none !important;
-                        opacity: 1 !important;
-                        filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.95)) drop-shadow(0 0 20px rgba(168, 85, 247, 0.85)) !important;
-                      }
-                      [data-beam="{id}"] [data-beam-bloom] {
-                        inset: -24px !important;
-                        padding: 28px !important;
-                        border-radius: 52px !important;
-                        clip-path: none !important;
-                        opacity: 1 !important;
-                        filter: blur(24px) brightness(3.5) saturate(2.5) !important;
-                      }
-                      [data-beam="{id}"]::before {
-                        opacity: 1 !important;
-                        box-shadow: inset 0 0 20px 4px rgba(255, 255, 255, 0.5) !important;
-                      }
-                      [data-beam="{id}"]:hover::after,
-                      [data-beam="{id}"]:hover [data-beam-bloom] {
-                        animation-duration: 18s !important;
-                      }
-                    `}
-                    className="w-full h-full rounded-[28px] overflow-visible transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.06] hover:shadow-[0_0_90px_rgba(20,184,166,0.9),0_0_160px_rgba(56,189,248,0.7),0_0_220px_rgba(168,85,247,0.5),0_35px_80px_rgba(0,0,0,0.95)]"
+                    strokeWidth={2.5}
+                    bloomBlur={24}
+                    bloomSpread={16}
+                    hoverScale={1.05}
+                    className="w-full h-full"
                   >
-                    <div className="relative w-full h-full rounded-[28px] overflow-hidden">
+                    <div className="relative w-full h-full rounded-[28px] overflow-hidden bg-[#090b10]">
                       {/* Background Image */}
                       <img
                         src={evt.image}
@@ -388,11 +352,11 @@ export default function AIConnectX3DGallery() {
                       />
 
                       {/* Cybernetic Dark Gradient Scrim */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/65 to-transparent pointer-events-none" />
 
                       {/* Top Tag Pill */}
                       <div className="absolute top-5 left-5 z-10 pointer-events-none">
-                        <span className="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/60 backdrop-blur-md border border-teal-400/40 text-teal-300 font-semibold shadow-md">
+                        <span className="px-3.5 py-1.5 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/65 backdrop-blur-md border border-white/20 text-neutral-200 font-semibold shadow-md">
                           #{evt.tag}
                         </span>
                       </div>
@@ -403,12 +367,12 @@ export default function AIConnectX3DGallery() {
                           <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
                             {evt.title}
                           </h3>
-                          <p className="text-[11px] sm:text-xs font-mono font-bold text-teal-400 tracking-wider mt-1 uppercase">
+                          <p className="text-[11px] sm:text-xs font-mono font-bold text-amber-400 tracking-wider mt-1 uppercase">
                             // {evt.subtitle}
                           </p>
                         </div>
 
-                        <p className="text-xs sm:text-[13px] text-white/75 line-clamp-3 leading-relaxed font-light mb-4 drop-shadow-sm">
+                        <p className="text-xs sm:text-[13px] text-white/80 line-clamp-3 leading-relaxed font-light mb-4 drop-shadow-sm">
                           {evt.description}
                         </p>
 
@@ -418,16 +382,16 @@ export default function AIConnectX3DGallery() {
                             e.stopPropagation();
                             setSelectedEvent(evt);
                           }}
-                          className="inline-flex items-center justify-between w-full px-5 py-2.5 rounded-xl border border-teal-400/50 bg-[#04282b]/80 hover:bg-teal-900/60 text-teal-300 text-xs font-bold tracking-wider uppercase transition-all shadow-[0_0_15px_rgba(20,184,166,0.25)] hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
+                          className="inline-flex items-center justify-between w-full px-5 py-2.5 rounded-xl border border-white/20 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white text-xs font-bold tracking-wider uppercase transition-all shadow-lg hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
                         >
                           <span>View Event Story</span>
-                          <ArrowUpRight className="w-4 h-4 text-teal-400" />
+                          <ArrowUpRight className="w-4 h-4 text-amber-400" />
                         </button>
                       </div>
                     </div>
-                  </BorderBeam>
+                  </ChromaticBorderBeam>
                 ) : (
-                  <div className="w-full h-full rounded-[28px] overflow-hidden border border-white/15 hover:border-white/40 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.03] relative">
+                  <div className="w-full h-full rounded-[28px] overflow-hidden border border-white/15 hover:border-white/35 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.03] relative bg-[#090b10]">
                     {/* Background Image */}
                     <img
                       src={evt.image}
@@ -437,11 +401,11 @@ export default function AIConnectX3DGallery() {
                     />
 
                     {/* Cybernetic Dark Gradient Scrim */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/65 to-transparent pointer-events-none" />
 
                     {/* Top Tag Pill */}
                     <div className="absolute top-5 left-5 z-10 pointer-events-none">
-                      <span className="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/60 backdrop-blur-md border border-teal-400/40 text-teal-300 font-semibold shadow-md">
+                      <span className="px-3.5 py-1.5 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/65 backdrop-blur-md border border-white/15 text-neutral-300 font-semibold shadow-md">
                         #{evt.tag}
                       </span>
                     </div>
@@ -452,12 +416,12 @@ export default function AIConnectX3DGallery() {
                         <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
                           {evt.title}
                         </h3>
-                        <p className="text-[11px] sm:text-xs font-mono font-bold text-teal-400 tracking-wider mt-1 uppercase">
+                        <p className="text-[11px] sm:text-xs font-mono font-bold text-neutral-400 tracking-wider mt-1 uppercase">
                           // {evt.subtitle}
                         </p>
                       </div>
 
-                      <p className="text-xs sm:text-[13px] text-white/75 line-clamp-3 leading-relaxed font-light mb-4 drop-shadow-sm">
+                      <p className="text-xs sm:text-[13px] text-white/70 line-clamp-3 leading-relaxed font-light mb-4 drop-shadow-sm">
                         {evt.description}
                       </p>
 
@@ -495,10 +459,10 @@ export default function AIConnectX3DGallery() {
           data-media-modal="true"
           className="media-modal-active fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
         >
-          <div className="relative w-full max-w-2xl rounded-3xl bg-zinc-950/95 border border-teal-400/40 p-6 sm:p-8 shadow-[0_30px_90px_rgba(0,0,0,0.9)] text-white">
+          <div className="relative w-full max-w-2xl rounded-3xl bg-zinc-950/95 border border-white/20 p-6 sm:p-8 shadow-[0_30px_90px_rgba(0,0,0,0.95)] text-white">
             <div className="flex items-start justify-between pb-4 border-b border-white/10 mb-6">
               <div>
-                <span className="text-xs font-mono uppercase text-teal-300 font-semibold tracking-widest block mb-1">
+                <span className="text-xs font-mono uppercase text-amber-400 font-semibold tracking-widest block mb-1">
                   #{selectedEvent.tag}
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight uppercase">
@@ -521,12 +485,12 @@ export default function AIConnectX3DGallery() {
             <div className="space-y-4">
               <div className="flex flex-wrap items-center gap-4 text-xs text-white/70 font-mono pb-2">
                 <span className="flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-teal-400" />
+                  <Calendar className="w-3.5 h-3.5 text-amber-400" />
                   {selectedEvent.date}
                 </span>
                 <span>•</span>
                 <span className="flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-teal-400" />
+                  <MapPin className="w-3.5 h-3.5 text-amber-400" />
                   {selectedEvent.location}
                 </span>
               </div>
@@ -536,12 +500,12 @@ export default function AIConnectX3DGallery() {
               </p>
 
               <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 mt-4">
-                <span className="text-[11px] font-mono uppercase text-teal-300 tracking-wider block font-semibold">
+                <span className="text-[11px] font-mono uppercase text-amber-400 tracking-wider block font-semibold">
                   KEY EVENT HIGHLIGHTS
                 </span>
                 {selectedEvent.highlights.map((h, i) => (
                   <div key={i} className="flex items-center gap-2 text-xs text-white/80">
-                    <Sparkles className="w-3.5 h-3.5 text-teal-400 shrink-0" />
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                     <span>{h}</span>
                   </div>
                 ))}
@@ -551,7 +515,7 @@ export default function AIConnectX3DGallery() {
             <div className="mt-8 flex justify-end">
               <button
                 onClick={() => setSelectedEvent(null)}
-                className="px-6 py-2.5 rounded-full bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-bold text-xs tracking-wide hover:brightness-110 active:scale-95 transition-all cursor-pointer shadow-[0_0_20px_rgba(45,212,191,0.4)]"
+                className="px-6 py-2.5 rounded-full bg-gradient-to-r from-amber-400 via-orange-500 to-pink-500 text-slate-950 font-bold text-xs tracking-wide hover:brightness-110 active:scale-95 transition-all cursor-pointer shadow-[0_0_20px_rgba(245,158,11,0.35)]"
               >
                 Close Story
               </button>
