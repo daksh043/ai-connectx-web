@@ -34,6 +34,7 @@ const TermsOfServicePage = lazy(() => import("./pages/legal/TermsOfServicePage")
 const CookiePolicyPage = lazy(() => import("./pages/legal/CookiePolicyPage"));
 const RefundPolicyPage = lazy(() => import("./pages/legal/RefundPolicyPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
+const NotFoundDemoPage = lazy(() => import("./pages/NotFoundDemoPage"));
 
 const queryClient = new QueryClient();
 
@@ -151,6 +152,8 @@ export default function App() {
 
               {/* Branded 404 Route */}
               <Route path="/404" element={<NotFoundPage />} />
+              <Route path="/not-found" element={<NotFoundPage />} />
+              <Route path="/not-found-demo" element={<NotFoundDemoPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Suspense>

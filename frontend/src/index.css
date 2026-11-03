@@ -55,10 +55,28 @@
   --color-color-3: hsl(var(--color-3));
   --color-color-4: hsl(var(--color-4));
   --color-color-5: hsl(var(--color-5));
+
+  --color-background: var(--background, #ffffff);
+  --color-foreground: var(--foreground, #09090b);
+  --color-muted: var(--muted, #f4f4f5);
+  --color-muted-foreground: var(--muted-foreground, #71717a);
+  --color-border: var(--border, #e4e4e7);
+  --color-input: var(--input, #e4e4e7);
+  --color-secondary: var(--secondary, #f4f4f5);
+  --color-secondary-foreground: var(--secondary-foreground, #18181b);
 }
 
 @layer base {
   :root {
+    --background: #ffffff;
+    --foreground: #09090b;
+    --muted: #f4f4f5;
+    --muted-foreground: #71717a;
+    --border: #e4e4e7;
+    --input: #e4e4e7;
+    --secondary: #f4f4f5;
+    --secondary-foreground: #18181b;
+
     --color-1: 330 100% 40%;
     --color-2: 140 100% 55%;
     --color-3: 210 100% 30%;
@@ -68,6 +86,15 @@
   }
 
   .dark {
+    --background: #050507;
+    --foreground: #fafafa;
+    --muted: #1c1c22;
+    --muted-foreground: #a1a1aa;
+    --border: #27272a;
+    --input: #27272a;
+    --secondary: #27272a;
+    --secondary-foreground: #fafafa;
+
     --color-1: 330 100% 40%;
     --color-2: 140 100% 55%;
     --color-3: 210 100% 30%;

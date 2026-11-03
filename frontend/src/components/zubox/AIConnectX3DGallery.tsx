@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, type CSSProperties } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -327,7 +327,7 @@ export default function AIConnectX3DGallery() {
                 }}
                 className={`absolute w-[280px] sm:w-[330px] md:w-[370px] lg:w-[400px] h-[460px] sm:h-[510px] md:h-[550px] lg:h-[580px] rounded-[28px] cursor-pointer shadow-2xl group ${
                   isCenter
-                    ? "shadow-[0_25px_60px_rgba(0,0,0,0.85)]"
+                    ? "shadow-[0_0_35px_rgba(255,0,85,0.45),0_0_70px_rgba(0,255,102,0.35),0_0_105px_rgba(0,102,255,0.35),0_25px_60px_rgba(0,0,0,0.95)]"
                     : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
                 }`}
               >
@@ -335,18 +335,60 @@ export default function AIConnectX3DGallery() {
                   <BorderBeam
                     size="md"
                     colorVariant="colorful"
-                    duration={3.5}
+                    duration={7}
                     borderRadius={28}
+                    strength={1}
+                    brightness={2.5}
+                    saturation={2.2}
+                    glowSize={2.0}
+                    style={{
+                      "--beam-stroke-opacity": 3.8,
+                      "--beam-bloom-opacity": 3.5,
+                      "--beam-inner-opacity": 1.2,
+                    } as CSSProperties}
                     css={`
-                      [data-beam="{id}"]:hover,
+                      [data-beam="{id}"]::after {
+                        padding: 3.5px !important;
+                        opacity: 1 !important;
+                        background: conic-gradient(
+                          from var(--beam-angle-{id}),
+                          #ff0055 0deg,
+                          #ff3b30 40deg,
+                          #ff9500 75deg,
+                          #00e676 130deg,
+                          #00b0ff 190deg,
+                          #2979ff 250deg,
+                          #d500f9 305deg,
+                          #ff0055 360deg
+                        ) !important;
+                      }
+                      [data-beam="{id}"] [data-beam-bloom] {
+                        padding: 5px !important;
+                        opacity: 0.95 !important;
+                        filter: blur(14px) brightness(2.4) saturate(2.2) !important;
+                        background: conic-gradient(
+                          from var(--beam-angle-{id}),
+                          #ff0055 0deg,
+                          #ff3b30 40deg,
+                          #ff9500 75deg,
+                          #00e676 130deg,
+                          #00b0ff 190deg,
+                          #2979ff 250deg,
+                          #d500f9 305deg,
+                          #ff0055 360deg
+                        ) !important;
+                      }
+                      [data-beam="{id}"]::before {
+                        opacity: 0.25 !important;
+                      }
                       [data-beam="{id}"]:hover::after,
                       [data-beam="{id}"]:hover [data-beam-bloom] {
-                        animation-duration: 9s !important;
+                        animation-duration: 14s !important;
                       }
                     `}
-                    className="w-full h-full rounded-[28px] transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.05]"
+                    className="w-full h-full rounded-[28px] overflow-hidden transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.05] hover:shadow-[0_0_55px_rgba(255,0,85,0.65),0_0_95px_rgba(0,255,102,0.5),0_0_140px_rgba(0,102,255,0.5),0_35px_80px_rgba(0,0,0,0.95)]"
                   >
-                    <div className="relative w-full h-full rounded-[28px] overflow-hidden bg-[#121214]">
+                    <div className="relative w-full h-full rounded-[28px] overflow-hidden">
                       {/* Background Image */}
                       <img
                         src={evt.image}
@@ -360,7 +402,8 @@ export default function AIConnectX3DGallery() {
 
                       {/* Top Tag Pill */}
                       <div className="absolute top-5 left-5 z-10 pointer-events-none">
-                        <span className="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/70 backdrop-blur-md border border-white/20 text-white/90 font-semibold shadow-md">
+                        <span className="px-3.5 py-1 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/75 backdrop-blur-md border border-white/20 text-white font-bold shadow-lg flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-red-500 via-green-400 to-blue-500 animate-pulse" />
                           #{evt.tag}
                         </span>
                       </div>
@@ -371,7 +414,7 @@ export default function AIConnectX3DGallery() {
                           <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
                             {evt.title}
                           </h3>
-                          <p className="text-[11px] sm:text-xs font-mono font-bold text-white/70 tracking-wider mt-1 uppercase">
+                          <p className="text-[11px] sm:text-xs font-mono font-bold tracking-wider mt-1 uppercase bg-gradient-to-r from-red-400 via-emerald-400 to-blue-400 bg-clip-text text-transparent">
                             // {evt.subtitle}
                           </p>
                         </div>
@@ -386,10 +429,13 @@ export default function AIConnectX3DGallery() {
                             e.stopPropagation();
                             setSelectedEvent(evt);
                           }}
-                          className="inline-flex items-center justify-between w-full px-5 py-2.5 rounded-xl border border-white/20 bg-white/10 hover:bg-white/15 text-white text-xs font-bold tracking-wider uppercase transition-all shadow-sm hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
+                          className="relative group/btn w-full p-[1px] rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-[0_0_20px_rgba(255,0,85,0.25),0_0_25px_rgba(0,255,102,0.2),0_0_30px_rgba(0,102,255,0.25)]"
                         >
-                          <span>View Event Story</span>
-                          <ArrowUpRight className="w-4 h-4 text-white/80" />
+                          <span className="absolute inset-0 bg-gradient-to-r from-red-500 via-emerald-400 to-blue-500 opacity-80 group-hover/btn:opacity-100 transition-opacity" />
+                          <div className="relative px-5 py-2.5 rounded-[11px] bg-zinc-950/90 group-hover/btn:bg-zinc-900/90 flex items-center justify-between transition-colors">
+                            <span className="text-white text-xs font-bold tracking-wider uppercase">View Event Story</span>
+                            <ArrowUpRight className="w-4 h-4 text-white/90 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                          </div>
                         </button>
                       </div>
                     </div>
