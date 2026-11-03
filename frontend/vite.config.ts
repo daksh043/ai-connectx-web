@@ -10,6 +10,10 @@ export default defineConfig({
     alias: {
       "@": path.resolve(import.meta.dirname, "./src"),
     },
+    dedupe: ["react", "react-dom"],
+  },
+  optimizeDeps: {
+    include: ["react", "react-dom", "border-beam"],
   },
   server: {
     host: true,
