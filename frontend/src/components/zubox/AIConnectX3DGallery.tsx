@@ -334,11 +334,10 @@ export default function AIConnectX3DGallery() {
                 {isCenter ? (
                   <ChromaticBorderBeam
                     duration={8.5}
-                    hoverDuration={13.5}
+                    hoverDuration={14}
                     borderRadius={28}
-                    strokeWidth={2.5}
-                    bloomBlur={24}
-                    bloomSpread={16}
+                    strokeWidth={3.5}
+                    beamLength={360}
                     hoverScale={1.05}
                     className="w-full h-full"
                   >

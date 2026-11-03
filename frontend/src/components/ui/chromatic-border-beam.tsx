@@ -4,11 +4,10 @@ export interface ChromaticBorderBeamProps {
   children: React.ReactNode;
   className?: string;
   duration?: number; // rotation duration in seconds (default: 8.5)
-  hoverDuration?: number; // rotation duration when hovered (default: 13.5)
+  hoverDuration?: number; // rotation duration when hovered (default: 14)
   borderRadius?: number; // corner radius in px (default: 28)
-  strokeWidth?: number; // stroke thickness in px (default: 2.5)
-  bloomBlur?: number; // outward glow blur in px (default: 22)
-  bloomSpread?: number; // how far outside the card the glow extends in px (default: 15)
+  strokeWidth?: number; // stroke thickness in px (default: 3.5)
+  beamLength?: number; // length of traveling beam in px (default: 340)
   hoverScale?: number; // scale multiplier on hover (default: 1.05)
 }
 
@@ -16,117 +15,149 @@ export function ChromaticBorderBeam({
   children,
   className = "",
   duration = 8.5,
-  hoverDuration = 13.5,
+  hoverDuration = 14,
   borderRadius = 28,
-  strokeWidth = 2.5,
-  bloomBlur = 22,
-  bloomSpread = 15,
+  strokeWidth = 3.5,
+  beamLength = 340,
   hoverScale = 1.05,
 }: ChromaticBorderBeamProps) {
   const id = useId().replace(/:/g, "");
-  const beamClass = `chromatic-beam-${id}`;
+  const scopeClass = `chromatic-flow-${id}`;
 
   return (
     <>
       <style>{`
-        @property --beam-angle-${id} {
-          syntax: "<angle>";
-          initial-value: 0deg;
-          inherits: true;
-        }
-
-        @keyframes beam-spin-${id} {
+        @keyframes perimeter-travel-${id} {
           0% {
-            --beam-angle-${id}: 0deg;
+            offset-distance: 0%;
+            -webkit-offset-distance: 0%;
           }
           100% {
-            --beam-angle-${id}: 360deg;
+            offset-distance: 100%;
+            -webkit-offset-distance: 100%;
           }
         }
 
-        .${beamClass} {
-          --chromatic-gradient: conic-gradient(
-            from var(--beam-angle-${id}),
-            transparent 0deg,
-            transparent 235deg,
-            rgba(6, 182, 212, 0.45) 260deg,
-            rgba(59, 130, 246, 0.85) 282deg,
-            rgba(139, 92, 246, 0.95) 305deg,
-            rgba(236, 72, 153, 1) 325deg,
-            rgba(249, 115, 22, 1) 345deg,
-            rgba(251, 191, 36, 1) 357deg,
-            transparent 360deg
-          );
-          animation: beam-spin-${id} ${duration}s linear infinite;
-          transform-origin: center center;
+        .${scopeClass} {
           transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+          transform-origin: center center;
+          border-radius: ${borderRadius}px;
         }
 
-        .${beamClass}:hover {
-          animation-duration: ${hoverDuration}s;
+        .${scopeClass}:hover {
           transform: scale(${hoverScale});
         }
 
-        /* 1. Dynamic Outward Radiant Bloom (Moves with traveling color) */
-        .${beamClass} .beam-bloom {
-          position: absolute;
-          inset: -${bloomSpread}px;
-          border-radius: ${borderRadius + bloomSpread}px;
-          background: var(--chromatic-gradient);
-          filter: blur(${bloomBlur}px) saturate(2) brightness(1.75);
-          opacity: 0.92;
+        /* Dense chromatic pigment ribbon */
+        .${scopeClass} .chromatic-ribbon {
+          background: linear-gradient(
+            to left,
+            #facc15 0%,
+            #fb923c 14%,
+            #f43f5e 30%,
+            #ec4899 48%,
+            #a855f7 68%,
+            #3b82f6 84%,
+            rgba(59, 130, 246, 0) 100%
+          );
+        }
+
+        /* Shared motion path settings for uniform perimeter speed */
+        .${scopeClass} .path-tracker {
+          offset-path: inset(0 round ${borderRadius}px);
+          -webkit-offset-path: inset(0 round ${borderRadius}px);
+          offset-anchor: 100% 50%;
+          offset-rotate: auto;
+          animation: perimeter-travel-${id} ${duration}s linear infinite;
+          will-change: offset-distance;
           pointer-events: none;
-          z-index: 0;
-          transition: filter 0.4s ease, opacity 0.4s ease;
         }
 
-        .${beamClass}:hover .beam-bloom {
+        .${scopeClass}:hover .path-tracker {
+          animation-duration: ${hoverDuration}s;
+        }
+
+        /* 1. Deep Atmospheric Outward Glow */
+        .${scopeClass} .bloom-deep {
+          position: absolute;
+          width: ${beamLength}px;
+          height: 90px;
+          border-radius: 45px;
+          filter: blur(28px) saturate(2.6) brightness(1.95);
+          opacity: 0.88;
+          z-index: 1;
+        }
+
+        /* 2. Tight Concentrated Core Glow (High Density) */
+        .${scopeClass} .bloom-tight {
+          position: absolute;
+          width: ${Math.round(beamLength * 0.72)}px;
+          height: 48px;
+          border-radius: 24px;
+          filter: blur(13px) saturate(2.4) brightness(2.2);
+          opacity: 0.95;
+          z-index: 2;
+        }
+
+        .${scopeClass}:hover .bloom-deep {
           opacity: 1;
-          filter: blur(${bloomBlur + 6}px) saturate(2.3) brightness(2);
+          filter: blur(34px) saturate(2.8) brightness(2.1);
         }
 
-        /* 2. Sharp Traveling Border Stroke (Crisp Perimeter) */
-        .${beamClass} .beam-stroke {
+        .${scopeClass}:hover .bloom-tight {
+          opacity: 1;
+          filter: blur(15px) saturate(2.6) brightness(2.3);
+        }
+
+        /* 3. Sharp High-Density Perimeter Stroke (3.5px) */
+        .${scopeClass} .stroke-mask-wrap {
           position: absolute;
           inset: 0;
           border-radius: ${borderRadius}px;
           padding: ${strokeWidth}px;
-          background: var(--chromatic-gradient);
           pointer-events: none;
           z-index: 25;
+          overflow: hidden;
           -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           -webkit-mask-composite: xor;
           mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           mask-composite: exclude;
         }
 
-        /* 3. Subtle Dark Hairline Frame (Clean dark outline where beam is absent) */
-        .${beamClass} .beam-hairline {
+        .${scopeClass} .stroke-element {
+          position: absolute;
+          width: ${beamLength}px;
+          height: 120px;
+          border-radius: 60px;
+        }
+
+        /* 4. Dark subtle hairline boundary */
+        .${scopeClass} .hairline-boundary {
           position: absolute;
           inset: 0;
           border-radius: ${borderRadius}px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.12);
           pointer-events: none;
           z-index: 20;
         }
       `}</style>
 
-      <div
-        className={`relative ${beamClass} ${className}`}
-        style={{
-          borderRadius: `${borderRadius}px`,
-        }}
-      >
-        {/* Outward dynamic colored bloom */}
-        <div className="beam-bloom" aria-hidden="true" />
+      <div className={`relative ${scopeClass} ${className}`}>
+        {/* Tier 1: Deep atmospheric dynamic bloom */}
+        <div className="bloom-deep chromatic-ribbon path-tracker" aria-hidden="true" />
 
-        {/* Sharp traveling chromatic stroke */}
-        <div className="beam-stroke" aria-hidden="true" />
+        {/* Tier 2: Tight concentrated high-density core bloom */}
+        <div className="bloom-tight chromatic-ribbon path-tracker" aria-hidden="true" />
 
-        {/* Dark subtle hairline boundary */}
-        <div className="beam-hairline" aria-hidden="true" />
+        {/* Tier 3: Sharp high-density perimeter stroke */}
+        <div className="stroke-mask-wrap" aria-hidden="true">
+          <div className="stroke-element chromatic-ribbon path-tracker" />
+        </div>
 
-        {/* Main Content Body */}
+        {/* Tier 4: Dark subtle hairline boundary */}
+        <div className="hairline-boundary" aria-hidden="true" />
+
+        {/* Inner Content Card Body */}
         <div
           className="relative w-full h-full overflow-hidden"
           style={{
