@@ -12,37 +12,62 @@ import {
 } from "lucide-react";
 import { sanitizeInput, isValidEmail } from "../../utils/sanitize";
 
-// Social icon helpers for clean minimalist icons matching reference
-function LinkedInIcon({ className }: { className?: string }) {
+// Official Brand Logos in their Original Authentic Colors
+function LinkedInIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
+      <rect width="24" height="24" rx="4.5" fill="#0A66C2" />
+      <path
+        fill="#ffffff"
+        d="M5.5 8.7h2.8v8.6H5.5V8.7zm1.4-4.4c.9 0 1.6.7 1.6 1.6 0 .9-.7 1.6-1.6 1.6-.9 0-1.6-.7-1.6-1.6 0-.9.7-1.6 1.6-1.6zM10.2 8.7h2.7v1.2h.04c.38-.72 1.3-1.48 2.68-1.48 2.87 0 3.4 1.89 3.4 4.35v4.53h-2.8v-4c0-.96-.02-2.2-1.34-2.2-1.34 0-1.55 1.05-1.55 2.13v4.07h-2.8V8.7z"
+      />
     </svg>
   );
 }
 
-function FacebookIcon({ className }: { className?: string }) {
+function FacebookIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="12" fill="#1877F2" />
+      <path
+        fill="#ffffff"
+        d="M16.671 15.469l.532-3.47h-3.328v-2.25c0-.949.465-1.874 1.956-1.874h1.737V4.922s-1.374-.235-2.686-.235c-2.741 0-4.533 1.662-4.533 4.669v2.012H7.078v3.47h3.271v8.385a12.083 12.083 0 0 0 3.651 0v-8.385h2.671z"
+      />
     </svg>
   );
 }
 
-function InstagramIcon({ className = "w-5 h-5" }: { className?: string }) {
+function InstagramIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
+      <defs>
+        <radialGradient id="instagram-gradient-contact" cx="30%" cy="107%" r="150%">
+          <stop offset="0%" stopColor="#fdf497" />
+          <stop offset="5%" stopColor="#fdf497" />
+          <stop offset="45%" stopColor="#fd5949" />
+          <stop offset="60%" stopColor="#d6249f" />
+          <stop offset="90%" stopColor="#285AEB" />
+        </radialGradient>
+      </defs>
+      <rect width="24" height="24" rx="6.5" fill="url(#instagram-gradient-contact)" />
+      <rect x="4.5" y="4.5" width="15" height="15" rx="4" stroke="#ffffff" strokeWidth="1.75" />
+      <circle cx="12" cy="12" r="3.5" stroke="#ffffff" strokeWidth="1.75" />
+      <circle cx="16.5" cy="7.5" r="1" fill="#ffffff" />
+    </svg>
+  );
+}
+
+function WhatsAppIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
+      <path
+        fill="#25D366"
+        d="M20.52 3.48A11.93 11.93 0 0 0 12.06 0C5.46 0 .09 5.37.09 11.97c0 2.11.55 4.17 1.6 5.99L0 24l6.19-1.62a11.93 11.93 0 0 0 5.87 1.53h.01c6.6 0 11.97-5.37 11.97-11.97 0-3.2-1.25-6.21-3.52-8.46z"
+      />
+      <path
+        fill="#ffffff"
+        d="M17.47 14.38c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.95 1.18-.18.2-.35.23-.65.08-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.5-1.78-1.68-2.08-.18-.3-.02-.46.13-.61.14-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.07-.15-.67-1.63-.92-2.23-.25-.6-.5-.5-.68-.52-.18 0-.38-.01-.58-.01-.2 0-.53.08-.8.38-.28.3-1.06 1.03-1.06 2.5 0 1.49 1.08 2.92 1.23 3.12.15.2 2.13 3.24 5.15 4.54.72.31 1.28.5 1.72.64.72.23 1.38.2 1.9.12.58-.09 1.78-.73 2.03-1.43.25-.7.25-1.3.18-1.43-.08-.13-.28-.2-.58-.35z"
+      />
     </svg>
   );
 }
@@ -325,43 +350,43 @@ export default function AIConnectXContactSection() {
                     </AnimatePresence>
                   </form>
 
-                  {/* Social Icon Row - Individual Frosted Glass Pills */}
-                  <div className="mt-6 pt-5 border-t border-white/15 flex items-center justify-center gap-4 text-cyan-300">
+                  {/* Social Icon Row - Individual Frosted Glass Pills in Original Brand Colors */}
+                  <div className="mt-6 pt-5 border-t border-white/15 flex items-center justify-center gap-4">
                     <a
                       href="https://www.linkedin.com/company/ai-connectx-ai/"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="LinkedIn company page"
-                      className="p-2.5 rounded-full bg-white/[0.06] hover:bg-white/[0.15] border border-white/20 hover:border-cyan-300/60 backdrop-blur-md hover:text-white transition-all duration-300 hover:scale-110 shadow-[0_2px_10px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)]"
+                      className="group p-2.5 rounded-full bg-white/[0.06] hover:bg-[#0A66C2]/20 border border-white/20 hover:border-[#0A66C2]/70 backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-[0_2px_10px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(10,102,194,0.5)] cursor-pointer"
                     >
-                      <LinkedInIcon className="w-4 h-4" />
+                      <LinkedInIcon className="w-4 h-4 transition-transform duration-300 group-hover:scale-105" />
                     </a>
                     <a
                       href="https://facebook.com/aiconnectx"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="Facebook community page"
-                      className="p-2.5 rounded-full bg-white/[0.06] hover:bg-white/[0.15] border border-white/20 hover:border-cyan-300/60 backdrop-blur-md hover:text-white transition-all duration-300 hover:scale-110 shadow-[0_2px_10px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)]"
+                      className="group p-2.5 rounded-full bg-white/[0.06] hover:bg-[#1877F2]/20 border border-white/20 hover:border-[#1877F2]/70 backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-[0_2px_10px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(24,119,242,0.5)] cursor-pointer"
                     >
-                      <FacebookIcon className="w-4 h-4" />
+                      <FacebookIcon className="w-4 h-4 transition-transform duration-300 group-hover:scale-105" />
                     </a>
                     <a
                       href="https://instagram.com/aiconnectx.official"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="Instagram profile"
-                      className="p-2.5 rounded-full bg-white/[0.06] hover:bg-white/[0.15] border border-white/20 hover:border-cyan-300/60 backdrop-blur-md hover:text-white transition-all duration-300 hover:scale-110 shadow-[0_2px_10px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)]"
+                      className="group p-2.5 rounded-full bg-white/[0.06] hover:bg-[#E1306C]/20 border border-white/20 hover:border-[#E1306C]/70 backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-[0_2px_10px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(225,48,108,0.5)] cursor-pointer"
                     >
-                      <InstagramIcon className="w-4 h-4" />
+                      <InstagramIcon className="w-4 h-4 transition-transform duration-300 group-hover:scale-105" />
                     </a>
                     <a
                       href="https://wa.me/917556789000"
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label="WhatsApp direct transmission"
-                      className="p-2.5 rounded-full bg-white/[0.06] hover:bg-white/[0.15] border border-white/20 hover:border-emerald-300/60 backdrop-blur-md text-emerald-400 hover:text-white transition-all duration-300 hover:scale-110 shadow-[0_2px_10px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)]"
+                      className="group p-2.5 rounded-full bg-white/[0.06] hover:bg-[#25D366]/20 border border-white/20 hover:border-[#25D366]/70 backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-[0_2px_10px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(37,211,102,0.5)] cursor-pointer"
                     >
-                      <MessageSquare className="w-4 h-4" />
+                      <WhatsAppIcon className="w-4 h-4 transition-transform duration-300 group-hover:scale-105" />
                     </a>
                   </div>
                 </div>
