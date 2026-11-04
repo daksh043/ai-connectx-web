@@ -64,6 +64,27 @@
   --color-input: var(--input, #e4e4e7);
   --color-secondary: var(--secondary, #f4f4f5);
   --color-secondary-foreground: var(--secondary-foreground, #18181b);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
 }
 
 @layer base {

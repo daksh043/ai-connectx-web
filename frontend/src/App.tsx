@@ -35,6 +35,7 @@ const CookiePolicyPage = lazy(() => import("./pages/legal/CookiePolicyPage"));
 const RefundPolicyPage = lazy(() => import("./pages/legal/RefundPolicyPage"));
 const NotFoundPage = lazy(() => import("./pages/NotFoundPage"));
 const NotFoundDemoPage = lazy(() => import("./pages/NotFoundDemoPage"));
+const FAQPage = lazy(() => import("./pages/FAQPage"));
 
 const queryClient = new QueryClient();
 
@@ -133,6 +134,7 @@ export default function App() {
               />
               <Route path="/showcase" element={<ShowcasePage />} />
               <Route path="/soffit" element={<ShowcasePage />} />
+              <Route path="/faq" element={<FAQPage />} />
               <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
               <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
 
