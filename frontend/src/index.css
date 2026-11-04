@@ -87,6 +87,26 @@
   }
 }
 
+@property --beam-ambient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: true;
+}
+
+@keyframes beam-ambient-spin {
+  0% {
+    --beam-ambient-angle: 0deg;
+  }
+  100% {
+    --beam-ambient-angle: 360deg;
+  }
+}
+
+.group:hover .ambient-beam-shadow-wide,
+.group:hover .ambient-beam-shadow-near {
+  animation-duration: 14s !important;
+}
+
 @layer base {
   :root {
     --background: #ffffff;

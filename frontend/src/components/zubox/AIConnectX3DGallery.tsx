@@ -328,12 +328,58 @@ export default function AIConnectX3DGallery() {
                     ? "opacity 0.15s ease-out, transform 0.04s ease-out"
                     : "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
-                className={`absolute w-[280px] sm:w-[330px] md:w-[370px] lg:w-[400px] h-[460px] sm:h-[510px] md:h-[550px] lg:h-[580px] rounded-[28px] cursor-pointer shadow-2xl group ${
+                className={`absolute w-[280px] sm:w-[330px] md:w-[370px] lg:w-[400px] h-[460px] sm:h-[510px] md:h-[550px] lg:h-[580px] rounded-[28px] cursor-pointer group ${
                   isCenter
-                    ? "shadow-[0_0_35px_rgba(255,0,85,0.45),0_0_70px_rgba(0,255,102,0.35),0_0_105px_rgba(0,102,255,0.35),0_25px_60px_rgba(0,0,0,0.95)]"
+                    ? "shadow-[0_30px_70px_rgba(0,0,0,0.92)]"
                     : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
                 }`}
               >
+                {/* ─── Dynamic Ambient Light Shadow Following Border Beam Colors ─── */}
+                {isCenter && (
+                  <>
+                    {/* Volumetric ambient shadow that projects rotating ambient light deep into the background */}
+                    <div
+                      className="ambient-beam-shadow-wide absolute -inset-7 sm:-inset-10 md:-inset-12 rounded-[56px] -z-10 pointer-events-none transition-all duration-500 group-hover:scale-105"
+                      style={{
+                        background: `conic-gradient(
+                          from var(--beam-ambient-angle, 0deg),
+                          #ff0055 0deg,
+                          #ff3b30 40deg,
+                          #ff9500 75deg,
+                          #00e676 130deg,
+                          #00b0ff 190deg,
+                          #2979ff 250deg,
+                          #d500f9 305deg,
+                          #ff0055 360deg
+                        )`,
+                        filter: "blur(48px) brightness(1.9) saturate(2.1)",
+                        opacity: 0.8,
+                        animation: "beam-ambient-spin 7s linear infinite",
+                      }}
+                    />
+                    {/* Intense near ambient shadow hugging the perimeter with exact edge color matching */}
+                    <div
+                      className="ambient-beam-shadow-near absolute -inset-3 sm:-inset-4.5 rounded-[40px] -z-10 pointer-events-none transition-all duration-500 group-hover:scale-105"
+                      style={{
+                        background: `conic-gradient(
+                          from var(--beam-ambient-angle, 0deg),
+                          #ff0055 0deg,
+                          #ff3b30 40deg,
+                          #ff9500 75deg,
+                          #00e676 130deg,
+                          #00b0ff 190deg,
+                          #2979ff 250deg,
+                          #d500f9 305deg,
+                          #ff0055 360deg
+                        )`,
+                        filter: "blur(20px) brightness(2.3) saturate(2.2)",
+                        opacity: 0.95,
+                        animation: "beam-ambient-spin 7s linear infinite",
+                      }}
+                    />
+                  </>
+                )}
+
                 {isCenter ? (
                   <BorderBeam
                     size="md"
@@ -389,7 +435,7 @@ export default function AIConnectX3DGallery() {
                         animation-duration: 14s !important;
                       }
                     `}
-                    className="w-full h-full rounded-[28px] overflow-hidden transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.05] hover:shadow-[0_0_55px_rgba(255,0,85,0.65),0_0_95px_rgba(0,255,102,0.5),0_0_140px_rgba(0,102,255,0.5),0_35px_80px_rgba(0,0,0,0.95)]"
+                    className="w-full h-full rounded-[28px] overflow-hidden transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.05]"
                   >
                     <div className="relative w-full h-full rounded-[28px] overflow-hidden">
                       {/* Background Image */}
