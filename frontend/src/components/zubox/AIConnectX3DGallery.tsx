@@ -243,21 +243,24 @@ export default function AIConnectX3DGallery() {
       <div className="sticky top-0 h-screen w-full flex flex-col justify-between py-6 sm:py-8 lg:py-10 px-6 sm:px-12 lg:px-16 overflow-hidden z-20">
 
         {/* ─── Top Section Header (Matches Screenshot Exactly) ─── */}
-        <div className="w-full max-w-[1600px] mx-auto flex items-start justify-between gap-6 z-20 shrink-0 [text-shadow:none] [&_*]:[text-shadow:none]">
+        <div className="w-full max-w-[1600px] mx-auto flex items-start justify-between gap-6 z-20 shrink-0 no-text-shadow [text-shadow:none] [&_*]:[text-shadow:none]" style={{ textShadow: "none" }}>
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="w-2 h-2 rounded-full bg-[#014BAA]" />
-              <span className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-[0.2em] text-[#014BAA]">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#1D4ED8] shadow-[0_0_8px_rgba(29,78,216,0.5)]" />
+              <span className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-[0.22em] text-[#1D4ED8]" style={{ textShadow: "none" }}>
                 MOMENTS &amp; SPRINTS · LINKEDIN ARCHIVE
               </span>
             </div>
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-['Space_Grotesk',sans-serif] font-bold tracking-tight text-[#014BAA]">
+            <h2
+              className="text-4xl sm:text-5xl lg:text-6xl font-['Outfit',sans-serif] font-extrabold tracking-[-0.03em] text-[#1D4ED8] drop-shadow-none leading-none select-none"
+              style={{ textShadow: "none" }}
+            >
               Club Chronicles
             </h2>
           </div>
 
           <div className="flex flex-col items-end gap-3.5">
-            <p className="max-w-xs sm:max-w-md text-xs sm:text-sm text-[#014BAA]/80 font-normal leading-relaxed text-right">
+            <p className="max-w-xs sm:max-w-md text-xs sm:text-sm text-[#1D4ED8]/85 font-medium leading-relaxed text-right" style={{ textShadow: "none" }}>
               Captured moments from our flagship AI Conclaves, hackathons, robotics
               deployments, and technical summits.
             </p>
@@ -267,14 +270,14 @@ export default function AIConnectX3DGallery() {
               <button
                 onClick={handlePrev}
                 aria-label="Previous event"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#014BAA]/25 bg-white/90 backdrop-blur-md flex items-center justify-center text-[#014BAA] hover:bg-[#014BAA] hover:text-white hover:border-[#014BAA] active:scale-95 transition-all cursor-pointer shadow-sm"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#1D4ED8]/30 bg-white/95 backdrop-blur-md flex items-center justify-center text-[#1D4ED8] hover:bg-[#1D4ED8] hover:text-white hover:border-[#1D4ED8] active:scale-95 transition-all cursor-pointer shadow-xs"
               >
                 <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
               <button
                 onClick={handleNext}
                 aria-label="Next event"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#014BAA]/25 bg-white/90 backdrop-blur-md flex items-center justify-center text-[#014BAA] hover:bg-[#014BAA] hover:text-white hover:border-[#014BAA] active:scale-95 transition-all cursor-pointer shadow-sm"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#1D4ED8]/30 bg-white/95 backdrop-blur-md flex items-center justify-center text-[#1D4ED8] hover:bg-[#1D4ED8] hover:text-white hover:border-[#1D4ED8] active:scale-95 transition-all cursor-pointer shadow-xs"
               >
                 <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
@@ -495,8 +498,8 @@ export default function AIConnectX3DGallery() {
               aria-label={`Go to event ${idx + 1}`}
               className={`transition-all duration-300 cursor-pointer rounded-full ${
                 idx === activeIdx
-                  ? "w-7 h-1.5 bg-[#014BAA] shadow-sm"
-                  : "w-1.5 h-1.5 bg-[#014BAA]/25 hover:bg-[#014BAA]/50"
+                  ? "w-7 h-1.5 bg-[#1D4ED8] shadow-sm"
+                  : "w-1.5 h-1.5 bg-[#1D4ED8]/25 hover:bg-[#1D4ED8]/50"
               }`}
             />
           ))}

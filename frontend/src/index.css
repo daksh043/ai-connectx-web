@@ -1816,8 +1816,7 @@ html.lenis body {
 
 
 /* ─── Global Surrounding Dark Blur Effect for Website Typography ─── */
-/* Seamless cinematic text shadow that blends naturally with the canvas scene */
-h1, h2, h3, h4, h5, h6,
+/* Scoped cinematic text shadow that blends naturally with dark canvas scenes */
 .text-dark-blur {
   text-shadow:
     0 2px 10px rgba(0, 0, 0, 0.85),
@@ -1825,12 +1824,19 @@ h1, h2, h3, h4, h5, h6,
     0 0 40px rgba(0, 0, 0, 0.45);
 }
 
-p,
 .subheading-dark-blur,
 .badge-dark-blur {
   text-shadow:
     0 1px 6px rgba(0, 0, 0, 0.85),
     0 2px 16px rgba(0, 0, 0, 0.6);
+}
+
+/* Ensure gallery and light / editorial sections have pristine zero text-shadow */
+#gallery,
+#gallery *,
+.no-text-shadow,
+.no-text-shadow * {
+  text-shadow: none !important;
 }
 
 /* Light / cream background sections must never have dark blur text shadows */

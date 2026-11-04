@@ -18,3 +18,4 @@ export default function NotFoundDemoPage() {
     </div>
   );
 }
+
