@@ -330,16 +330,16 @@ export default function AIConnectX3DGallery() {
                 }}
                 className={`absolute w-[280px] sm:w-[330px] md:w-[370px] lg:w-[400px] h-[460px] sm:h-[510px] md:h-[550px] lg:h-[580px] rounded-[28px] cursor-pointer group ${
                   isCenter
-                    ? "shadow-[0_30px_70px_rgba(0,0,0,0.92)]"
+                    ? "shadow-[0_20px_45px_rgba(0,0,0,0.75)]"
                     : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
                 }`}
               >
-                {/* ─── Dynamic Ambient Light Shadow Following Border Beam Colors ─── */}
+                {/* ─── Dynamic Ambient Light Shadow Following Border Beam Colors (Subtle & Tight) ─── */}
                 {isCenter && (
                   <>
-                    {/* Volumetric ambient shadow that projects rotating ambient light deep into the background */}
+                    {/* Soft ambient light falloff */}
                     <div
-                      className="ambient-beam-shadow-wide absolute -inset-7 sm:-inset-10 md:-inset-12 rounded-[56px] -z-10 pointer-events-none transition-all duration-500 group-hover:scale-105"
+                      className="ambient-beam-shadow-wide absolute -inset-4 sm:-inset-6 rounded-[36px] -z-10 pointer-events-none transition-all duration-500 group-hover:scale-102"
                       style={{
                         background: `conic-gradient(
                           from var(--beam-ambient-angle, 0deg),
@@ -352,14 +352,14 @@ export default function AIConnectX3DGallery() {
                           #d500f9 305deg,
                           #ff0055 360deg
                         )`,
-                        filter: "blur(48px) brightness(1.9) saturate(2.1)",
-                        opacity: 0.8,
+                        filter: "blur(28px) brightness(1.2) saturate(1.4)",
+                        opacity: 0.35,
                         animation: "beam-ambient-spin 7s linear infinite",
                       }}
                     />
-                    {/* Intense near ambient shadow hugging the perimeter with exact edge color matching */}
+                    {/* Near ambient halo hugging the border */}
                     <div
-                      className="ambient-beam-shadow-near absolute -inset-3 sm:-inset-4.5 rounded-[40px] -z-10 pointer-events-none transition-all duration-500 group-hover:scale-105"
+                      className="ambient-beam-shadow-near absolute -inset-1.5 sm:-inset-2 rounded-[32px] -z-10 pointer-events-none transition-all duration-500 group-hover:scale-102"
                       style={{
                         background: `conic-gradient(
                           from var(--beam-ambient-angle, 0deg),
@@ -372,8 +372,8 @@ export default function AIConnectX3DGallery() {
                           #d500f9 305deg,
                           #ff0055 360deg
                         )`,
-                        filter: "blur(20px) brightness(2.3) saturate(2.2)",
-                        opacity: 0.95,
+                        filter: "blur(12px) brightness(1.3) saturate(1.5)",
+                        opacity: 0.45,
                         animation: "beam-ambient-spin 7s linear infinite",
                       }}
                     />
