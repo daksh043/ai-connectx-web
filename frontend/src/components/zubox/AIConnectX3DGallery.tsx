@@ -240,33 +240,33 @@ export default function AIConnectX3DGallery() {
       <span id="chronicles" className="sr-only" />
 
       {/* ─── Fullscreen Sticky Stage (Creates the clean pause while scrolling) ─── */}
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-between py-6 sm:py-8 lg:py-10 px-6 sm:px-12 lg:px-16 overflow-hidden z-20">
+      <div className="sticky top-0 h-screen h-[100dvh] w-full flex flex-col justify-between py-4 sm:py-8 lg:py-10 px-4 sm:px-12 lg:px-16 overflow-hidden z-20">
 
         {/* ─── Top Section Header (Matches Screenshot Exactly) ─── */}
-        <div className="w-full max-w-[1600px] mx-auto flex items-start justify-between gap-6 z-20 shrink-0 no-text-shadow [text-shadow:none] [&_*]:[text-shadow:none]" style={{ textShadow: "none" }}>
+        <div className="w-full max-w-[1600px] mx-auto flex flex-col sm:flex-row items-start justify-between gap-2.5 sm:gap-6 z-20 shrink-0 no-text-shadow [text-shadow:none] [&_*]:[text-shadow:none]" style={{ textShadow: "none" }}>
           <div>
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
               <span className="w-2.5 h-2.5 rounded-full bg-[#1D4ED8] shadow-[0_0_8px_rgba(29,78,216,0.5)]" />
-              <span className="text-[11px] sm:text-xs font-mono font-bold uppercase tracking-[0.22em] text-[#1D4ED8]" style={{ textShadow: "none" }}>
+              <span className="text-[10px] sm:text-xs font-mono font-bold uppercase tracking-[0.22em] text-[#1D4ED8]" style={{ textShadow: "none" }}>
                 MOMENTS &amp; SPRINTS · LINKEDIN ARCHIVE
               </span>
             </div>
             <h2
-              className="text-4xl sm:text-5xl lg:text-6xl font-['Outfit',sans-serif] font-extrabold tracking-[-0.03em] text-[#1D4ED8] drop-shadow-none leading-none select-none"
+              className="text-3xl sm:text-5xl lg:text-6xl font-['Outfit',sans-serif] font-extrabold tracking-[-0.03em] text-[#1D4ED8] drop-shadow-none leading-none select-none"
               style={{ textShadow: "none" }}
             >
               Club Chronicles
             </h2>
           </div>
 
-          <div className="flex flex-col items-end gap-3.5">
-            <p className="max-w-xs sm:max-w-md text-xs sm:text-sm text-[#1D4ED8]/85 font-medium leading-relaxed text-right" style={{ textShadow: "none" }}>
+          <div className="flex items-center sm:items-end justify-between sm:justify-start w-full sm:w-auto gap-3.5">
+            <p className="max-w-xs sm:max-w-md text-xs sm:text-sm text-[#1D4ED8]/85 font-medium leading-relaxed text-left sm:text-right hidden sm:block" style={{ textShadow: "none" }}>
               Captured moments from our flagship AI Conclaves, hackathons, robotics
               deployments, and technical summits.
             </p>
 
             {/* Navigation Circular Arrows */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={handlePrev}
                 aria-label="Previous event"
@@ -328,7 +328,7 @@ export default function AIConnectX3DGallery() {
                     ? "opacity 0.15s ease-out, transform 0.04s ease-out"
                     : "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
-                className={`absolute w-[280px] sm:w-[330px] md:w-[370px] lg:w-[400px] h-[460px] sm:h-[510px] md:h-[550px] lg:h-[580px] rounded-[28px] cursor-pointer group ${
+                className={`absolute w-[260px] sm:w-[330px] md:w-[370px] lg:w-[400px] h-[390px] sm:h-[490px] md:h-[550px] lg:h-[580px] rounded-[28px] cursor-pointer group ${
                   isCenter
                     ? "shadow-[0_20px_45px_rgba(0,0,0,0.75)]"
                     : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"

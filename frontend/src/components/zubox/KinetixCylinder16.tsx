@@ -52,15 +52,30 @@ export interface SceneParameters {
  * At expansion = 0: radius 460, tilt -22°, roll -20°, perspective 1000px, scale 0.52
  * At expansion = 1: radius 1800, tilt 0°, roll 0°, perspective 450px, scale 2.3
  */
-export function sceneFromExpansion(expansion: number): SceneParameters {
+export function sceneFromExpansion(
+  expansion: number,
+  viewportWidth?: number
+): SceneParameters {
   const e = clamp(expansion, 0, 1);
+  const vw =
+    viewportWidth ??
+    (typeof window !== "undefined" ? window.innerWidth : 1200);
+  const isMobile = vw < 768;
+  const isSmallMobile = vw < 420;
+
+  const baseRadius = isSmallMobile ? 255 : isMobile ? 320 : 460;
+  const baseScale = isSmallMobile ? 0.36 : isMobile ? 0.42 : 0.52;
+  const targetRadius = isSmallMobile ? 1050 : isMobile ? 1350 : 1800;
+  const targetScale = isSmallMobile ? 1.35 : isMobile ? 1.7 : 2.3;
+  const basePerspective = isMobile ? 750 : 1000;
+
   return {
     expansion: e,
-    radius: lerp(460, 1800, e),
+    radius: lerp(baseRadius, targetRadius, e),
     tilt: 0,
     roll: 0,
-    perspective: lerp(1000, 450, e),
-    cardScale: lerp(0.52, 2.3, e),
+    perspective: lerp(basePerspective, 450, e),
+    cardScale: lerp(baseScale, targetScale, e),
   };
 }
 
@@ -187,7 +202,7 @@ export function runReelPoseUnitTests(): UnitTestResult[] {
   };
 
   // Test 1: Far center card (0°, formation=1, exp=0)
-  const scene0 = sceneFromExpansion(0);
+  const scene0 = sceneFromExpansion(0, 1200);
   const poseFar0 = reelPose(0, 1, scene0);
   assert(
     "Far Center Card (0°, formation=1, exp=0)",
@@ -263,7 +278,7 @@ export function runReelPoseUnitTests(): UnitTestResult[] {
   );
 
   // Test 6: Full Expansion Scene Parameters (expansion = 1)
-  const scene1 = sceneFromExpansion(1);
+  const scene1 = sceneFromExpansion(1, 1200);
   const poseExpandedFar = reelPose(0, 1, scene1);
   assert(
     "Expansion=1 Scene & Far Center Pose",
@@ -861,6 +876,9 @@ export default function KinetixCylinder16({
         el.style.setProperty(prop, nextVal);
       } else {
         (el.style as unknown as Record<string, string>)[prop] = nextVal;
+        if (prop === "transform") {
+          (el.style as unknown as Record<string, string>)["webkitTransform"] = nextVal;
+        }
       }
     };
 
@@ -1072,6 +1090,11 @@ export default function KinetixCylinder16({
   const handlePointerDown = (e: React.PointerEvent) => {
     if ((e.target as HTMLElement).closest("button, input, [data-no-drag]"))
       return;
+    try {
+      (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
+    } catch {
+      // ignore in environments where pointer capture isn't permitted
+    }
     isDraggingRef.current = true;
     dragStartXRef.current = e.clientX;
     dragStartYRef.current = e.clientY;
@@ -1095,7 +1118,14 @@ export default function KinetixCylinder16({
     targetRingAngle.set(dragStartAngleRef.current - dx * sensitivity);
   };
 
-  const handlePointerUp = () => {
+  const handlePointerUp = (e: React.PointerEvent) => {
+    try {
+      if ((e.currentTarget as HTMLElement).hasPointerCapture?.(e.pointerId)) {
+        (e.currentTarget as HTMLElement).releasePointerCapture?.(e.pointerId);
+      }
+    } catch {
+      // ignore
+    }
     isDraggingRef.current = false;
   };
 
@@ -1145,7 +1175,9 @@ export default function KinetixCylinder16({
         <div
           style={{
             transformStyle: "preserve-3d",
+            WebkitTransformStyle: "preserve-3d",
             transform: "rotateZ(var(--ring-roll)) rotateX(var(--ring-tilt))",
+            WebkitTransform: "rotateZ(var(--ring-roll)) rotateX(var(--ring-tilt))",
           }}
           className="relative w-0 h-0 flex items-center justify-center will-change-transform"
         >
@@ -1186,7 +1218,10 @@ export default function KinetixCylinder16({
                   marginLeft: "-135px",
                   marginTop: "-240px",
                   transformStyle: "preserve-3d",
+                  WebkitTransformStyle: "preserve-3d",
                   backfaceVisibility: "hidden",
+                  WebkitBackfaceVisibility: "hidden",
+                  touchAction: "pan-y",
                 }}
                 className={`group absolute left-0 top-0 rounded-2xl overflow-hidden bg-black border transition-shadow duration-300 focus:outline-none focus:ring-2 focus:ring-[#F8F3F0] pointer-events-auto ${
                   isSlotHovered
@@ -1343,7 +1378,7 @@ export default function KinetixCylinder16({
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-md bg-[#014BAA] border-2 border-[#F8F3F0] rounded-3xl overflow-hidden shadow-[0_28px_80px_rgba(1,75,170,0.95)] text-[#F8F3F0]"
+            className="relative w-full max-w-sm sm:max-w-md max-h-[88dvh] overflow-hidden flex flex-col bg-[#014BAA] border-2 border-[#F8F3F0] rounded-2xl sm:rounded-3xl shadow-[0_28px_80px_rgba(1,75,170,0.95)] text-[#F8F3F0]"
           >
             <div className="relative aspect-[9/12] w-full bg-black">
               <div

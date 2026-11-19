@@ -16,7 +16,7 @@ export default function AIConnectXKilnFooter() {
   };
 
   return (
-    <div className="relative z-20 w-full overflow-hidden border-t border-white/10 max-h-[50vh] sm:max-h-[48vh] flex flex-col justify-end">
+    <div className="relative z-20 w-full overflow-hidden border-t border-white/10 flex flex-col justify-end">
       <KilnWordmarkFooter
         brand="AI ConnectX"
         wordmark="Ai connectX"

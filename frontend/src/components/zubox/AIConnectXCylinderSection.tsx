@@ -48,7 +48,7 @@ export default function AIConnectXCylinderSection() {
     >
       <span id="cylinder" className="sr-only" />
       {/* ─── Cylinder Stage: scrolls in joined with the Hero canvas lift ─── */}
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+      <div className="sticky top-0 h-screen h-[100dvh] w-full flex items-center justify-center overflow-hidden">
         <div
           ref={stageRef}
           style={{ opacity: 0 }}

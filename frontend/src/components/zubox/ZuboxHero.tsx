@@ -29,7 +29,7 @@ export default function AIConnectXHero() {
       className="relative min-h-[220vh] w-full select-none z-10"
     >
       {/* Sticky Viewport Stage - Perfectly locks and pauses at top-0 */}
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-between pt-24 sm:pt-28 pb-12 px-6 sm:px-10 lg:px-12 text-left pointer-events-none">
+      <div className="sticky top-0 h-screen h-[100dvh] w-full flex flex-col justify-between pt-20 sm:pt-28 pb-10 sm:pb-12 px-5 sm:px-10 lg:px-12 text-left pointer-events-none">
         {/* ─── Hero Left Content Cluster (Clean, fully left-aligned with zero background box) ─── */}
         <motion.div
           style={{ opacity: contentOpacity, scale: contentScale, y: contentY }}

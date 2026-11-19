@@ -213,7 +213,7 @@ export default function TextRevealScroll() {
       className="relative min-h-[360vh] w-full select-none z-10 font-['Outfit',sans-serif]"
     >
       {/* Sticky Viewport Stage - Locks at top-0 across the line transitions */}
-      <div className="sticky top-0 h-screen w-full flex flex-col justify-center px-6 sm:px-10 lg:px-16 text-left pointer-events-none">
+      <div className="sticky top-0 h-screen h-[100dvh] w-full flex flex-col justify-center px-5 sm:px-10 lg:px-16 text-left pointer-events-none">
         {/* Ambient subtle vignette aura for text legibility without blurring the background */}
         <div
           className="absolute -inset-x-12 inset-y-12 -z-10 pointer-events-none rounded-3xl"

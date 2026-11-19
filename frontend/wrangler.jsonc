@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ai-connectx",
+  "pages_build_output_dir": "dist",
   "compatibility_date": "2026-11-18",
   "observability": {
     "enabled": true
@@ -10,3 +11,4 @@
     "not_found_handling": "single-page-application"
   }
 }
+

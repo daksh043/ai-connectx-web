@@ -322,6 +322,8 @@ html {
   overscroll-behavior-x: none;
   touch-action: pan-y;
   scrollbar-gutter: stable;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -335,6 +337,10 @@ body {
   background: linear-gradient(135deg, #f8fbff 0%, #edf5ff 52%, #f2f8ff 100%);
   color: #0f172a;
   min-height: 100vh;
+  min-height: 100dvh;
+  -moz-osx-font-smoothing: grayscale;
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
   -webkit-font-smoothing: antialiased;
 }
 
