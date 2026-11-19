@@ -309,64 +309,63 @@ export function runReelPoseUnitTests(): UnitTestResult[] {
 // 2. CURATED 48-REEL LIBRARY (Recycled across 16 DOM slots)
 // ============================================================================
 
-export const BASE_VIDEO_SOURCES = [
-  "https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-light-dancing-40033-large.mp4",
-  "https://assets.mixkit.co/videos/preview/mixkit-fashion-model-with-a-cold-and-serious-look-41793-large.mp4",
-  "https://assets.mixkit.co/videos/preview/mixkit-woman-running-above-the-camera-on-a-running-track-32807-large.mp4",
-  "https://assets.mixkit.co/videos/preview/mixkit-skater-doing-tricks-in-a-skatepark-41762-large.mp4",
-  "https://assets.mixkit.co/videos/preview/mixkit-dj-playing-music-at-a-nightclub-43442-large.mp4",
-  "https://assets.mixkit.co/videos/preview/mixkit-futuristic-city-traffic-at-night-34565-large.mp4",
-  "https://assets.mixkit.co/videos/preview/mixkit-abstract-video-of-a-man-with-heads-like-statues-32646-large.mp4",
-  "https://assets.mixkit.co/videos/preview/mixkit-waves-coming-to-the-beach-5016-large.mp4",
-];
+export const BASE_VIDEO_SOURCES: string[] = [];
 
 export const BASE_COVERS = [
-  "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=540&q=80",
-  "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=540&q=80",
-  "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=540&q=80",
-  "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=540&q=80",
-  "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=540&q=80",
-  "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=540&q=80",
-  "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=540&q=80",
-  "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=540&q=80",
-  "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=540&q=80",
-  "https://images.unsplash.com/photo-1604871000636-074fa5117945?auto=format&fit=crop&w=540&q=80",
-  "https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=540&q=80",
-  "https://images.unsplash.com/photo-1557672172-298e090bd0f1?auto=format&fit=crop&w=540&q=80",
-  "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=540&q=80",
-  "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=540&q=80",
-  "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=540&q=80",
-  "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=540&q=80",
+  "/team/passport_01.jpg",
+  "/team/passport_02.jpg",
+  "/team/passport_03.jpg",
+  "/team/passport_04.jpg",
+  "/team/passport_05.jpg",
+  "/team/passport_06.jpg",
+  "/team/passport_07.jpg",
+  "/team/passport_08.jpg",
+  "/team/passport_09.jpg",
+  "/team/passport_10.jpg",
+  "/team/passport_11.jpg",
+  "/team/passport_12.jpg",
+  "/team/passport_13.jpg",
+  "/team/passport_14.jpg",
+  "/team/passport_15.jpg",
+  "/team/passport_16.jpg",
 ];
 
 export const REEL_TITLES = [
-  "CHROMATIC PULSE",
-  "NEON DRIFT // 02",
-  "KINETIC ARCHIVE",
-  "SOLAR FLARE 99",
-  "HYPERION ECHO",
-  "VELVET GRAVITY",
-  "MONOLITH ZERO",
-  "CYBERNETIC BLOOM",
-  "AETHER VORTEX",
-  "SUBSONIC WAVE",
-  "OBSIDIAN MIRAGE",
-  "PRISM HORIZON",
-  "QUANTUM SILK",
-  "LUCID SPECTRUM",
-  "PARALLAX NOIR",
-  "ORBITAL SYNTH",
+  "FOUNDER & PRESIDENT",
+  "LEAD AI ARCHITECT",
+  "HEAD OF NEURAL RESEARCH",
+  "AUTONOMOUS AGENTS LEAD",
+  "COMPUTER VISION SPECIALIST",
+  "LLM ORCHESTRATION LEAD",
+  "ROBOTICS & PERCEPTION",
+  "FULL-STACK ML ENGINEER",
+  "DEEP LEARNING SPECIALIST",
+  "NLP & REASONING ARCHITECT",
+  "PRODUCT & ECOSYSTEM LEAD",
+  "EDGE AI & HARDWARE",
+  "DATA PLATFORM ARCHITECT",
+  "QUANTUM & TENSOR AI",
+  "APPLIED AI RESEARCHER",
+  "PERCEPTION & SLAM LEAD",
 ];
 
 export const REEL_DIRECTORS = [
-  "Studio Kinetix",
-  "Sora Takahashi",
+  "Aarav Sharma",
+  "Daksh Singh",
+  "Rhea Kapoor",
+  "Pranav Nair",
   "Elena Rostova",
+  "Yusuf Khan",
+  "Sora Takahashi",
   "Marcus Vance",
-  "Atelier Noir",
-  "Kuroda Lab",
-  "Vesper Collective",
+  "Ananya Iyer",
+  "David Chen",
+  "Sarah Jenkins",
+  "Vikram Malhotra",
   "Nadia Lindqvist",
+  "Arjun Mehta",
+  "Chloe Dubois",
+  "Aditya Verma",
 ];
 
 export const ACCENT_PALETTES = [
@@ -396,15 +395,13 @@ export const REEL_LIBRARY: ReelItem[] = Array.from(
     return {
       id: `reel-${i + 1}`,
       index: i,
-      code: `RL—${String(i + 1).padStart(2, "0")}`,
-      title: `${REEL_TITLES[i % REEL_TITLES.length]}${
-        i >= 16 ? ` Vol.${Math.floor(i / 16) + 1}` : ""
-      }`,
+      code: `AI—${String(i + 1).padStart(2, "0")}`,
+      title: REEL_TITLES[i % REEL_TITLES.length],
       director: REEL_DIRECTORS[i % REEL_DIRECTORS.length],
       duration: `00:${String(14 + ((i * 7) % 45)).padStart(2, "0")}`,
       fps: i % 2 === 0 ? "60 FPS" : "120 FPS",
       coverUrl: BASE_COVERS[i % BASE_COVERS.length],
-      videoUrl: BASE_VIDEO_SOURCES[i % BASE_VIDEO_SOURCES.length],
+      videoUrl: BASE_VIDEO_SOURCES[i % BASE_VIDEO_SOURCES.length] || "",
       accentA: palette[0],
       accentB: palette[1],
       href: `#reel-${i + 1}`,
@@ -514,8 +511,8 @@ export default function KinetixCylinder16({
   });
 
   // Real Asset Preloading State
-  const TOTAL_REAL_ASSETS = 24;
-  const [loadedAssetCount, setLoadedAssetCount] = useState(isInstantReady ? 24 : 0);
+  const TOTAL_REAL_ASSETS = 16;
+  const [loadedAssetCount, setLoadedAssetCount] = useState(isInstantReady ? 16 : 0);
   const [assetsReady, setAssetsReady] = useState(isInstantReady);
   const [formationDone, setFormationDone] = useState(isInstantReady);
   const [entrancePhase, setEntrancePhase] = useState<
@@ -675,23 +672,25 @@ export default function KinetixCylinder16({
       img.src = url;
     });
 
-    BASE_VIDEO_SOURCES.slice(0, 8).forEach((url) => {
-      const vid = document.createElement("video");
-      vid.preload = "metadata";
-      vid.muted = true;
-      vid.playsInline = true;
-      let done = false;
-      const finish = () => {
-        if (done) return;
-        done = true;
-        recordAssetLoad();
-      };
-      vid.onloadeddata = finish;
-      vid.onloadedmetadata = finish;
-      vid.onerror = finish;
-      setTimeout(finish, 2100);
-      vid.src = url;
-    });
+    if (BASE_VIDEO_SOURCES.length > 0) {
+      BASE_VIDEO_SOURCES.slice(0, 8).forEach((url) => {
+        const vid = document.createElement("video");
+        vid.preload = "metadata";
+        vid.muted = true;
+        vid.playsInline = true;
+        let done = false;
+        const finish = () => {
+          if (done) return;
+          done = true;
+          recordAssetLoad();
+        };
+        vid.onloadeddata = finish;
+        vid.onloadedmetadata = finish;
+        vid.onerror = finish;
+        setTimeout(finish, 2100);
+        vid.src = url;
+      });
+    }
 
     return () => {
       isCancelled = true;
@@ -1201,31 +1200,33 @@ export default function KinetixCylinder16({
                 >
                   <img
                     src={reel.coverUrl}
-                    alt=""
+                    alt={reel.director}
                     loading="eager"
                     draggable={false}
                     className="absolute inset-0 w-full h-full object-cover object-center select-none"
                   />
-                  <video
-                    ref={(el) => {
-                      videoDomRefs.current[slot] = el;
-                    }}
-                    src={reel.videoUrl}
-                    poster={reel.coverUrl}
-                    muted={muted}
-                    loop
-                    playsInline
-                    preload="metadata"
-                    className="absolute inset-0 w-full h-full object-cover object-center"
-                  />
+                  {reel.videoUrl ? (
+                    <video
+                      ref={(el) => {
+                        videoDomRefs.current[slot] = el;
+                      }}
+                      src={reel.videoUrl}
+                      poster={reel.coverUrl}
+                      muted={muted}
+                      loop
+                      playsInline
+                      preload="metadata"
+                      className="absolute inset-0 w-full h-full object-cover object-center"
+                    />
+                  ) : null}
                 </div>
 
-                <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/70 via-black/25 to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
 
                 <div className="absolute bottom-4 left-4 right-4 flex flex-col gap-1 pointer-events-none">
                   <div className="flex items-center justify-between text-[10px] font-mono text-[#F8F3F0]/75">
                     <span>{reel.director}</span>
-                    <span>{reel.duration}</span>
+                    <span>{reel.code}</span>
                   </div>
                   <div className="flex items-center justify-between gap-2">
                     <h3 className="text-sm font-semibold tracking-tight text-[#F8F3F0] truncate">
@@ -1258,13 +1259,13 @@ export default function KinetixCylinder16({
           <div className="flex items-center gap-2.5">
             <span className="w-2 h-2 rounded-full bg-[#014BAA] animate-ping" />
             <ScrambledCaption
-              text="Loading Reels"
+              text="Loading Team"
               progress={loaderPercent / 100}
             />
           </div>
           <p className="text-xs font-mono text-[#014BAA]/80 max-w-xs">
-            Real asset buffer: {loadedAssetCount}/{TOTAL_REAL_ASSETS} streams
-            verified · Dealing 16 cards around 360° ring
+            Team roster: {loadedAssetCount}/{TOTAL_REAL_ASSETS} profiles
+            verified · Positioning 16 team cards around 360° ring
           </p>
           <div className="flex items-center gap-2 pt-1">
             <button
@@ -1349,14 +1350,22 @@ export default function KinetixCylinder16({
                 className="absolute inset-0"
                 style={{ filter: "none", mixBlendMode: "normal" }}
               >
-                <video
-                  src={activeReelModal.videoUrl}
-                  poster={activeReelModal.coverUrl}
-                  autoPlay
-                  controls
-                  playsInline
-                  className="w-full h-full object-cover"
-                />
+                {activeReelModal.videoUrl ? (
+                  <video
+                    src={activeReelModal.videoUrl}
+                    poster={activeReelModal.coverUrl}
+                    autoPlay
+                    controls
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <img
+                    src={activeReelModal.coverUrl}
+                    alt={activeReelModal.director}
+                    className="w-full h-full object-cover object-center"
+                  />
+                )}
               </div>
               <button
                 type="button"
