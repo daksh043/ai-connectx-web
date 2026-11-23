@@ -37,22 +37,14 @@ function FacebookIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-function InstagramIcon({ className = "w-4 h-4" }: { className?: string }) {
+function GmailIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
-      <defs>
-        <radialGradient id="instagram-gradient-contact" cx="30%" cy="107%" r="150%">
-          <stop offset="0%" stopColor="#fdf497" />
-          <stop offset="5%" stopColor="#fdf497" />
-          <stop offset="45%" stopColor="#fd5949" />
-          <stop offset="60%" stopColor="#d6249f" />
-          <stop offset="90%" stopColor="#285AEB" />
-        </radialGradient>
-      </defs>
-      <rect width="24" height="24" rx="6.5" fill="url(#instagram-gradient-contact)" />
-      <rect x="4.5" y="4.5" width="15" height="15" rx="4" stroke="#ffffff" strokeWidth="1.75" />
-      <circle cx="12" cy="12" r="3.5" stroke="#ffffff" strokeWidth="1.75" />
-      <circle cx="16.5" cy="7.5" r="1" fill="#ffffff" />
+      <path fill="#4285F4" d="M2 7v10a2 2 0 0 0 2 2h3v-8.5L2 7z" />
+      <path fill="#34A853" d="M22 7v10a2 2 0 0 1-2 2h-3v-8.5L22 7z" />
+      <path fill="#FBBC04" d="M2 7l5 3.5V5H4a2 2 0 0 0-2 2z" />
+      <path fill="#C5221F" d="M22 7l-5 3.5V5h3a2 2 0 0 1 2 2z" />
+      <path fill="#EA4335" d="M7 5v5.5l5 3.75 5-3.75V5l-5 3.75L7 5z" />
     </svg>
   );
 }
@@ -371,13 +363,11 @@ export default function AIConnectXContactSection() {
                       <FacebookIcon className="w-4 h-4 transition-transform duration-300 group-hover:scale-105" />
                     </a>
                     <a
-                      href="https://instagram.com/aiconnectx.official"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Instagram profile"
-                      className="group p-2.5 rounded-full bg-white/[0.06] hover:bg-[#E1306C]/20 border border-white/20 hover:border-[#E1306C]/70 backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-[0_2px_10px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(225,48,108,0.5)] cursor-pointer"
+                      href="mailto:aiconnectx@universalai.in?subject=AI%20ConnectX%20Inquiry"
+                      aria-label="Send direct email via Gmail"
+                      className="group p-2.5 rounded-full bg-white/[0.06] hover:bg-[#EA4335]/20 border border-white/20 hover:border-[#EA4335]/70 backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-[0_2px_10px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(234,67,53,0.5)] cursor-pointer"
                     >
-                      <InstagramIcon className="w-4 h-4 transition-transform duration-300 group-hover:scale-105" />
+                      <GmailIcon className="w-4 h-4 transition-transform duration-300 group-hover:scale-105" />
                     </a>
                     <a
                       href="https://wa.me/917556789000"

@@ -15,6 +15,58 @@ import ScrollCanvasBackground from "../components/zubox/ScrollCanvasBackground";
 import AIConnectXNavbar from "../components/zubox/ZuboxNavbar";
 import AIConnectXFooter from "../components/zubox/AIConnectXFooter";
 
+// Official Brand Logos in their Original Authentic Colors
+function LinkedInIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
+      <rect width="24" height="24" rx="4.5" fill="#0A66C2" />
+      <path
+        fill="#ffffff"
+        d="M5.5 8.7h2.8v8.6H5.5V8.7zm1.4-4.4c.9 0 1.6.7 1.6 1.6 0 .9-.7 1.6-1.6 1.6-.9 0-1.6-.7-1.6-1.6 0-.9.7-1.6 1.6-1.6zM10.2 8.7h2.7v1.2h.04c.38-.72 1.3-1.48 2.68-1.48 2.87 0 3.4 1.89 3.4 4.35v4.53h-2.8v-4c0-.96-.02-2.2-1.34-2.2-1.34 0-1.55 1.05-1.55 2.13v4.07h-2.8V8.7z"
+      />
+    </svg>
+  );
+}
+
+function FacebookIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="12" fill="#1877F2" />
+      <path
+        fill="#ffffff"
+        d="M16.671 15.469l.532-3.47h-3.328v-2.25c0-.949.465-1.874 1.956-1.874h1.737V4.922s-1.374-.235-2.686-.235c-2.741 0-4.533 1.662-4.533 4.669v2.012H7.078v3.47h3.271v8.385a12.083 12.083 0 0 0 3.651 0v-8.385h2.671z"
+      />
+    </svg>
+  );
+}
+
+function GmailIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
+      <path fill="#4285F4" d="M2 7v10a2 2 0 0 0 2 2h3v-8.5L2 7z" />
+      <path fill="#34A853" d="M22 7v10a2 2 0 0 1-2 2h-3v-8.5L22 7z" />
+      <path fill="#FBBC04" d="M2 7l5 3.5V5H4a2 2 0 0 0-2 2z" />
+      <path fill="#C5221F" d="M22 7l-5 3.5V5h3a2 2 0 0 1 2 2z" />
+      <path fill="#EA4335" d="M7 5v5.5l5 3.75 5-3.75V5l-5 3.75L7 5z" />
+    </svg>
+  );
+}
+
+function WhatsAppIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
+      <path
+        fill="#25D366"
+        d="M20.52 3.48A11.93 11.93 0 0 0 12.06 0C5.46 0 .09 5.37.09 11.97c0 2.11.55 4.17 1.6 5.99L0 24l6.19-1.62a11.93 11.93 0 0 0 5.87 1.53h.01c6.6 0 11.97-5.37 11.97-11.97 0-3.2-1.25-6.21-3.52-8.46z"
+      />
+      <path
+        fill="#ffffff"
+        d="M17.47 14.38c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.95 1.18-.18.2-.35.23-.65.08-.3-.15-1.27-.47-2.42-1.5-.9-.8-1.5-1.78-1.68-2.08-.18-.3-.02-.46.13-.61.14-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.03-.53-.07-.15-.67-1.63-.92-2.23-.25-.6-.5-.5-.68-.52-.18 0-.38-.01-.58-.01-.2 0-.53.08-.8.38-.28.3-1.06 1.03-1.06 2.5 0 1.49 1.08 2.92 1.23 3.12.15.2 2.13 3.24 5.15 4.54.72.31 1.28.5 1.72.64.72.23 1.38.2 1.9.12.58-.09 1.78-.73 2.03-1.43.25-.7.25-1.3.18-1.43-.08-.13-.28-.2-.58-.35z"
+      />
+    </svg>
+  );
+}
+
 export default function ContactUsPage() {
   // Form State
   const [formData, setFormData] = useState({
@@ -286,6 +338,44 @@ export default function ContactUsPage() {
                       )}
                     </AnimatePresence>
                   </form>
+
+                  {/* Social Icon Row - Individual Frosted Glass Pills in Original Brand Colors */}
+                  <div className="mt-6 pt-5 border-t border-white/15 flex items-center justify-center gap-4">
+                    <a
+                      href="https://www.linkedin.com/company/ai-connectx-ai/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn company page"
+                      className="group p-2.5 rounded-full bg-white/[0.06] hover:bg-[#0A66C2]/20 border border-white/20 hover:border-[#0A66C2]/70 backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-[0_2px_10px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(10,102,194,0.5)] cursor-pointer"
+                    >
+                      <LinkedInIcon className="w-4 h-4 transition-transform duration-300 group-hover:scale-105" />
+                    </a>
+                    <a
+                      href="https://facebook.com/aiconnectx"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Facebook community page"
+                      className="group p-2.5 rounded-full bg-white/[0.06] hover:bg-[#1877F2]/20 border border-white/20 hover:border-[#1877F2]/70 backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-[0_2px_10px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(24,119,242,0.5)] cursor-pointer"
+                    >
+                      <FacebookIcon className="w-4 h-4 transition-transform duration-300 group-hover:scale-105" />
+                    </a>
+                    <a
+                      href="mailto:aiconnectx@universalai.in?subject=AI%20ConnectX%20Inquiry"
+                      aria-label="Send direct email via Gmail"
+                      className="group p-2.5 rounded-full bg-white/[0.06] hover:bg-[#EA4335]/20 border border-white/20 hover:border-[#EA4335]/70 backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-[0_2px_10px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(234,67,53,0.5)] cursor-pointer"
+                    >
+                      <GmailIcon className="w-4 h-4 transition-transform duration-300 group-hover:scale-105" />
+                    </a>
+                    <a
+                      href="https://wa.me/917556789000"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="WhatsApp direct transmission"
+                      className="group p-2.5 rounded-full bg-white/[0.06] hover:bg-[#25D366]/20 border border-white/20 hover:border-[#25D366]/70 backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-[0_2px_10px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(37,211,102,0.5)] cursor-pointer"
+                    >
+                      <WhatsAppIcon className="w-4 h-4 transition-transform duration-300 group-hover:scale-105" />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
