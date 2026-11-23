@@ -213,22 +213,6 @@ export default function AIConnectX3DGallery() {
         "Seed grant opportunities with university incubator",
       ],
     },
-    {
-      id: 7,
-      tag: "RESEARCH SEMINAR",
-      title: "GENESIS ’24 LLMS",
-      subtitle: "REASONING AGENTS WORKSHOP",
-      description:
-        "Intensive whiteboard workshop breaking down frontier reasoning architectures, tool-calling loops, test-time compute, and quantization on commodity hardware.",
-      image: "/gallery/workshop.jpg",
-      date: "May 10, 2024",
-      location: "Advanced AI Seminar Hall 402",
-      highlights: [
-        "Hands-on LoRA adapter training & 4-bit quantization",
-        "Agentic tool-use loops with structured JSON schemas",
-        "Vector database RAG retrieval optimization",
-      ],
-    },
   ];
 
   const total = events.length;

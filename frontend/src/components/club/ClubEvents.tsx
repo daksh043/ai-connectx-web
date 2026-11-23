@@ -41,21 +41,6 @@ export default function ClubEvents({ onRegister }: ClubEventsProps) {
       type: "FLAGSHIP CONCLAVE",
     },
     {
-      id: "genesis-24",
-      title: "Genesis ’24",
-      badgeTags: ["NLP", "LLMs", "Workshop"],
-      date: "March 15-16, 2024",
-      location: "Virtual & Hybrid Lab Room 402",
-      description:
-        "Deep-dive technical workshop and buildathon focused on modern Natural Language Processing, fine-tuning Llama/Mistral, and architecting autonomous multi-agent tool loops.",
-      details: [
-        "Hands-on quantization, LoRA adapter training, and vLLM deployment",
-        "RAG architecture with vector databases (Qdrant & Chroma)",
-        "Automated agentic reasoning benchmark competitions",
-      ],
-      type: "DEEP-DIVE WORKSHOP",
-    },
-    {
       id: "aiconic-20",
       title: "AIConic 2.0",
       badgeTags: ["MLOps", "Deep Learning", "Hackathon"],
