@@ -327,11 +327,11 @@ export function runReelPoseUnitTests(): UnitTestResult[] {
 export const BASE_VIDEO_SOURCES: string[] = [];
 
 export const BASE_COVERS = [
+  "/team/pranav.jpg",
   "/team/surya.jpg",
   "/team/atharva.jpg",
   "/team/ratnadeep.jpg",
   "/team/mahi.jpg",
-  "/team/passport_05.jpg",
   "/team/passport_06.jpg",
   "/team/passport_07.jpg",
   "/team/passport_08.jpg",
@@ -346,11 +346,11 @@ export const BASE_COVERS = [
 ];
 
 export const REEL_TITLES = [
+  "PATRON",
   "PRESIDENT",
   "VICE PRESIDENT",
   "GENERAL SECRETARY",
   "STUDENT ADVISORY - INDUSTRY EVENTS LEAD",
-  "COMPUTER VISION SPECIALIST",
   "LLM ORCHESTRATION LEAD",
   "ROBOTICS & PERCEPTION",
   "FULL-STACK ML ENGINEER",
@@ -365,11 +365,11 @@ export const REEL_TITLES = [
 ];
 
 export const REEL_DIRECTORS = [
+  "Mr. Pranav More",
   "Surya Gupta",
   "Atharva Sarde",
   "Ratnadeep Patil",
   "Mahi Jain",
-  "Elena Rostova",
   "Yusuf Khan",
   "Sora Takahashi",
   "Marcus Vance",

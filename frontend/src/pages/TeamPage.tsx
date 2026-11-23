@@ -332,13 +332,37 @@ export default function TeamPage() {
             </div>
           </div>
 
-          {/* Individual Cards Grid with spaces in between */}
+          {/* Organization Patron - Centered Spotlight */}
+          <div className="flex flex-col items-center justify-center mb-12">
+            <div className="text-center mb-4">
+              <span className="text-[11px] font-mono tracking-[0.25em] text-cyan-400 font-bold uppercase block">
+                ORGANIZATION PATRON // EXECUTIVE GUIDANCE
+              </span>
+            </div>
+            <div className="w-full max-w-[320px] sm:max-w-[350px]">
+              {featuredTeam.filter((m) => m.id === "pranav").map((member) => (
+                <HolographicTeamCard
+                  key={member.id}
+                  member={member}
+                  index={0}
+                  onSelect={setSelectedMember}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Core Leadership & Executive Council */}
+          <div className="text-center mb-5">
+            <span className="text-[11px] font-mono tracking-[0.25em] text-white/60 font-semibold uppercase block">
+              EXECUTIVE COUNCIL // STUDENT LEADERSHIP
+            </span>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
-            {featuredTeam.map((member, index) => (
+            {featuredTeam.filter((m) => m.id !== "pranav").map((member, index) => (
               <HolographicTeamCard
                 key={member.id}
                 member={member}
-                index={index}
+                index={index + 1}
                 onSelect={setSelectedMember}
               />
             ))}
