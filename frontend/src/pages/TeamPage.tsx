@@ -68,6 +68,22 @@ export default function TeamPage() {
       badge: "GENERAL SECRETARY",
     },
     {
+      id: "mahi",
+      name: "MAHI JAIN",
+      role: "STUDENT ADVISORY - INDUSTRY EVENTS LEAD",
+      title: "Student Advisory & Events Lead",
+      dept: "Universal AI University",
+      image: "/team/mahi.jpg",
+      bio: "Student Advisory - Industry Events Lead at AI CONNECTX, Universal AI University. Spearheading industry networking summits, corporate sponsor relations, student advisory initiatives, and flagship event execution.",
+      contributions: [
+        "Spearheaded student advisory forums and industry event planning",
+        "Coordinated corporate partner engagements and speaker logistics for masterclasses",
+        "Drove student participation and industry networking initiatives",
+      ],
+      skills: ["Event Direction", "Student Advisory", "Corporate Relations", "Strategic Networking"],
+      badge: "STUDENT ADVISORY",
+    },
+    {
       id: "daksh",
       name: "DAKSH RAJESH KHANDAGALE",
       role: "FOUNDER & LEAD ARCHITECT",
