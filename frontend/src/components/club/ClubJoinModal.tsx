@@ -92,7 +92,7 @@ export default function ClubJoinModal({ isOpen, onClose, defaultEvent }: ClubJoi
                 <input
                   type="email"
                   required
-                  placeholder="name@vitbhopal.ac.in"
+                  placeholder="name@universalai.in"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-xl border border-zinc-700 bg-black/40 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#CEFD46]"

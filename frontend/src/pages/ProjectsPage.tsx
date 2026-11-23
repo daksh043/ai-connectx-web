@@ -410,7 +410,7 @@ export default function ProjectsPage() {
                 <ExternalLink className="w-4 h-4 text-slate-950 stroke-[2]" />
               </a>
               <a
-                href="mailto:connect@aiconnectx.club"
+                href="mailto:aiconnectx@universalai.in"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all"
               >
                 <span>Email Lab Lead</span>

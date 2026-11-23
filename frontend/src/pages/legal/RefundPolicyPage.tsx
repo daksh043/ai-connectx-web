@@ -75,8 +75,8 @@ export default function RefundPolicyPage() {
             </p>
             <div className="inline-flex items-center gap-2 text-cyan-300 font-mono text-sm bg-black/40 border border-white/10 px-4 py-2 rounded-xl">
               <Mail className="w-4 h-4" />
-              <a href="mailto:refunds@aiconnectx.club" className="hover:underline">
-                refunds@aiconnectx.club
+              <a href="mailto:aiconnectx@universalai.in" className="hover:underline">
+                aiconnectx@universalai.in
               </a>
             </div>
           </section>

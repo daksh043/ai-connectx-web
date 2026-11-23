@@ -199,11 +199,11 @@ export default function AIConnectXContactSection() {
                 <span>•</span>
                 <button
                   type="button"
-                  onClick={() => handleCopy("connect@aiconnectx.club", "email")}
+                  onClick={() => handleCopy("aiconnectx@universalai.in", "email")}
                   className="flex items-center gap-1.5 hover:text-cyan-300 transition-colors cursor-pointer px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/10 backdrop-blur-sm"
                 >
                   <Mail className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>connect@aiconnectx.club</span>
+                  <span>aiconnectx@universalai.in</span>
                   {copiedKey === "email" && <Check className="w-3 h-3 text-cyan-400" />}
                 </button>
               </div>
@@ -275,7 +275,7 @@ export default function AIConnectXContactSection() {
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="connect@aiconnectx.club"
+                        placeholder="aiconnectx@universalai.in"
                         className="w-full px-5 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.12] focus:bg-white/[0.16] backdrop-blur-xl border border-white/25 text-sm text-white placeholder-slate-300/60 outline-none transition-all duration-300 focus:border-cyan-300 focus:shadow-[0_0_24px_rgba(34,211,238,0.45),inset_0_1.5px_2px_rgba(255,255,255,0.35)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.3)]"
                       />
                     </div>

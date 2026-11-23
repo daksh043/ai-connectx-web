@@ -45,7 +45,7 @@ export default function AIConnectXKilnFooter() {
         socials={[
           [
             { label: "LinkedIn", href: "https://www.linkedin.com/company/ai-connectx-ai/" },
-            { label: "Email", href: "mailto:connect@aiconnectx.club" },
+            { label: "Email", href: "mailto:aiconnectx@universalai.in" },
           ],
         ]}
         legal={[

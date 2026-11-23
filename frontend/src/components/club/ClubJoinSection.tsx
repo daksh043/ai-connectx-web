@@ -130,7 +130,7 @@ export default function ClubJoinSection() {
                         isDark ? "text-white" : "text-zinc-950"
                       }`}
                     >
-                      club@aiconnectx.org
+                      aiconnectx@universalai.in
                     </div>
                   </div>
                 </div>

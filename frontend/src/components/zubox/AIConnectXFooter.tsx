@@ -61,10 +61,10 @@ export default function AIConnectXFooter() {
               <div className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
                 <a
-                  href="mailto:connect@aiconnectx.club"
+                  href="mailto:aiconnectx@universalai.in"
                   className="hover:text-cyan-300 hover:underline transition-colors"
                 >
-                  connect@aiconnectx.club
+                  aiconnectx@universalai.in
                 </a>
               </div>
               <div className="flex items-center gap-2">
@@ -190,7 +190,7 @@ export default function AIConnectXFooter() {
               </li>
               <li>
                 <a
-                  href="mailto:privacy@aiconnectx.club?subject=DPDP%20Data%20Deletion%20Request"
+                  href="mailto:aiconnectx@universalai.in?subject=DPDP%20Data%20Deletion%20Request"
                   className="hover:text-cyan-300 transition-colors flex items-center justify-between group text-zinc-400"
                 >
                   <span>Data Deletion Request</span>

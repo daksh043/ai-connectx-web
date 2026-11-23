@@ -1,6 +1,6 @@
 # AI ConnectX
 
-> Frontier Student Artificial Intelligence & Autonomous Systems Organization at VIT Bhopal University.
+> Frontier Student Artificial Intelligence & Autonomous Systems Organization at Universal AI University.
 
 ## Core Mission
 AI ConnectX is a student-led AI engineering community dedicated to democratizing frontier artificial intelligence, agentic architectures, neural systems, and cross-campus collaborative intelligence.
@@ -17,6 +17,6 @@ AI ConnectX is a student-led AI engineering community dedicated to democratizing
 
 ## Organization & Contact Information
 - Organization: AI ConnectX (Official Student Chapter)
-- University Campus: VIT Bhopal University, Bhopal-Indore Highway, Kothrikalan, Sehore, Madhya Pradesh 466114, India
-- Email: connect@aiconnectx.club
+- University Campus: Universal AI University, Kushivili, PO Gaurkamath, Vadap, Karjat, Maharashtra 410201, India
+- Email: aiconnectx@universalai.in
 - WhatsApp Hotline: +91 755 678 9000

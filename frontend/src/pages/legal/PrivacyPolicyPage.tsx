@@ -54,7 +54,7 @@ export default function PrivacyPolicyPage() {
               <p><strong className="text-white">Organization:</strong> AI ConnectX Student Community</p>
               <p><strong className="text-white">Institution:</strong> Universal AI University (UAI)</p>
               <p><strong className="text-white">Address:</strong> Kushivili, PO Gaurkamath, Vadap, Karjat, Maharashtra 410201, India</p>
-              <p><strong className="text-white">Official Contact:</strong> connect@aiconnectx.club</p>
+              <p><strong className="text-white">Official Contact:</strong> aiconnectx@universalai.in</p>
             </div>
           </section>
 
@@ -140,7 +140,7 @@ export default function PrivacyPolicyPage() {
                 </p>
                 <div className="pt-2">
                   <a
-                    href="mailto:privacy@aiconnectx.club?subject=DPDP%20Data%20Deletion%20Request"
+                    href="mailto:aiconnectx@universalai.in?subject=DPDP%20Data%20Deletion%20Request"
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 text-xs font-bold tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(34,211,238,0.3)]"
                   >
                     <Mail className="w-3.5 h-3.5" />
@@ -163,7 +163,7 @@ export default function PrivacyPolicyPage() {
             <div className="text-xs font-mono bg-black/40 border border-white/10 rounded-xl p-4 text-zinc-300 space-y-1">
               <p><strong className="text-white">Designation:</strong> Data Protection &amp; Grievance Redressal Officer</p>
               <p><strong className="text-white">Organization:</strong> AI ConnectX, Universal AI University</p>
-              <p><strong className="text-white">Email:</strong> grievance@aiconnectx.club / connect@aiconnectx.club</p>
+              <p><strong className="text-white">Email:</strong> aiconnectx@universalai.in</p>
               <p><strong className="text-white">Address:</strong> Student Welfare &amp; Innovation Cell, Universal AI University, Karjat, Maharashtra 410201, India</p>
               <p><strong className="text-white">Resolution Timeline:</strong> Within 7 business days from receipt of grievance.</p>
             </div>
