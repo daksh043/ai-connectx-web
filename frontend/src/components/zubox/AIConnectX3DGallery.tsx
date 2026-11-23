@@ -183,22 +183,6 @@ export default function AIConnectX3DGallery() {
     },
     {
       id: 5,
-      tag: "ROBOTICS & EMBEDDED AI",
-      title: "ROVER PERCEPTION",
-      subtitle: "EDGE SENSING BENCHMARKS",
-      description:
-        "Live obstacle avoidance, 3D LiDAR point-cloud SLAM, and TensorRT edge inference testing on custom-built multi-sensor autonomous rovers.",
-      image: "/gallery/robotics.jpg",
-      date: "April 20, 2024",
-      location: "Robotics Perception & Edge Testing Track",
-      highlights: [
-        "LiDAR SLAM and multi-camera stereo tracking",
-        "Sub-15ms edge inference with Jetson Orin & TensorRT",
-        "Published real-time indoor obstacle avoidance dataset",
-      ],
-    },
-    {
-      id: 6,
       tag: "AWARD CEREMONY",
       title: "PODIUM CELEBRATION",
       subtitle: "₹1,00,000 GRAND PRIZE",

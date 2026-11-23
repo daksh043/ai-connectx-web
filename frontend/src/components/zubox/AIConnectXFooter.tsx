@@ -144,7 +144,7 @@ export default function AIConnectXFooter() {
                 <span className="text-zinc-300">24-Hour Code Sprint</span>
               </li>
               <li>
-                <span className="text-zinc-300">Rover Perception Lab</span>
+                <span className="text-zinc-300">SIP Evaluation 2026</span>
               </li>
               <li>
                 <span className="text-zinc-300">Industry AI Mentorship</span>
