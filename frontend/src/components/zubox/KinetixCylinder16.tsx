@@ -329,7 +329,7 @@ export const BASE_VIDEO_SOURCES: string[] = [];
 export const BASE_COVERS = [
   "/team/surya.jpg",
   "/team/atharva.jpg",
-  "/team/passport_03.jpg",
+  "/team/ratnadeep.jpg",
   "/team/passport_04.jpg",
   "/team/passport_05.jpg",
   "/team/passport_06.jpg",
@@ -348,7 +348,7 @@ export const BASE_COVERS = [
 export const REEL_TITLES = [
   "PRESIDENT",
   "VICE PRESIDENT",
-  "HEAD OF NEURAL RESEARCH",
+  "GENERAL SECRETARY",
   "AUTONOMOUS AGENTS LEAD",
   "COMPUTER VISION SPECIALIST",
   "LLM ORCHESTRATION LEAD",
@@ -367,7 +367,7 @@ export const REEL_TITLES = [
 export const REEL_DIRECTORS = [
   "Surya Gupta",
   "Atharva Sarde",
-  "Rhea Kapoor",
+  "Ratnadeep Patil",
   "Pranav Nair",
   "Elena Rostova",
   "Yusuf Khan",
