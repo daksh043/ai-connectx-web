@@ -327,7 +327,7 @@ export function runReelPoseUnitTests(): UnitTestResult[] {
 export const BASE_VIDEO_SOURCES: string[] = [];
 
 export const BASE_COVERS = [
-  "/team/passport_01.jpg",
+  "/team/surya.jpg",
   "/team/passport_02.jpg",
   "/team/passport_03.jpg",
   "/team/passport_04.jpg",
@@ -346,7 +346,7 @@ export const BASE_COVERS = [
 ];
 
 export const REEL_TITLES = [
-  "FOUNDER & PRESIDENT",
+  "PRESIDENT",
   "LEAD AI ARCHITECT",
   "HEAD OF NEURAL RESEARCH",
   "AUTONOMOUS AGENTS LEAD",
@@ -365,7 +365,7 @@ export const REEL_TITLES = [
 ];
 
 export const REEL_DIRECTORS = [
-  "Aarav Sharma",
+  "Surya Gupta",
   "Daksh Singh",
   "Rhea Kapoor",
   "Pranav Nair",

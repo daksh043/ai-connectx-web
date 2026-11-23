@@ -20,20 +20,36 @@ export default function TeamPage() {
   // Core Leadership Team Members from Official LinkedIn Roster
   const featuredTeam: TeamMember[] = [
     {
+      id: "surya",
+      name: "SURYA GUPTA",
+      role: "PRESIDENT",
+      title: "President",
+      dept: "Universal AI University",
+      image: "/team/surya.jpg",
+      bio: "President of AI CONNECTX at Universal AI University. Leading strategic vision, institutional partnerships, AI research initiatives, and student innovation across enterprise frontiers.",
+      contributions: [
+        "Executive leadership and organizational vision for AI CONNECTX",
+        "Spearheading cross-institutional AI initiatives and industry collaborations",
+        "Driving high-impact research, innovation challenges, and student development",
+      ],
+      skills: ["Strategic Leadership", "AI Strategy", "Executive Direction", "Partnerships"],
+      badge: "PRESIDENT",
+    },
+    {
       id: "daksh",
       name: "DAKSH RAJESH KHANDAGALE",
-      role: "PRESIDENT & FOUNDER",
+      role: "FOUNDER & LEAD ARCHITECT",
       title: "Lead Architect",
       dept: "Universal AI University · AI & ML",
       image: "/team/daksh.jpg",
-      bio: "President and Founder of AI CONNECTX at Universal AI University. Pioneer in autonomous agentic loops, enterprise industry pipelines, edge model orchestration, and student-to-corporate engineering bridges.",
+      bio: "Founder and Lead Architect of AI CONNECTX at Universal AI University. Pioneer in autonomous agentic loops, enterprise industry pipelines, edge model orchestration, and student-to-corporate engineering bridges.",
       contributions: [
         "Founded and architected the AI CONNECTX organization and vision",
         "Conducted industry masterclasses in Agentic AI & Frontier LLM workflows",
         "Engineered the 240-frame high-performance cinematic visualizers",
       ],
       skills: ["PyTorch", "System Architecture", "Agentic Systems", "React & TypeScript"],
-      badge: "PRESIDENT",
+      badge: "FOUNDER",
     },
     {
       id: "pranav",
