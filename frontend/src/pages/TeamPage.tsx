@@ -36,6 +36,22 @@ export default function TeamPage() {
       badge: "PRESIDENT",
     },
     {
+      id: "atharva",
+      name: "ATHARVA SARDE",
+      role: "VICE PRESIDENT",
+      title: "Vice President",
+      dept: "Universal AI University",
+      image: "/team/atharva.jpg",
+      bio: "Vice President of AI CONNECTX at Universal AI University. Orchestrating organization operations, student builder initiatives, strategic AI development programs, and inter-collegiate technical symposiums.",
+      contributions: [
+        "Executive leadership and operational administration across AI CONNECTX working groups",
+        "Co-spearheading student innovation pipelines and technical workshop series",
+        "Driving organizational expansion, member mentorship, and event execution",
+      ],
+      skills: ["Executive Strategy", "Operations Leadership", "Technical Coordination", "AI Innovation"],
+      badge: "VICE PRESIDENT",
+    },
+    {
       id: "daksh",
       name: "DAKSH RAJESH KHANDAGALE",
       role: "FOUNDER & LEAD ARCHITECT",
