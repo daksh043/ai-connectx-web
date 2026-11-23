@@ -16,9 +16,13 @@ interface GalleryEvent {
   subtitle: string;
   description: string;
   image: string;
+  fullImage?: string;
   date: string;
   location: string;
   highlights: string[];
+  panelists?: string[];
+  mentors?: string[];
+  closingNote?: string;
 }
 
 export default function AIConnectX3DGallery() {
@@ -58,6 +62,38 @@ export default function AIConnectX3DGallery() {
   const events: GalleryEvent[] = [
     {
       id: 1,
+      tag: "SIP EVALUATION 2026",
+      title: "SIP EVALUATION ’26",
+      subtitle: "INDUSTRY JURY & MENTORSHIP",
+      description:
+        "🙌 Behind every successful initiative is a team that makes it happen! The successful completion of SIP Evaluation 2026 at Universal Ai University was made possible through the dedication, coordination, and hard work of the Ai ConnectX team.\n\nFrom coordinating with industry professionals to managing evaluation sessions and ensuring smooth execution, our team worked together behind the scenes to make the process successful.",
+      image: "/gallery/sip_evaluation.jpg",
+      fullImage: "/gallery/sip_evaluation_full.jpg",
+      date: "Saturday, 26/09/2026 · 01:00 PM",
+      location: "Universal AI University Campus, Kushiwali, Maharashtra",
+      highlights: [
+        "Dedicated coordination and execution by the AI ConnectX team",
+        "Comprehensive Summer Internship Project evaluations by leading industry pioneers",
+        "Direct corporate insights, feedback loops and real-world evaluation benchmarks",
+      ],
+      panelists: [
+        "Roshan Joshi – Founder, Value Nova Ventures",
+        "Mandar Chiplunkar – Product Manager, Xplor Technologies",
+        "Vivek Yadav – Founder, Ocean AI",
+        "Varun Mishra – Vice President, Navdhan Capital",
+        "Sanket Thete – Senior Software Engineer",
+        "Abhijeet Gosavi – Team Lead",
+      ],
+      mentors: [
+        "Dr. Shivaji Pawar for his support and guidance",
+        "Mr. Akash Kadam for his valuable support",
+        "Mr. Pranav More, Patron of Ai ConnectX, for his continued guidance and encouragement",
+      ],
+      closingNote:
+        "And most importantly, a big shoutout to every member of the Ai ConnectX team who contributed their time, effort, and commitment.\n\nA shared effort, a successful SIP Evaluation, and another step towards stronger industry connections! 🚀\n\nAi ConnectX | Connecting Students • Industry • Ideas • Impact.",
+    },
+    {
+      id: 2,
       tag: "FLAGSHIP ANNUAL CONCLAVE",
       title: "AI CONCLAVE 4.0",
       subtitle: "UNIVERSAL AI AUDITORIUM",
@@ -73,7 +109,7 @@ export default function AIConnectX3DGallery() {
       ],
     },
     {
-      id: 2,
+      id: 3,
       tag: "24-HOUR BUILDATHON",
       title: "AI CODE SPRINT",
       subtitle: "MIDNIGHT HACK LAB",
@@ -89,7 +125,7 @@ export default function AIConnectX3DGallery() {
       ],
     },
     {
-      id: 3,
+      id: 4,
       tag: "ROBOTICS & EMBEDDED AI",
       title: "ROVER PERCEPTION",
       subtitle: "EDGE SENSING BENCHMARKS",
@@ -105,7 +141,7 @@ export default function AIConnectX3DGallery() {
       ],
     },
     {
-      id: 4,
+      id: 5,
       tag: "AWARD CEREMONY",
       title: "PODIUM CELEBRATION",
       subtitle: "₹1,00,000 GRAND PRIZE",
@@ -121,7 +157,7 @@ export default function AIConnectX3DGallery() {
       ],
     },
     {
-      id: 5,
+      id: 6,
       tag: "RESEARCH SEMINAR",
       title: "GENESIS ’24 LLMS",
       subtitle: "REASONING AGENTS WORKSHOP",
@@ -558,7 +594,7 @@ export default function AIConnectX3DGallery() {
           data-media-modal="true"
           className="media-modal-active fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
         >
-          <div className="relative w-full max-w-2xl rounded-3xl bg-zinc-950/95 border border-white/20 p-6 sm:p-8 shadow-[0_30px_90px_rgba(0,0,0,0.9)] text-white">
+          <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-zinc-950/95 border border-white/20 p-6 sm:p-8 shadow-[0_30px_90px_rgba(0,0,0,0.9)] text-white">
             <div className="flex items-start justify-between pb-4 border-b border-white/10 mb-6">
               <div>
                 <span className="text-xs font-mono uppercase text-emerald-400 font-semibold tracking-widest block mb-1">
@@ -582,6 +618,15 @@ export default function AIConnectX3DGallery() {
             </div>
 
             <div className="space-y-4">
+              {/* Event Image Banner */}
+              <div className="w-full max-h-64 sm:max-h-72 rounded-2xl overflow-hidden border border-white/10 mb-4 bg-black/60 shadow-inner">
+                <img
+                  src={selectedEvent.fullImage || selectedEvent.image}
+                  alt={selectedEvent.title}
+                  className="w-full h-full object-contain sm:object-cover object-center"
+                />
+              </div>
+
               <div className="flex flex-wrap items-center gap-4 text-xs text-white/70 font-mono pb-2">
                 <span className="flex items-center gap-1.5">
                   <Calendar className="w-3.5 h-3.5 text-red-400" />
@@ -594,10 +639,11 @@ export default function AIConnectX3DGallery() {
                 </span>
               </div>
 
-              <p className="text-sm text-white/85 leading-relaxed font-light">
+              <p className="text-sm text-white/85 leading-relaxed font-light whitespace-pre-line">
                 {selectedEvent.description}
               </p>
 
+              {/* Key Event Highlights */}
               <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 mt-4">
                 <span className="text-[11px] font-mono uppercase bg-gradient-to-r from-red-400 via-emerald-400 to-blue-400 bg-clip-text text-transparent tracking-wider block font-semibold">
                   KEY EVENT HIGHLIGHTS
@@ -609,6 +655,47 @@ export default function AIConnectX3DGallery() {
                   </div>
                 ))}
               </div>
+
+              {/* Industry Experts & Jury */}
+              {selectedEvent.panelists && (
+                <div className="p-4 rounded-2xl bg-cyan-950/20 border border-cyan-500/20 space-y-2.5 mt-4">
+                  <span className="text-[11px] font-mono uppercase bg-gradient-to-r from-cyan-400 to-sky-300 bg-clip-text text-transparent tracking-wider block font-semibold">
+                    INDUSTRY EXPERTS &amp; EVALUATION JURY
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                    {selectedEvent.panelists.map((p, i) => (
+                      <div key={i} className="flex items-start gap-2 text-xs text-slate-200">
+                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
+                        <span>{p}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Sincere Gratitude & Mentorship */}
+              {selectedEvent.mentors && (
+                <div className="p-4 rounded-2xl bg-amber-950/20 border border-amber-500/20 space-y-2.5 mt-4">
+                  <span className="text-[11px] font-mono uppercase bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent tracking-wider block font-semibold">
+                    SINCERE GRATITUDE &amp; GUIDANCE
+                  </span>
+                  <div className="space-y-1.5 pt-1">
+                    {selectedEvent.mentors.map((m, i) => (
+                      <div key={i} className="flex items-start gap-2 text-xs text-slate-200">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0" />
+                        <span>{m}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Closing Note */}
+              {selectedEvent.closingNote && (
+                <div className="p-4 rounded-2xl bg-blue-950/30 border border-blue-500/30 text-xs text-blue-200 font-mono leading-relaxed whitespace-pre-line mt-4">
+                  {selectedEvent.closingNote}
+                </div>
+              )}
             </div>
 
             <div className="mt-8 flex justify-end">

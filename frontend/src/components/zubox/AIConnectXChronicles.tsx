@@ -19,6 +19,16 @@ interface ChronicleItem {
 const CHRONICLE_ITEMS: ChronicleItem[] = [
   {
     id: 1,
+    title: "SIP Evaluation 2026",
+    tag: "INDUSTRY JURY",
+    aspect: "col-span-12 md:col-span-8 min-h-[300px] sm:min-h-[340px]",
+    bgGradient: "from-blue-950/45 via-[#070b14]/75 to-[#050507]",
+    accentColor: "#38bdf8",
+    caption: "Successful completion of SIP Evaluation 2026 at Universal AI University orchestrated by the AI ConnectX team with prominent industry founders & senior tech leads.",
+    icon: Award,
+  },
+  {
+    id: 2,
     title: "AI Conclave Main Stage",
     tag: "FLAGSHIP AUDITORIUM",
     aspect: "col-span-12 md:col-span-8 min-h-[300px] sm:min-h-[340px]",
@@ -28,7 +38,7 @@ const CHRONICLE_ITEMS: ChronicleItem[] = [
     icon: Users,
   },
   {
-    id: 2,
+    id: 3,
     title: "24h Hackathon Midnight Sprints",
     tag: "CODE JAM",
     aspect: "col-span-12 md:col-span-4 min-h-[300px] sm:min-h-[340px]",
@@ -38,7 +48,7 @@ const CHRONICLE_ITEMS: ChronicleItem[] = [
     icon: Code,
   },
   {
-    id: 3,
+    id: 4,
     title: "Autonomous Rover Perception Test",
     tag: "ROBOTICS LAB",
     aspect: "col-span-12 md:col-span-4 min-h-[300px] sm:min-h-[340px]",
@@ -48,7 +58,7 @@ const CHRONICLE_ITEMS: ChronicleItem[] = [
     icon: Eye,
   },
   {
-    id: 4,
+    id: 5,
     title: "Grand Prize Trophy Ceremony",
     tag: "PODIUM CELEBRATION",
     aspect: "col-span-12 md:col-span-5 min-h-[300px] sm:min-h-[340px]",
@@ -58,7 +68,7 @@ const CHRONICLE_ITEMS: ChronicleItem[] = [
     icon: Trophy,
   },
   {
-    id: 5,
+    id: 6,
     title: "ArXiv Paper Reading Circle",
     tag: "RESEARCH DISSECTION",
     aspect: "col-span-12 md:col-span-3 min-h-[300px] sm:min-h-[340px]",
