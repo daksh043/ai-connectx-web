@@ -366,11 +366,11 @@ export default function AIConnectX3DGallery() {
             const isDesktop = windowWidth >= 1280;
             const isLaptop = windowWidth >= 1024;
             const isTablet = windowWidth >= 640;
-            const stepX = isDesktop ? 320 : isLaptop ? 290 : isTablet ? 240 : 170;
+            const stepX = isDesktop ? 390 : isLaptop ? 340 : isTablet ? 270 : 180;
 
             const currentTranslateX = diff * stepX + dragOffset;
             const translateZ = isCenter ? 80 : isAbsOne ? -60 : -160;
-            const rotateY = diff * -20;
+            const rotateY = diff * -16;
             const scale = isCenter ? 1.0 : isAbsOne ? 0.88 : 0.74;
             const opacity = isCenter ? 1 : isAbsOne ? 0.7 : 0.3;
             const zIndex = 30 - Math.abs(diff) * 10;
@@ -389,7 +389,7 @@ export default function AIConnectX3DGallery() {
                     ? "opacity 0.15s ease-out, transform 0.04s ease-out"
                     : "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
-                className={`absolute w-[260px] sm:w-[330px] md:w-[370px] lg:w-[400px] h-[390px] sm:h-[490px] md:h-[550px] lg:h-[580px] rounded-[28px] cursor-pointer group ${
+                className={`absolute w-[310px] sm:w-[480px] md:w-[600px] lg:w-[720px] h-[210px] sm:h-[310px] md:h-[380px] lg:h-[440px] rounded-[24px] sm:rounded-[28px] cursor-pointer group ${
                   isCenter
                     ? "shadow-[0_20px_45px_rgba(0,0,0,0.75)]"
                     : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
@@ -518,35 +518,36 @@ export default function AIConnectX3DGallery() {
                         </span>
                       </div>
 
-                      {/* Bottom Editorial Content Overlay */}
-                      <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 flex flex-col justify-end z-10">
-                        <div className="mb-2">
-                          <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
-                            {evt.title}
-                          </h3>
-                          <p className="text-[11px] sm:text-xs font-mono font-bold tracking-wider mt-1 uppercase bg-gradient-to-r from-red-400 via-emerald-400 to-blue-400 bg-clip-text text-transparent">
-                            // {evt.subtitle}
-                          </p>
-                        </div>
-
-                        <p className="text-xs sm:text-[13px] text-white/75 line-clamp-3 leading-relaxed font-light mb-4 drop-shadow-sm">
-                          {evt.description}
-                        </p>
-
-                        {/* Action CTA Button */}
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedEvent(evt);
-                          }}
-                          className="relative group/btn w-full p-[1px] rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-[0_0_20px_rgba(255,0,85,0.25),0_0_25px_rgba(0,255,102,0.2),0_0_30px_rgba(0,102,255,0.25)]"
-                        >
-                          <span className="absolute inset-0 bg-gradient-to-r from-red-500 via-emerald-400 to-blue-500 opacity-80 group-hover/btn:opacity-100 transition-opacity" />
-                          <div className="relative px-5 py-2.5 rounded-[11px] bg-zinc-950/90 group-hover/btn:bg-zinc-900/90 flex items-center justify-between transition-colors">
-                            <span className="text-white text-xs font-bold tracking-wider uppercase">View Event Story</span>
-                            <ArrowUpRight className="w-4 h-4 text-white/90 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                      {/* Bottom Editorial Content Overlay in Landscape Layout */}
+                      <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 flex flex-col justify-end z-10 bg-gradient-to-t from-black/95 via-black/60 to-transparent">
+                        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2.5 sm:gap-6">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-base sm:text-2xl md:text-3xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
+                              {evt.title}
+                            </h3>
+                            <p className="text-[10px] sm:text-xs font-mono font-bold tracking-wider mt-0.5 uppercase bg-gradient-to-r from-red-400 via-emerald-400 to-blue-400 bg-clip-text text-transparent">
+                              // {evt.subtitle}
+                            </p>
+                            <p className="text-[11px] sm:text-xs text-white/80 line-clamp-2 leading-relaxed font-light mt-1.5 drop-shadow-sm max-w-xl hidden sm:block">
+                              {evt.description}
+                            </p>
                           </div>
-                        </button>
+
+                          {/* Action CTA Button */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedEvent(evt);
+                            }}
+                            className="relative group/btn shrink-0 w-full sm:w-auto p-[1px] rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer shadow-[0_0_20px_rgba(255,0,85,0.25),0_0_25px_rgba(0,255,102,0.2),0_0_30px_rgba(0,102,255,0.25)]"
+                          >
+                            <span className="absolute inset-0 bg-gradient-to-r from-red-500 via-emerald-400 to-blue-500 opacity-80 group-hover/btn:opacity-100 transition-opacity" />
+                            <div className="relative px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-[11px] bg-zinc-950/90 group-hover/btn:bg-zinc-900/90 flex items-center justify-center gap-2 transition-colors">
+                              <span className="text-white text-[10px] sm:text-xs font-bold tracking-wider uppercase whitespace-nowrap">View Event Story</span>
+                              <ArrowUpRight className="w-3.5 h-3.5 text-white/90 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                            </div>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </BorderBeam>
@@ -571,21 +572,17 @@ export default function AIConnectX3DGallery() {
                     </div>
 
                     {/* Bottom Editorial Content Overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 flex flex-col justify-end z-10">
-                      <div className="mb-2">
-                        <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
+                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 flex flex-col justify-end z-10 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
+                      <div className="mb-1">
+                        <h3 className="text-base sm:text-xl md:text-2xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
                           {evt.title}
                         </h3>
-                        <p className="text-[11px] sm:text-xs font-mono font-bold text-white/60 tracking-wider mt-1 uppercase">
+                        <p className="text-[10px] sm:text-xs font-mono font-bold text-white/60 tracking-wider mt-0.5 uppercase">
                           // {evt.subtitle}
                         </p>
                       </div>
 
-                      <p className="text-xs sm:text-[13px] text-white/75 line-clamp-3 leading-relaxed font-light mb-4 drop-shadow-sm">
-                        {evt.description}
-                      </p>
-
-                      <span className="text-[10px] text-white/40 font-mono tracking-wider uppercase">
+                      <span className="text-[10px] text-white/50 font-mono tracking-wider uppercase mt-1">
                         Click to Focus
                       </span>
                     </div>
@@ -643,8 +640,8 @@ export default function AIConnectX3DGallery() {
             </div>
 
             <div className="space-y-4">
-              {/* Event Image Banner */}
-              <div className="w-full max-h-64 sm:max-h-72 rounded-2xl overflow-hidden border border-white/10 mb-4 bg-black/60 shadow-inner">
+              {/* Event Image Banner - Widescreen Landscape */}
+              <div className="w-full aspect-[16/9] sm:aspect-[16/10] max-h-80 sm:max-h-96 rounded-2xl overflow-hidden border border-white/10 mb-4 bg-black/60 shadow-inner">
                 <img
                   src={selectedEvent.fullImage || selectedEvent.image}
                   alt={selectedEvent.title}
