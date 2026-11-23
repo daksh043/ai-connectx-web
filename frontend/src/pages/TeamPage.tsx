@@ -84,6 +84,22 @@ export default function TeamPage() {
       badge: "STUDENT ADVISORY",
     },
     {
+      id: "sana",
+      name: "SANA KHAN",
+      role: "STARTUP & INDUSTRY RELATIONS TEAM LEAD",
+      title: "Startup & Industry Relations Lead",
+      dept: "Universal AI University",
+      image: "/team/sana.jpg",
+      bio: "Startup & Industry Relations Team Lead at AI CONNECTX, Universal AI University. Spearheading startup partnerships, corporate sponsor conduits, innovation accelerator links, and strategic industry relationships.",
+      contributions: [
+        "Leading startup relations and corporate incubation initiatives for student ventures",
+        "Fostering strategic industry partnerships, enterprise sponsorships, and executive interactions",
+        "Orchestrating high-value networking platforms between emerging AI founders and student innovators",
+      ],
+      skills: ["Startup Relations", "Industry Partnerships", "Corporate Sponsorships", "Strategic Networking"],
+      badge: "INDUSTRY RELATIONS",
+    },
+    {
       id: "daksh",
       name: "DAKSH RAJESH KHANDAGALE",
       role: "FOUNDER & LEAD ARCHITECT",

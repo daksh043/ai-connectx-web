@@ -129,6 +129,17 @@ export default function AIConnectXEditorialTeam() {
   const directoryMembers: TeamMember[] = [
     ...featuredTeam,
     {
+      id: "sana-khan",
+      name: "SANA KHAN",
+      role: "STARTUP & INDUSTRY RELATIONS TEAM LEAD",
+      title: "Startup & Industry Relations Lead",
+      dept: "Universal AI University",
+      image: "/team/sana.jpg",
+      bio: "Spearheading startup partnerships, corporate sponsor conduits, and innovation accelerator links at Universal AI University.",
+      contributions: ["Startup relations and corporate incubation initiatives", "Strategic industry partnerships and executive interactions"],
+      skills: ["Startup Relations", "Industry Partnerships", "Corporate Sponsorships", "Strategic Networking"],
+    },
+    {
       id: "hemanth-maddila",
       name: "HEMANTH HARIHARAN MADDILA",
       role: "COMMUNITY & EVENT COORDINATOR",
