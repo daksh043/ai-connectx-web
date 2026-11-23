@@ -360,8 +360,11 @@ export default function ContactUsPage() {
                       <FacebookIcon className="w-4 h-4 transition-transform duration-300 group-hover:scale-105" />
                     </a>
                     <a
-                      href="mailto:aiconnectx@universalai.in?subject=AI%20ConnectX%20Inquiry"
-                      aria-label="Send direct email via Gmail"
+                      href="https://mail.google.com/mail/?view=cm&fs=1&to=aiconnectx@universalai.in&su=AI%20ConnectX%20Inquiry"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Send via Gmail"
+                      aria-label="Send email directly via Gmail"
                       className="group p-2.5 rounded-full bg-white/[0.06] hover:bg-[#EA4335]/20 border border-white/20 hover:border-[#EA4335]/70 backdrop-blur-md transition-all duration-300 hover:scale-110 shadow-[0_2px_10px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_0_20px_rgba(234,67,53,0.5)] cursor-pointer"
                     >
                       <GmailIcon className="w-4 h-4 transition-transform duration-300 group-hover:scale-105" />
