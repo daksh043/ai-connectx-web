@@ -9,6 +9,37 @@ import {
 } from "lucide-react";
 import { BorderBeam } from "@/components/ui/border-beam";
 
+// Helper to parse markdown links [label](url) in event descriptions
+function renderFormattedText(text: string) {
+  const parts: (string | React.ReactNode)[] = [];
+  const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  let lastIndex = 0;
+  let match;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.substring(lastIndex, match.index));
+    }
+    const [_, label, url] = match;
+    parts.push(
+      <a
+        key={match.index}
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-cyan-400 hover:text-cyan-300 underline underline-offset-2 font-medium"
+      >
+        {label}
+      </a>
+    );
+    lastIndex = regex.lastIndex;
+  }
+  if (lastIndex < text.length) {
+    parts.push(text.substring(lastIndex));
+  }
+  return parts.length > 0 ? parts : text;
+}
+
 interface GalleryEvent {
   id: number;
   tag: string;
@@ -62,6 +93,32 @@ export default function AIConnectX3DGallery() {
   const events: GalleryEvent[] = [
     {
       id: 1,
+      tag: "AI ENGINEERING × AGENTIC SYSTEMS",
+      title: "AI ENGINEERING ’26",
+      subtitle: "MASTERCLASS BY MR. DIPAN MEHTA",
+      description:
+        "Turning industry expertise into student experiences. 🤝\n\n[AI ConnectX](https://www.linkedin.com/company/ai-connectx-ai/) was proud to support and contribute to the successful execution of the insightful session on AI Engineering × Agentic Systems by Mr. [Dipan Mehta](https://www.linkedin.com/in/dipanmehta/) at [Universal Ai University](https://www.linkedin.com/school/universalaiuniversity/).\n\nFrom coordination to execution, our team worked to create a platform where industry expertise meets student curiosity, enabling meaningful learning and interaction.",
+      image: "/gallery/agentic_systems.jpg",
+      fullImage: "/gallery/agentic_systems_full.jpg",
+      date: "Campus Masterclass · 2026",
+      location: "Universal Ai University Auditorium & Innovation Stage",
+      highlights: [
+        "Insightful session on AI Engineering × Agentic Systems by Mr. Dipan Mehta",
+        "Created a collaborative platform where industry expertise meets student curiosity",
+        "End-to-end event coordination and seamless execution by the AI ConnectX team",
+        "Direct guidance & mentorship by Mr. Pranav More, Patron of AI CONNECTX",
+      ],
+      panelists: [
+        "Mr. Dipan Mehta – Industry Leader & AI Engineering Expert",
+      ],
+      mentors: [
+        "Mr. Pranav More – Patron of AI CONNECTX, for continued guidance & creating industry bridges",
+      ],
+      closingNote:
+        "A special note of appreciation to Mr. [Pranav More](https://www.linkedin.com/in/pranav-more-892a14131/), Patron AI CONNECTX, for his continued support and guidance in creating opportunities that connect students with industry.\n\nAI CONNECTX | Connecting Students • Industry • Ideas • Impact. 🚀",
+    },
+    {
+      id: 2,
       tag: "SIP EVALUATION 2026",
       title: "SIP EVALUATION ’26",
       subtitle: "INDUSTRY JURY & MENTORSHIP",
@@ -93,7 +150,7 @@ export default function AIConnectX3DGallery() {
         "And most importantly, a big shoutout to every member of the Ai ConnectX team who contributed their time, effort, and commitment.\n\nA shared effort, a successful SIP Evaluation, and another step towards stronger industry connections! 🚀\n\nAi ConnectX | Connecting Students • Industry • Ideas • Impact.",
     },
     {
-      id: 2,
+      id: 3,
       tag: "FLAGSHIP ANNUAL CONCLAVE",
       title: "AI CONCLAVE 4.0",
       subtitle: "UNIVERSAL AI AUDITORIUM",
@@ -109,7 +166,7 @@ export default function AIConnectX3DGallery() {
       ],
     },
     {
-      id: 3,
+      id: 4,
       tag: "24-HOUR BUILDATHON",
       title: "AI CODE SPRINT",
       subtitle: "MIDNIGHT HACK LAB",
@@ -125,7 +182,7 @@ export default function AIConnectX3DGallery() {
       ],
     },
     {
-      id: 4,
+      id: 5,
       tag: "ROBOTICS & EMBEDDED AI",
       title: "ROVER PERCEPTION",
       subtitle: "EDGE SENSING BENCHMARKS",
@@ -141,7 +198,7 @@ export default function AIConnectX3DGallery() {
       ],
     },
     {
-      id: 5,
+      id: 6,
       tag: "AWARD CEREMONY",
       title: "PODIUM CELEBRATION",
       subtitle: "₹1,00,000 GRAND PRIZE",
@@ -157,7 +214,7 @@ export default function AIConnectX3DGallery() {
       ],
     },
     {
-      id: 6,
+      id: 7,
       tag: "RESEARCH SEMINAR",
       title: "GENESIS ’24 LLMS",
       subtitle: "REASONING AGENTS WORKSHOP",
@@ -640,7 +697,7 @@ export default function AIConnectX3DGallery() {
               </div>
 
               <p className="text-sm text-white/85 leading-relaxed font-light whitespace-pre-line">
-                {selectedEvent.description}
+                {renderFormattedText(selectedEvent.description)}
               </p>
 
               {/* Key Event Highlights */}
@@ -693,7 +750,7 @@ export default function AIConnectX3DGallery() {
               {/* Closing Note */}
               {selectedEvent.closingNote && (
                 <div className="p-4 rounded-2xl bg-blue-950/30 border border-blue-500/30 text-xs text-blue-200 font-mono leading-relaxed whitespace-pre-line mt-4">
-                  {selectedEvent.closingNote}
+                  {renderFormattedText(selectedEvent.closingNote)}
                 </div>
               )}
             </div>

@@ -11,6 +11,21 @@ export default function ClubEvents({ onRegister }: ClubEventsProps) {
 
   const events = [
     {
+      id: "agentic-systems-2026",
+      title: "AI Engineering × Agentic Systems",
+      badgeTags: ["Agentic AI", "Masterclass", "Industry"],
+      date: "2026",
+      location: "Universal Ai University Auditorium",
+      description:
+        "Insightful session on AI Engineering × Agentic Systems by Mr. Dipan Mehta. From coordination to execution, AI ConnectX created a platform where industry expertise meets student curiosity, under the mentorship of Patron Mr. Pranav More.",
+      details: [
+        "Keynote by Mr. Dipan Mehta on AI Engineering & Agentic Loops",
+        "Student interaction and hands-on system architecture QA",
+        "Connecting student curiosity directly with enterprise leaders",
+      ],
+      type: "INDUSTRY MASTERCLASS",
+    },
+    {
       id: "ai-conclave-2024",
       title: "AI Conclave 2024",
       badgeTags: ["Workshops", "AI Projects", "Games"],
