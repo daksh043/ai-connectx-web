@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, type CSSProperties } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import {
   ChevronLeft,
@@ -9,7 +9,6 @@ import {
   ArrowUpRight,
   X,
 } from "lucide-react";
-import { BorderBeam } from "@/components/ui/border-beam";
 
 // Helper to parse markdown links [label](url) in event descriptions
 function renderFormattedText(text: string) {
@@ -438,110 +437,9 @@ export default function AIConnectX3DGallery() {
                     : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
                 }`}
               >
-                {/* ─── Dynamic Ambient Light Shadow Following Border Beam Colors (Subtle & Tight) ─── */}
-                {isCenter && (
-                  <>
-                    {/* Soft ambient light falloff */}
-                    <div
-                      className="ambient-beam-shadow-wide absolute -inset-4 sm:-inset-6 rounded-[36px] -z-10 pointer-events-none transition-all duration-500 group-hover:scale-102"
-                      style={{
-                        background: `conic-gradient(
-                          from var(--beam-ambient-angle, 0deg),
-                          #ff0055 0deg,
-                          #ff3b30 40deg,
-                          #ff9500 75deg,
-                          #00e676 130deg,
-                          #00b0ff 190deg,
-                          #2979ff 250deg,
-                          #d500f9 305deg,
-                          #ff0055 360deg
-                        )`,
-                        filter: "blur(28px) brightness(1.2) saturate(1.4)",
-                        opacity: 0.35,
-                        animation: "beam-ambient-spin 7s linear infinite",
-                      }}
-                    />
-                    {/* Near ambient halo hugging the border */}
-                    <div
-                      className="ambient-beam-shadow-near absolute -inset-1.5 sm:-inset-2 rounded-[32px] -z-10 pointer-events-none transition-all duration-500 group-hover:scale-102"
-                      style={{
-                        background: `conic-gradient(
-                          from var(--beam-ambient-angle, 0deg),
-                          #ff0055 0deg,
-                          #ff3b30 40deg,
-                          #ff9500 75deg,
-                          #00e676 130deg,
-                          #00b0ff 190deg,
-                          #2979ff 250deg,
-                          #d500f9 305deg,
-                          #ff0055 360deg
-                        )`,
-                        filter: "blur(12px) brightness(1.3) saturate(1.5)",
-                        opacity: 0.45,
-                        animation: "beam-ambient-spin 7s linear infinite",
-                      }}
-                    />
-                  </>
-                )}
-
                 {isCenter ? (
-                  <BorderBeam
-                    size="md"
-                    colorVariant="colorful"
-                    duration={7}
-                    borderRadius={28}
-                    strength={1}
-                    brightness={2.5}
-                    saturation={2.2}
-                    glowSize={2.0}
-                    style={{
-                      "--beam-stroke-opacity": 3.8,
-                      "--beam-bloom-opacity": 3.5,
-                      "--beam-inner-opacity": 1.2,
-                    } as CSSProperties}
-                    css={`
-                      [data-beam="{id}"]::after {
-                        padding: 3.5px !important;
-                        opacity: 1 !important;
-                        background: conic-gradient(
-                          from var(--beam-angle-{id}),
-                          #ff0055 0deg,
-                          #ff3b30 40deg,
-                          #ff9500 75deg,
-                          #00e676 130deg,
-                          #00b0ff 190deg,
-                          #2979ff 250deg,
-                          #d500f9 305deg,
-                          #ff0055 360deg
-                        ) !important;
-                      }
-                      [data-beam="{id}"] [data-beam-bloom] {
-                        padding: 5px !important;
-                        opacity: 0.95 !important;
-                        filter: blur(14px) brightness(2.4) saturate(2.2) !important;
-                        background: conic-gradient(
-                          from var(--beam-angle-{id}),
-                          #ff0055 0deg,
-                          #ff3b30 40deg,
-                          #ff9500 75deg,
-                          #00e676 130deg,
-                          #00b0ff 190deg,
-                          #2979ff 250deg,
-                          #d500f9 305deg,
-                          #ff0055 360deg
-                        ) !important;
-                      }
-                      [data-beam="{id}"]::before {
-                        opacity: 0.25 !important;
-                      }
-                      [data-beam="{id}"]:hover::after,
-                      [data-beam="{id}"]:hover [data-beam-bloom] {
-                        animation-duration: 14s !important;
-                      }
-                    `}
-                    className="w-full h-full rounded-[28px] overflow-hidden transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.05]"
-                  >
-                    <div className="relative w-full h-full rounded-[28px] overflow-hidden">
+                  <div className="w-full h-full rounded-[24px] sm:rounded-[28px] overflow-hidden border border-white/20 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.03] relative">
+                    <div className="relative w-full h-full rounded-[24px] sm:rounded-[28px] overflow-hidden">
                       {/* Background Image - Positioned to keep people's faces visible in landscape */}
                       <img
                         src={evt.image}
@@ -593,7 +491,7 @@ export default function AIConnectX3DGallery() {
                         </div>
                       </div>
                     </div>
-                  </BorderBeam>
+                  </div>
                 ) : (
                   <div className="w-full h-full rounded-[28px] overflow-hidden border border-white/15 hover:border-white/40 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.03] relative">
                     {/* Background Image */}
