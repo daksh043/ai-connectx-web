@@ -226,7 +226,7 @@ export default function TextRevealScroll() {
         <div className="relative w-full max-w-4xl lg:max-w-5xl pointer-events-auto">
           {/* Section Header */}
           <div className="relative mb-6 sm:mb-8 z-20 flex flex-col items-start">
-            <span className="text-xl sm:text-3xl md:text-4xl font-['Outfit',sans-serif] tracking-[0.12em] bg-gradient-to-r from-white via-cyan-200 to-sky-400 bg-clip-text text-transparent font-black uppercase drop-shadow-[0_4px_24px_rgba(34,211,238,0.45)]">
+            <span className="text-2xl sm:text-3xl md:text-4xl font-['Outfit',sans-serif] tracking-tight bg-gradient-to-r from-cyan-300 via-sky-300 to-blue-400 bg-clip-text text-transparent font-bold uppercase drop-shadow-[0_0_24px_rgba(65,105,225,0.7)]">
               MISSION &amp; OVERVIEW
             </span>
             <div className="mt-2 h-[2px] w-20 sm:w-28 bg-gradient-to-r from-cyan-400 via-sky-400 to-transparent shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
