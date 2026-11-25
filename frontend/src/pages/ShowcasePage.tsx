@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import SoffitGradientCanvas from "../components/zubox/SoffitGradientCanvas";
-import AIConnectXNavbar from "../components/zubox/ZuboxNavbar";
 import "./ShowcasePage.css";
 
 export default function ShowcasePage() {
@@ -100,7 +99,6 @@ export default function ShowcasePage() {
 
   return (
     <div ref={containerRef} className="lk-stage font-['Outfit']">
-      <AIConnectXNavbar />
       {/* Background WebGL2 Soffit Gradient asset */}
       <div className="lk-bg absolute inset-0 pointer-events-none z-0">
         <SoffitGradientCanvas

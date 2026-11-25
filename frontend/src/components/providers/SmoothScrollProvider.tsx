@@ -65,22 +65,10 @@ export default function SmoothScrollProvider({ children }: SmoothScrollProviderP
     if (!lenis) return;
 
     if (location.hash) {
-      const normalizedHash = location.hash === "#chronicles" ? "#gallery" : location.hash;
-      const target = document.querySelector(normalizedHash);
+      const target = document.querySelector(location.hash);
       if (target) {
-        const isSlideSection = [
-          "#hero",
-          "#text-reveal",
-          "#gallery",
-          "#team",
-          "#cylinder",
-          "#contact",
-        ].includes(normalizedHash);
         const timeout = setTimeout(() => {
-          lenis.scrollTo(target as HTMLElement, {
-            offset: isSlideSection ? 0 : -70,
-            duration: 1.15,
-          });
+          lenis.scrollTo(target as HTMLElement, { offset: -70, duration: 1.2 });
         }, 120);
         return () => clearTimeout(timeout);
       }

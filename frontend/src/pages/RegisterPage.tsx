@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/auth-context";
 import { ArrowUpRight, Eye, EyeOff, ShieldCheck, Sparkles, CheckCircle2 } from "lucide-react";
-import AIConnectXNavbar from "../components/zubox/ZuboxNavbar";
 import { sanitizeInput, isValidEmail, validatePasswordStrength } from "../utils/sanitize";
 
 export default function RegisterPage() {
@@ -51,7 +50,6 @@ export default function RegisterPage() {
 
   return (
     <div className="startup-shell">
-      <AIConnectXNavbar />
       <section className="startup-showcase">
         <div className="startup-grid" />
         <div className="startup-brand">
