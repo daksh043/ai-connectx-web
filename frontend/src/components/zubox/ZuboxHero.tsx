@@ -1,10 +1,12 @@
-import { useRef } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { motion, useScroll, useTransform } from "motion/react";
+import type Lenis from "lenis";
 
 export default function AIConnectXHero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const tourCleanupRef = useRef<(() => void) | null>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -15,12 +17,184 @@ export default function AIConnectXHero() {
   const contentScale = useTransform(scrollYProgress, [0.70, 0.95], [1, 0.94]);
   const contentY = useTransform(scrollYProgress, [0.70, 0.95], [0, -35]);
 
+  useEffect(() => {
+    return () => {
+      tourCleanupRef.current?.();
+    };
+  }, []);
+
   const handleScrollTo = (id: string) => {
+    tourCleanupRef.current?.();
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+      const lenis = (window as unknown as { lenis?: Lenis }).lenis;
+      if (lenis) {
+        lenis.scrollTo(el, { duration: 1.4 });
+      } else {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
+
+  /**
+   * Guided ecosystem tour: smoothly scrolls through Mission & Overview (pausing at
+   * each narrative beat), pauses at Club Chronicles, and lands on Our Team.
+   * Cancels immediately on any manual user scroll, touch, or navigation key input.
+   */
+  const handleExploreEcosystem = useCallback(() => {
+    tourCleanupRef.current?.();
+
+    const textRevealEl = document.getElementById("text-reveal");
+    const galleryEl = document.getElementById("gallery");
+    const teamEl = document.getElementById("team") || document.getElementById("cylinder");
+
+    const lenis = (window as unknown as { lenis?: Lenis }).lenis;
+    const vh = window.innerHeight;
+    const getAbsTop = (el: HTMLElement) => el.getBoundingClientRect().top + window.scrollY;
+
+    const stops: { y: number; scrollDuration: number; pauseMs: number }[] = [];
+
+    if (textRevealEl) {
+      const trTop = getAbsTop(textRevealEl);
+      const trSpan = Math.max(0, textRevealEl.offsetHeight - vh);
+      // Pause at the middle of each of the 4 narrative lines in TextRevealScroll
+      stops.push({ y: trTop + trSpan * 0.17, scrollDuration: 1.4, pauseMs: 1300 });
+      stops.push({ y: trTop + trSpan * 0.43, scrollDuration: 1.3, pauseMs: 1300 });
+      stops.push({ y: trTop + trSpan * 0.68, scrollDuration: 1.3, pauseMs: 1300 });
+      stops.push({ y: trTop + trSpan * 0.91, scrollDuration: 1.3, pauseMs: 1300 });
+    }
+
+    if (galleryEl) {
+      const galleryTop = getAbsTop(galleryEl);
+      stops.push({ y: galleryTop, scrollDuration: 1.5, pauseMs: 1800 });
+    }
+
+    if (teamEl) {
+      const teamTop = getAbsTop(teamEl);
+      stops.push({ y: teamTop, scrollDuration: 1.6, pauseMs: 0 });
+    }
+
+    if (stops.length === 0) return;
+
+    let cancelled = false;
+    let activeTimer: ReturnType<typeof setTimeout> | null = null;
+    let activeRaf: number | null = null;
+
+    const cleanup = () => {
+      if (cancelled) return;
+      cancelled = true;
+      if (activeTimer) clearTimeout(activeTimer);
+      if (activeRaf !== null) cancelAnimationFrame(activeRaf);
+      window.removeEventListener("wheel", onUserInterrupt);
+      window.removeEventListener("touchstart", onUserInterrupt);
+      window.removeEventListener("mousedown", onUserInterrupt);
+      window.removeEventListener("keydown", onKeyInterrupt);
+      if (lenis) {
+        lenis.stop();
+        lenis.start();
+      }
+      if (tourCleanupRef.current === cleanup) {
+        tourCleanupRef.current = null;
+      }
+    };
+
+    const onUserInterrupt = () => cleanup();
+    const onKeyInterrupt = (e: KeyboardEvent) => {
+      if (
+        ["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", "Space", " ", "Escape"].includes(
+          e.key
+        )
+      ) {
+        cleanup();
+      }
+    };
+
+    // Defer attaching interrupt listeners by a tick so the triggering click doesn't cancel
+    const attachTimer = setTimeout(() => {
+      if (cancelled) return;
+      window.addEventListener("wheel", onUserInterrupt, { passive: true });
+      window.addEventListener("touchstart", onUserInterrupt, { passive: true });
+      window.addEventListener("mousedown", onUserInterrupt, { passive: true });
+      window.addEventListener("keydown", onKeyInterrupt);
+    }, 50);
+
+    tourCleanupRef.current = () => {
+      clearTimeout(attachTimer);
+      cleanup();
+    };
+
+    const easeInOutCubic = (t: number) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    const scrollToY = (targetY: number, durationSec: number): Promise<void> =>
+      new Promise((resolve) => {
+        if (cancelled) {
+          resolve();
+          return;
+        }
+        if (lenis) {
+          let settled = false;
+          const finish = () => {
+            if (settled) return;
+            settled = true;
+            if (activeTimer) {
+              clearTimeout(activeTimer);
+              activeTimer = null;
+            }
+            resolve();
+          };
+          lenis.scrollTo(targetY, {
+            duration: durationSec,
+            easing: easeInOutCubic,
+            onComplete: finish,
+          });
+          // Fallback resolve in case Lenis skips onComplete when already at target
+          activeTimer = setTimeout(finish, durationSec * 1000 + 80);
+        } else {
+          const startY = window.scrollY;
+          const diff = targetY - startY;
+          const durationMs = durationSec * 1000;
+          const startTime = performance.now();
+
+          const step = (now: number) => {
+            if (cancelled) {
+              resolve();
+              return;
+            }
+            const elapsed = now - startTime;
+            const t = Math.min(1, elapsed / durationMs);
+            window.scrollTo(0, startY + diff * easeInOutCubic(t));
+            if (t < 1) {
+              activeRaf = requestAnimationFrame(step);
+            } else {
+              resolve();
+            }
+          };
+          activeRaf = requestAnimationFrame(step);
+        }
+      });
+
+    const waitMs = (ms: number): Promise<void> =>
+      new Promise((resolve) => {
+        if (cancelled || ms <= 0) {
+          resolve();
+          return;
+        }
+        activeTimer = setTimeout(resolve, ms);
+      });
+
+    (async () => {
+      for (const stop of stops) {
+        if (cancelled) break;
+        await scrollToY(stop.y, stop.scrollDuration);
+        if (cancelled) break;
+        await waitMs(stop.pauseMs);
+      }
+      if (!cancelled) {
+        cleanup();
+      }
+    })();
+  }, []);
 
   return (
     <section
@@ -129,7 +303,7 @@ export default function AIConnectXHero() {
           <div className="mt-8 sm:mt-10">
             <BorderBeam size="md" colorVariant="colorful">
               <button
-                onClick={() => handleScrollTo("cylinder")}
+                onClick={handleExploreEcosystem}
                 className="group inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-semibold text-sm tracking-wide bg-gradient-to-r from-cyan-400 via-sky-400 to-[#4169e1] text-slate-950 hover:brightness-110 shadow-[0_4px_24px_rgba(65,105,225,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
               >
                 <span>Explore Ecosystem</span>
@@ -145,7 +319,7 @@ export default function AIConnectXHero() {
           className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-70 hover:opacity-100 transition-opacity pointer-events-auto"
         >
           <button
-            onClick={() => handleScrollTo("cylinder")}
+            onClick={() => handleScrollTo("text-reveal")}
             aria-label="Scroll down"
             className="p-1 cursor-pointer"
           >
