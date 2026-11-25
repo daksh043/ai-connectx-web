@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/auth-context";
 import { ArrowUpRight, Eye, EyeOff, ShieldCheck, Sparkles } from "lucide-react";
 import ZeroSevenLoadingScreen from "../components/zubox/ZeroSevenLoadingScreen";
 import ScrollCanvasBackground from "../components/zubox/ScrollCanvasBackground";
+import AIConnectXNavbar from "../components/zubox/ZuboxNavbar";
 import { sanitizeInput, isValidEmail } from "../utils/sanitize";
 
 export default function LoginPage() {
@@ -60,6 +61,7 @@ export default function LoginPage() {
 
   return (
     <div className="startup-shell login-shell relative overflow-hidden">
+      <AIConnectXNavbar />
       {/* 07 Loader: Displays transparent concentric orbit animation while logging in */}
       {show07Loader && (
         <>

@@ -6,6 +6,7 @@ import { useAuth } from "./contexts/auth-context";
 import ClubPage from "./pages/ClubPage";
 import CookieConsentBanner from "./components/common/CookieConsentBanner";
 import SmoothScrollProvider from "./components/providers/SmoothScrollProvider";
+import AIConnectXNavbar from "./components/zubox/ZuboxNavbar";
 
 // Lazy-loaded routes to minimize initial bundle size and parsing overhead
 const AppLayout = lazy(() => import("./layouts/AppLayout"));
@@ -119,7 +120,8 @@ export default function App() {
               <Route
                 path="/gallery-preview"
                 element={
-                  <div className="bg-[#050507] min-h-screen text-white flex flex-col items-center justify-center p-6">
+                  <div className="bg-[#FAF6EE] min-h-[100dvh] text-neutral-900 flex flex-col items-center justify-center relative overflow-x-clip">
+                    <AIConnectXNavbar />
                     <AIConnectX3DGallery />
                   </div>
                 }
@@ -127,7 +129,8 @@ export default function App() {
               <Route
                 path="/team-preview"
                 element={
-                  <div className="bg-[#050507] min-h-screen text-white flex flex-col items-center justify-center">
+                  <div className="bg-[#050507] min-h-[100dvh] text-white flex flex-col items-center justify-center relative overflow-x-clip">
+                    <AIConnectXNavbar />
                     <AIConnectXEditorialTeam />
                   </div>
                 }
