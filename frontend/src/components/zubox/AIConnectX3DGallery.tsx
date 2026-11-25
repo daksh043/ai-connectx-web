@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback, type CSSProperties } from "react";
+import { createPortal } from "react-dom";
 import {
   ChevronLeft,
   ChevronRight,
@@ -6,6 +7,7 @@ import {
   MapPin,
   Sparkles,
   ArrowUpRight,
+  X,
 } from "lucide-react";
 import { BorderBeam } from "@/components/ui/border-beam";
 
@@ -45,6 +47,7 @@ interface GalleryEvent {
   tag: string;
   title: string;
   subtitle: string;
+  summary: string;
   description: string;
   image: string;
   fullImage?: string;
@@ -78,15 +81,45 @@ export default function AIConnectX3DGallery() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Toggle media-modal-open to hide the taskbar/navbar when event modal is open
+  // Scroll-lock body cleanly when modal is open and portal to document.body
   useEffect(() => {
-    if (selectedEvent) {
-      document.body.classList.add("media-modal-open");
-    } else {
-      document.body.classList.remove("media-modal-open");
-    }
+    if (!selectedEvent) return;
+
+    const scrollY = window.scrollY;
+    const originalStyles = {
+      position: document.body.style.position,
+      top: document.body.style.top,
+      left: document.body.style.left,
+      right: document.body.style.right,
+      overflow: document.body.style.overflow,
+      width: document.body.style.width,
+    };
+
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.overflow = "hidden";
+    document.body.style.width = "100%";
+    document.body.classList.add("media-modal-open");
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setSelectedEvent(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
     return () => {
+      document.body.style.position = originalStyles.position;
+      document.body.style.top = originalStyles.top;
+      document.body.style.left = originalStyles.left;
+      document.body.style.right = originalStyles.right;
+      document.body.style.overflow = originalStyles.overflow;
+      document.body.style.width = originalStyles.width;
       document.body.classList.remove("media-modal-open");
+      window.scrollTo(0, scrollY);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [selectedEvent]);
 
@@ -96,6 +129,8 @@ export default function AIConnectX3DGallery() {
       tag: "AI ENGINEERING × AGENTIC SYSTEMS",
       title: "AI ENGINEERING ’26",
       subtitle: "MASTERCLASS BY MR. DIPAN MEHTA",
+      summary:
+        "Frontier Masterclass on AI Engineering & Agentic Systems hosted by Mr. Dipan Mehta at Universal AI University.",
       description:
         "Turning industry expertise into student experiences. 🤝\n\n[AI ConnectX](https://www.linkedin.com/company/ai-connectx-ai/) was proud to support and contribute to the successful execution of the insightful session on AI Engineering × Agentic Systems by Mr. [Dipan Mehta](https://www.linkedin.com/in/dipanmehta/) at [Universal Ai University](https://www.linkedin.com/school/universalaiuniversity/).\n\nFrom coordination to execution, our team worked to create a platform where industry expertise meets student curiosity, enabling meaningful learning and interaction.",
       image: "/gallery/agentic_systems.jpg",
@@ -122,6 +157,8 @@ export default function AIConnectX3DGallery() {
       tag: "SIP EVALUATION 2026",
       title: "SIP EVALUATION ’26",
       subtitle: "INDUSTRY JURY & MENTORSHIP",
+      summary:
+        "Industry Summer Internship Project evaluation session orchestrated by the AI ConnectX team with distinguished corporate jury pioneers.",
       description:
         "🙌 Behind every successful initiative is a team that makes it happen! The successful completion of SIP Evaluation 2026 at Universal Ai University was made possible through the dedication, coordination, and hard work of the Ai ConnectX team.\n\nFrom coordinating with industry professionals to managing evaluation sessions and ensuring smooth execution, our team worked together behind the scenes to make the process successful.",
       image: "/gallery/sip_evaluation.jpg",
@@ -154,6 +191,8 @@ export default function AIConnectX3DGallery() {
       tag: "FLAGSHIP ANNUAL CONCLAVE",
       title: "AI CONCLAVE 4.0",
       subtitle: "UNIVERSAL AI AUDITORIUM",
+      summary:
+        "Marquee annual convention packed with 500+ student innovators, foundation model keynotes, and neural gaming arenas.",
       description:
         "The marquee annual convention of the AI Club. Packed auditorium with 500+ builders, industry keynotes from Google & Nvidia alumni, and our interactive neural gaming arena.",
       image: "/gallery/conclave.jpg",
@@ -170,6 +209,8 @@ export default function AIConnectX3DGallery() {
       tag: "24-HOUR BUILDATHON",
       title: "AI CODE SPRINT",
       subtitle: "MIDNIGHT HACK LAB",
+      summary:
+        "High-intensity 24-hour sprint where student cohorts engineered, fine-tuned, and deployed production-grade AI systems.",
       description:
         "Non-stop 24-hour sprint where student teams architected, fine-tuned, and served production-grade AI systems under strict latency and accuracy benchmarks.",
       image: "/gallery/hackathon.jpg",
@@ -186,6 +227,8 @@ export default function AIConnectX3DGallery() {
       tag: "AWARD CEREMONY",
       title: "PODIUM CELEBRATION",
       subtitle: "₹1,00,000 GRAND PRIZE",
+      summary:
+        "Triumphant conclusion to the AI Buildathon honoring breakthrough autonomous cohorts with bounties and incubation fast-tracks.",
       description:
         "Triumphant conclusion to the AI Buildathon with cash bounties, certificates of merit, and direct internship fast-tracks for the winning autonomous diagnostic team.",
       image: "/gallery/trophy.jpg",
@@ -303,7 +346,7 @@ export default function AIConnectX3DGallery() {
       {/* ─── Fullscreen Sticky Stage (Creates the clean pause while scrolling) ─── */}
       <div className="sticky top-0 h-screen h-[100dvh] w-full flex flex-col justify-between py-4 sm:py-8 lg:py-10 px-4 sm:px-12 lg:px-16 overflow-hidden z-20">
 
-        {/* ─── Top Section Header (Matches Screenshot Exactly) ─── */}
+        {/* ─── Top Section Header ─── */}
         <div className="w-full max-w-[1600px] mx-auto flex flex-col sm:flex-row items-start justify-between gap-2.5 sm:gap-6 z-20 shrink-0 no-text-shadow [text-shadow:none] [&_*]:[text-shadow:none]" style={{ textShadow: "none" }}>
           <div>
             <div className="flex items-center gap-2 mb-1.5 sm:mb-2">
@@ -346,7 +389,7 @@ export default function AIConnectX3DGallery() {
           </div>
         </div>
 
-        {/* ─── 3D Card Stage (Vertical Portrait Cards in 3D Perspective) ─── */}
+        {/* ─── 3D Card Stage (Landscape Cards in 3D Perspective) ─── */}
         <div
           ref={stageRef}
           onPointerDown={handlePointerDown}
@@ -499,28 +542,28 @@ export default function AIConnectX3DGallery() {
                     className="w-full h-full rounded-[28px] overflow-hidden transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.05]"
                   >
                     <div className="relative w-full h-full rounded-[28px] overflow-hidden">
-                      {/* Background Image */}
+                      {/* Background Image - Positioned to keep people's faces visible in landscape */}
                       <img
                         src={evt.image}
                         alt={evt.title}
                         draggable={false}
-                        className="w-full h-full object-cover pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105"
+                        className="w-full h-full object-cover object-[center_20%] sm:object-[center_25%] pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105"
                       />
 
-                      {/* Cybernetic Dark Gradient Scrim */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none" />
+                      {/* Top Soft Gradient Scrim for Tag Legibility */}
+                      <div className="absolute top-0 inset-x-0 h-20 bg-gradient-to-b from-black/75 via-black/25 to-transparent pointer-events-none" />
 
                       {/* Top Tag Pill */}
-                      <div className="absolute top-5 left-5 z-10 pointer-events-none">
-                        <span className="px-3.5 py-1 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/75 backdrop-blur-md border border-white/20 text-white font-bold shadow-lg flex items-center gap-1.5">
+                      <div className="absolute top-4 sm:top-5 left-4 sm:left-5 z-10 pointer-events-none">
+                        <span className="px-3 sm:px-3.5 py-1 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/75 backdrop-blur-md border border-white/20 text-white font-bold shadow-lg flex items-center gap-1.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-red-500 via-green-400 to-blue-500 animate-pulse" />
                           #{evt.tag}
                         </span>
                       </div>
 
-                      {/* Bottom Editorial Content Overlay in Landscape Layout */}
-                      <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 flex flex-col justify-end z-10 bg-gradient-to-t from-black/95 via-black/60 to-transparent">
-                        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2.5 sm:gap-6">
+                      {/* Bottom Editorial Content Overlay in Landscape Layout (Clean, compact height) */}
+                      <div className="absolute bottom-0 left-0 right-0 pt-10 sm:pt-14 pb-3.5 sm:pb-5 px-4 sm:px-6 flex flex-col justify-end z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent">
+                        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-6">
                           <div className="flex-1 min-w-0">
                             <h3 className="text-base sm:text-2xl md:text-3xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
                               {evt.title}
@@ -528,8 +571,8 @@ export default function AIConnectX3DGallery() {
                             <p className="text-[10px] sm:text-xs font-mono font-bold tracking-wider mt-0.5 uppercase bg-gradient-to-r from-red-400 via-emerald-400 to-blue-400 bg-clip-text text-transparent">
                               // {evt.subtitle}
                             </p>
-                            <p className="text-[11px] sm:text-xs text-white/80 line-clamp-2 leading-relaxed font-light mt-1.5 drop-shadow-sm max-w-xl hidden sm:block">
-                              {evt.description}
+                            <p className="text-[11px] sm:text-xs text-white/80 line-clamp-1 sm:line-clamp-2 leading-relaxed font-light mt-1 drop-shadow-sm max-w-xl hidden sm:block">
+                              {evt.summary}
                             </p>
                           </div>
 
@@ -558,22 +601,22 @@ export default function AIConnectX3DGallery() {
                       src={evt.image}
                       alt={evt.title}
                       draggable={false}
-                      className="w-full h-full object-cover pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105"
+                      className="w-full h-full object-cover object-[center_20%] sm:object-[center_25%] pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105"
                     />
 
-                    {/* Cybernetic Dark Gradient Scrim */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none" />
+                    {/* Subtle top scrim for tag */}
+                    <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-black/60 to-transparent pointer-events-none" />
 
                     {/* Top Tag Pill */}
-                    <div className="absolute top-5 left-5 z-10 pointer-events-none">
+                    <div className="absolute top-4 sm:top-5 left-4 sm:left-5 z-10 pointer-events-none">
                       <span className="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/60 backdrop-blur-md border border-white/20 text-white/80 font-semibold shadow-md">
                         #{evt.tag}
                       </span>
                     </div>
 
                     {/* Bottom Editorial Content Overlay */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 flex flex-col justify-end z-10 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
-                      <div className="mb-1">
+                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 flex flex-col justify-end z-10 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
+                      <div className="mb-0.5">
                         <h3 className="text-base sm:text-xl md:text-2xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
                           {evt.title}
                         </h3>
@@ -593,7 +636,7 @@ export default function AIConnectX3DGallery() {
           })}
         </div>
 
-        {/* ─── Bottom Pagination Dots (Matches Screenshot) ─── */}
+        {/* ─── Bottom Pagination Dots ─── */}
         <div className="w-full flex items-center justify-center gap-2 pt-2 pb-2 z-20 shrink-0 [text-shadow:none]">
           {events.map((evt, idx) => (
             <button
@@ -610,127 +653,140 @@ export default function AIConnectX3DGallery() {
         </div>
       </div>
 
-      {/* ─── Event Details Modal Dossier ─── */}
-      {selectedEvent && (
-        <div
-          data-media-modal="true"
-          className="media-modal-active fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200"
-        >
-          <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-zinc-950/95 border border-white/20 p-6 sm:p-8 shadow-[0_30px_90px_rgba(0,0,0,0.9)] text-white">
-            <div className="flex items-start justify-between pb-4 border-b border-white/10 mb-6">
-              <div>
-                <span className="text-xs font-mono uppercase text-emerald-400 font-semibold tracking-widest block mb-1">
-                  #{selectedEvent.tag}
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight uppercase">
-                  {selectedEvent.title}
-                </h3>
-                <p className="text-xs text-white/60 font-mono">
-                  {selectedEvent.subtitle}
+      {/* ─── Event Details Modal Dossier (Portaled to document.body to prevent 3D perspective glitching) ─── */}
+      {selectedEvent &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            data-media-modal="true"
+            className="media-modal-active fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200 select-auto"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setSelectedEvent(null);
+            }}
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+          >
+            <div
+              role="dialog"
+              aria-modal="true"
+              className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl bg-zinc-950/95 border border-white/20 p-5 sm:p-8 shadow-[0_30px_90px_rgba(0,0,0,0.95)] text-white focus:outline-none"
+            >
+              {/* Header */}
+              <div className="flex items-start justify-between pb-4 border-b border-white/10 mb-5">
+                <div>
+                  <span className="text-xs font-mono uppercase text-emerald-400 font-semibold tracking-widest block mb-1">
+                    #{selectedEvent.tag}
+                  </span>
+                  <h3 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight uppercase">
+                    {selectedEvent.title}
+                  </h3>
+                  <p className="text-xs text-white/60 font-mono mt-0.5">
+                    {selectedEvent.subtitle}
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => setSelectedEvent(null)}
+                  className="p-2 rounded-full text-white/60 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                  aria-label="Close dialog"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {/* Event Image Banner - Widescreen Landscape */}
+                <div className="w-full aspect-[16/9] sm:aspect-[16/10] max-h-80 sm:max-h-96 rounded-2xl overflow-hidden border border-white/10 mb-4 bg-black/80 flex items-center justify-center shadow-inner">
+                  <img
+                    src={selectedEvent.fullImage || selectedEvent.image}
+                    alt={selectedEvent.title}
+                    className="w-full h-full object-contain object-center"
+                  />
+                </div>
+
+                <div className="flex flex-wrap items-center gap-4 text-xs text-white/70 font-mono pb-2">
+                  <span className="flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-red-400" />
+                    {selectedEvent.date}
+                  </span>
+                  <span>•</span>
+                  <span className="flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-blue-400" />
+                    {selectedEvent.location}
+                  </span>
+                </div>
+
+                <p className="text-sm text-white/85 leading-relaxed font-light whitespace-pre-line">
+                  {renderFormattedText(selectedEvent.description)}
                 </p>
-              </div>
 
-              <button
-                onClick={() => setSelectedEvent(null)}
-                className="p-1.5 rounded-full text-white/50 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-                aria-label="Close dialog"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              {/* Event Image Banner - Widescreen Landscape */}
-              <div className="w-full aspect-[16/9] sm:aspect-[16/10] max-h-80 sm:max-h-96 rounded-2xl overflow-hidden border border-white/10 mb-4 bg-black/60 shadow-inner">
-                <img
-                  src={selectedEvent.fullImage || selectedEvent.image}
-                  alt={selectedEvent.title}
-                  className="w-full h-full object-contain sm:object-cover object-center"
-                />
-              </div>
-
-              <div className="flex flex-wrap items-center gap-4 text-xs text-white/70 font-mono pb-2">
-                <span className="flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-red-400" />
-                  {selectedEvent.date}
-                </span>
-                <span>•</span>
-                <span className="flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-blue-400" />
-                  {selectedEvent.location}
-                </span>
-              </div>
-
-              <p className="text-sm text-white/85 leading-relaxed font-light whitespace-pre-line">
-                {renderFormattedText(selectedEvent.description)}
-              </p>
-
-              {/* Key Event Highlights */}
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 mt-4">
-                <span className="text-[11px] font-mono uppercase bg-gradient-to-r from-red-400 via-emerald-400 to-blue-400 bg-clip-text text-transparent tracking-wider block font-semibold">
-                  KEY EVENT HIGHLIGHTS
-                </span>
-                {selectedEvent.highlights.map((h, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs text-white/80">
-                    <Sparkles className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                    <span>{h}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Industry Experts & Jury */}
-              {selectedEvent.panelists && (
-                <div className="p-4 rounded-2xl bg-cyan-950/20 border border-cyan-500/20 space-y-2.5 mt-4">
-                  <span className="text-[11px] font-mono uppercase bg-gradient-to-r from-cyan-400 to-sky-300 bg-clip-text text-transparent tracking-wider block font-semibold">
-                    INDUSTRY EXPERTS &amp; EVALUATION JURY
+                {/* Key Event Highlights */}
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 mt-4">
+                  <span className="text-[11px] font-mono uppercase bg-gradient-to-r from-red-400 via-emerald-400 to-blue-400 bg-clip-text text-transparent tracking-wider block font-semibold">
+                    KEY EVENT HIGHLIGHTS
                   </span>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
-                    {selectedEvent.panelists.map((p, i) => (
-                      <div key={i} className="flex items-start gap-2 text-xs text-slate-200">
-                        <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
-                        <span>{p}</span>
-                      </div>
-                    ))}
+                  {selectedEvent.highlights.map((h, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs text-white/80">
+                      <Sparkles className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      <span>{h}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Industry Experts & Jury */}
+                {selectedEvent.panelists && (
+                  <div className="p-4 rounded-2xl bg-cyan-950/20 border border-cyan-500/20 space-y-2.5 mt-4">
+                    <span className="text-[11px] font-mono uppercase bg-gradient-to-r from-cyan-400 to-sky-300 bg-clip-text text-transparent tracking-wider block font-semibold">
+                      INDUSTRY EXPERTS &amp; EVALUATION JURY
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                      {selectedEvent.panelists.map((p, i) => (
+                        <div key={i} className="flex items-start gap-2 text-xs text-slate-200">
+                          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
+                          <span>{p}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Sincere Gratitude & Mentorship */}
-              {selectedEvent.mentors && (
-                <div className="p-4 rounded-2xl bg-amber-950/20 border border-amber-500/20 space-y-2.5 mt-4">
-                  <span className="text-[11px] font-mono uppercase bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent tracking-wider block font-semibold">
-                    SINCERE GRATITUDE &amp; GUIDANCE
-                  </span>
-                  <div className="space-y-1.5 pt-1">
-                    {selectedEvent.mentors.map((m, i) => (
-                      <div key={i} className="flex items-start gap-2 text-xs text-slate-200">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0" />
-                        <span>{m}</span>
-                      </div>
-                    ))}
+                {/* Sincere Gratitude & Mentorship */}
+                {selectedEvent.mentors && (
+                  <div className="p-4 rounded-2xl bg-amber-950/20 border border-amber-500/20 space-y-2.5 mt-4">
+                    <span className="text-[11px] font-mono uppercase bg-gradient-to-r from-amber-400 to-yellow-300 bg-clip-text text-transparent tracking-wider block font-semibold">
+                      SINCERE GRATITUDE &amp; GUIDANCE
+                    </span>
+                    <div className="space-y-1.5 pt-1">
+                      {selectedEvent.mentors.map((m, i) => (
+                        <div key={i} className="flex items-start gap-2 text-xs text-slate-200">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0" />
+                          <span>{m}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Closing Note */}
-              {selectedEvent.closingNote && (
-                <div className="p-4 rounded-2xl bg-blue-950/30 border border-blue-500/30 text-xs text-blue-200 font-mono leading-relaxed whitespace-pre-line mt-4">
-                  {renderFormattedText(selectedEvent.closingNote)}
-                </div>
-              )}
-            </div>
+                {/* Closing Note */}
+                {selectedEvent.closingNote && (
+                  <div className="p-4 rounded-2xl bg-blue-950/30 border border-blue-500/30 text-xs text-blue-200 font-mono leading-relaxed whitespace-pre-line mt-4">
+                    {renderFormattedText(selectedEvent.closingNote)}
+                  </div>
+                )}
+              </div>
 
-            <div className="mt-8 flex justify-end">
-              <button
-                onClick={() => setSelectedEvent(null)}
-                className="px-6 py-2.5 rounded-full bg-gradient-to-r from-red-500 via-emerald-500 to-blue-500 text-white font-bold text-xs tracking-wide hover:brightness-110 active:scale-95 transition-all cursor-pointer shadow-[0_0_20px_rgba(255,0,85,0.4)]"
-              >
-                Close Story
-              </button>
+              <div className="mt-8 flex justify-end">
+                <button
+                  onClick={() => setSelectedEvent(null)}
+                  className="px-6 py-2.5 rounded-full bg-gradient-to-r from-red-500 via-emerald-500 to-blue-500 text-white font-bold text-xs tracking-wide hover:brightness-110 active:scale-95 transition-all cursor-pointer shadow-[0_0_20px_rgba(255,0,85,0.4)]"
+                >
+                  Close Story
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </section>
   );
 }
