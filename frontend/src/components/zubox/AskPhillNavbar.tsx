@@ -21,7 +21,6 @@ const DEFAULT_LINKS: NavLinkItem[] = [
   { label: "Featured Projects", href: "/projects" },
   { label: "Industry Voices", href: "/industry-voices" },
   { label: "Club Chronicles", href: "/#chronicles" },
-  { label: "Contact", href: "/contact" },
 ];
 
 // Exact spring physics from Ask Phill (ap.main.js: stiffness 400, damping 24 & 29)
@@ -188,26 +187,7 @@ export default function AskPhillNavbar({
       </header>
 
       {/* ------------------------------------------------------------------------- */}
-      {/* 2. TOP RIGHT: CONTACT PILL BUTTON (Ask Phill layout + BouncyBackground)   */}
-      {/* ------------------------------------------------------------------------- */}
-      <div className="fixed right-5 top-[calc(env(safe-area-inset-top,0px)+1rem)] z-40 hidden lg:block lg:top-6">
-        <motion.div
-          whileHover={{ scale: 1.06 }}
-          whileTap={{ scale: 0.95 }}
-          transition={springBouncy}
-        >
-          <Link
-            to="/contact"
-            className="relative flex h-10 items-center justify-center rounded-full px-5 font-bold tracking-tight text-slate-950 shadow-[0px_4px_18px_rgba(0,180,216,0.35)] transition-shadow duration-300 hover:shadow-[0px_6px_24px_rgba(0,180,216,0.5)] select-none"
-            style={{ backgroundColor: themeColor }}
-          >
-            <span className="text-[1.125rem] leading-none">Contact</span>
-          </Link>
-        </motion.div>
-      </div>
-
-      {/* ------------------------------------------------------------------------- */}
-      {/* 3. INTERACTIVE EXPANDING PILL MENU (Ask Phill exact kinematics)           */}
+      {/* 2. INTERACTIVE EXPANDING PILL MENU (Ask Phill exact kinematics)           */}
       {/* ------------------------------------------------------------------------- */}
       <div
         ref={containerRef}
@@ -342,17 +322,6 @@ export default function AskPhillNavbar({
                   );
                 })}
               </nav>
-
-              {/* Mobile CTA */}
-              <div className="mt-2 border-t border-slate-950/20 pt-2 text-center lg:hidden">
-                <Link
-                  to="/contact"
-                  onClick={() => setIsOpen(false)}
-                  className="block w-full rounded-full bg-[#050507] py-2 text-center text-sm font-bold text-cyan-400 active:scale-95 transition-transform"
-                >
-                  Contact Us
-                </Link>
-              </div>
             </motion.div>
           )}
         </AnimatePresence>
