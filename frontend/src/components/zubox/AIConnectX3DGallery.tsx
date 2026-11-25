@@ -65,7 +65,7 @@ export default function AIConnectX3DGallery() {
   const containerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
 
-  const [activeIdx, setActiveIdx] = useState(0);
+  const [virtualIdx, setVirtualIdx] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState<GalleryEvent | null>(null);
 
   // Drag interaction states for left-to-right gesture tracking
@@ -246,47 +246,24 @@ export default function AIConnectX3DGallery() {
   ];
 
   const total = events.length;
+  const activeIdx = virtualIdx % total;
 
   const isDesktop = windowWidth >= 1280;
   const isLaptop = windowWidth >= 1024;
   const isTablet = windowWidth >= 640;
 
-  // Start right-shifted on the opening card (keeping the left side blank);
-  // after swiping forward (activeIdx > 0), center the carousel so swiped cards move left.
-  const isAtStart = activeIdx === 0;
-  const baseShiftX =
-    isAtStart && isTablet
-      ? isDesktop
-        ? Math.round(windowWidth * 0.14)
-        : isLaptop
-        ? Math.round(windowWidth * 0.13)
-        : Math.round(windowWidth * 0.11)
-      : 0;
-  const stepX = isAtStart
-    ? isDesktop
-      ? 250
-      : isLaptop
-      ? 210
-      : isTablet
-      ? 165
-      : 140
-    : isDesktop
-    ? 360
-    : isLaptop
-    ? 310
-    : isTablet
-    ? 250
-    : 180;
+  // Keep cards aligned to center; virtual slots flow strictly from right -> center -> left.
+  const stepX = isDesktop ? 390 : isLaptop ? 340 : isTablet ? 270 : 180;
   const outerRadius = isTablet ? 28 : 24;
   const innerRadius = outerRadius - 3;
 
   const handlePrev = useCallback(() => {
-    setActiveIdx((prev) => (prev === 0 ? total - 1 : prev - 1));
-  }, [total]);
+    setVirtualIdx((prev) => Math.max(0, prev - 1));
+  }, []);
 
   const handleNext = useCallback(() => {
-    setActiveIdx((prev) => (prev === total - 1 ? 0 : prev + 1));
-  }, [total]);
+    setVirtualIdx((prev) => prev + 1);
+  }, []);
 
   // ─── HORIZONTAL WHEEL SCROLL (Snappy response) ───
   const isWheelingRef = useRef(false);
@@ -340,7 +317,8 @@ export default function AIConnectX3DGallery() {
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!isDraggingRef.current) return;
     const diff = e.clientX - dragStartXRef.current;
-    setDragOffset(diff * 0.6);
+    const multiplier = virtualIdx === 0 && diff > 0 ? 0.22 : 0.6;
+    setDragOffset(diff * multiplier);
   };
 
   const handlePointerUp = () => {
@@ -413,8 +391,9 @@ export default function AIConnectX3DGallery() {
             <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={handlePrev}
+                disabled={virtualIdx === 0}
                 aria-label="Previous event"
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#1D4ED8]/30 bg-white/95 backdrop-blur-md flex items-center justify-center text-[#1D4ED8] hover:bg-[#1D4ED8] hover:text-white hover:border-[#1D4ED8] active:scale-95 transition-all cursor-pointer shadow-xs"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-[#1D4ED8]/30 bg-white/95 backdrop-blur-md flex items-center justify-center text-[#1D4ED8] hover:bg-[#1D4ED8] hover:text-white hover:border-[#1D4ED8] active:scale-95 transition-all cursor-pointer shadow-xs disabled:opacity-35 disabled:pointer-events-none"
               >
                 <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
@@ -429,41 +408,42 @@ export default function AIConnectX3DGallery() {
           </div>
         </div>
 
-        {/* ─── 3D Card Stage (Starts right-aligned with left blank; swiped cards move left) ─── */}
+        {/* ─── 3D Card Stage (Center-aligned; cards enter only from right & move left on swipe) ─── */}
         <div
           ref={stageRef}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerCancel}
-          style={{
-            touchAction: "pan-y",
-            perspectiveOrigin: isAtStart && isTablet ? "64% 50%" : "50% 50%",
-          }}
+          style={{ touchAction: "pan-y" }}
           className="relative w-full flex-1 flex items-center justify-center [perspective:1400px] overflow-visible my-auto select-none cursor-grab active:cursor-grabbing"
         >
-          {events.map((evt, idx) => {
-            // Linear signed offset: swiped cards (idx < activeIdx) move left (negative diff),
-            // upcoming cards stay to the right (positive diff), keeping the left side blank at start.
-            const diff = idx - activeIdx;
-            const absDiff = Math.abs(diff);
+          {[-3, -2, -1, 0, 1, 2, 3].map((offset) => {
+            const slotIdx = virtualIdx + offset;
+            // Slots before 0 never render, keeping the left side blank until the user swipes.
+            if (slotIdx < 0) return null;
 
-            const isCenter = diff === 0;
+            const evt = events[slotIdx % total];
+            const absDiff = Math.abs(offset);
+
+            const isCenter = offset === 0;
             const isAbsOne = absDiff === 1;
             const isInteractiveVisible = absDiff <= 2;
 
-            const currentTranslateX = baseShiftX + diff * stepX + dragOffset;
-            const translateZ = isCenter ? 80 : isAbsOne ? -55 : absDiff === 2 ? -155 : -220;
-            const rotateY = diff * -16;
-            const scale = isCenter ? 1.0 : isAbsOne ? 0.88 : absDiff === 2 ? 0.75 : 0.65;
-            const opacity = isCenter ? 1 : isAbsOne ? 0.75 : absDiff === 2 ? 0.35 : 0;
+            const currentTranslateX = offset * stepX + dragOffset;
+            const translateZ = isCenter ? 80 : isAbsOne ? -60 : absDiff === 2 ? -160 : -220;
+            const rotateY = offset * -16;
+            const scale = isCenter ? 1.0 : isAbsOne ? 0.88 : absDiff === 2 ? 0.74 : 0.62;
+            const opacity = isCenter ? 1 : isAbsOne ? 0.7 : absDiff === 2 ? 0.3 : 0;
             const zIndex = 30 - absDiff * 10;
 
             return (
               <div
-                key={evt.id}
+                key={slotIdx}
                 onClick={() => {
-                  if (isInteractiveVisible && Math.abs(dragOffset) < 5) setActiveIdx(idx);
+                  if (isInteractiveVisible && Math.abs(dragOffset) < 5) {
+                    setVirtualIdx((prev) => Math.max(0, prev + offset));
+                  }
                 }}
                 style={{
                   transform: `translateX(${currentTranslateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
@@ -475,7 +455,7 @@ export default function AIConnectX3DGallery() {
                     ? "opacity 0.15s ease-out, transform 0.04s ease-out"
                     : "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
-                className={`absolute w-[310px] sm:w-[440px] md:w-[500px] lg:w-[560px] xl:w-[640px] 2xl:w-[700px] h-[210px] sm:h-[290px] md:h-[330px] lg:h-[360px] xl:h-[410px] 2xl:h-[435px] cursor-pointer group ${
+                className={`absolute w-[310px] sm:w-[480px] md:w-[600px] lg:w-[720px] h-[210px] sm:h-[310px] md:h-[380px] lg:h-[440px] cursor-pointer group ${
                   isCenter
                     ? "shadow-[0_20px_45px_rgba(0,0,0,0.75)]"
                     : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
@@ -630,17 +610,21 @@ export default function AIConnectX3DGallery() {
           })}
         </div>
 
-        {/* ─── Bottom Pagination Dots (Aligned with shifted card focal point) ─── */}
-        <div
-          style={{
-            transform: isTablet ? `translateX(${baseShiftX}px)` : undefined,
-          }}
-          className="w-full flex items-center justify-center gap-2 pt-2 pb-2 z-20 shrink-0 [text-shadow:none] transition-transform duration-300"
-        >
+        {/* ─── Bottom Pagination Dots ─── */}
+        <div className="w-full flex items-center justify-center gap-2 pt-2 pb-2 z-20 shrink-0 [text-shadow:none]">
           {events.map((evt, idx) => (
             <button
               key={evt.id}
-              onClick={() => setActiveIdx(idx)}
+              onClick={() => {
+                setVirtualIdx((prev) => {
+                  const curActive = prev % total;
+                  let delta = (idx - curActive + total) % total;
+                  if (delta > total / 2 && prev + (delta - total) >= 0) {
+                    delta -= total;
+                  }
+                  return Math.max(0, prev + delta);
+                });
+              }}
               aria-label={`Go to event ${idx + 1}`}
               className={`transition-all duration-300 cursor-pointer rounded-full ${
                 idx === activeIdx
