@@ -1161,11 +1161,58 @@ body { background: #f8fbff; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
   *, *::before, *::after {
-    animation-duration: 1ms !important;
+    animation-delay: 0s !important;
+    animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
-    transition-duration: 1ms !important;
+    transition-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Stop infinite/decorative motion completely instead of snapping mid-frame */
+  .animate-spin,
+  .animate-ping,
+  .animate-pulse,
+  .animate-bounce,
+  .animate-spin-slow,
+  .animate-spin-reverse-slow,
+  .animate-shimmer-flow,
+  .animate-levitate-float,
+  .animate-aurora-spin,
+  .animate-glow-pulse,
+  .animate-scanline,
+  .animate-border-beam,
+  .animate-frame-pulse,
+  .pulse-glow,
+  .shimmer-loading,
+  .animate-club-marquee,
+  .animate-club-marquee-reverse,
+  .animate-marquee-infinite,
+  .startup-orbit,
+  .dashboard-light-orbit,
+  .login-shell .startup-orbit,
+  .motion-shell::before {
+    animation: none !important;
+  }
+
+  /* Ensure entrance-animated elements are immediately visible without flicker */
+  .motion-content,
+  .dashboard-hero,
+  .dashboard-hero-copy,
+  .dashboard-hero-actions,
+  .dashboard-hero-footer,
+  .dashboard-stat-card,
+  .dashboard-panel,
+  .login-shell .startup-copy,
+  .login-shell .auth-panel,
+  .animate-fade-in {
+    animation: none !important;
+    opacity: 1 !important;
   }
 }
 

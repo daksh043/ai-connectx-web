@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { ArrowUpRight, X, Sparkles, ChevronDown, Cpu } from "lucide-react";
-import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
+import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from "motion/react";
 import HolographicTeamCard, { type TeamMember } from "./HolographicTeamCard";
 
 export default function AIConnectXEditorialTeam() {
+  const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [showDirectory, setShowDirectory] = useState(false);
@@ -189,7 +190,9 @@ export default function AIConnectXEditorialTeam() {
     <section
       id="team"
       ref={containerRef}
-      className="relative min-h-[220vh] w-full z-10 select-none scroll-mt-20 font-['Outfit']"
+      className={`relative w-full z-10 select-none scroll-mt-20 font-['Outfit'] ${
+        prefersReducedMotion ? "min-h-screen min-h-[100dvh]" : "min-h-[220vh]"
+      }`}
     >
       {/* ─── Sticky Viewport Stage: Creates the pause in Team while background continues animating ─── */}
       <div className="sticky top-0 min-h-screen w-full flex flex-col justify-center items-center py-8 px-4 sm:px-8 lg:px-12 overflow-hidden">
@@ -204,7 +207,10 @@ export default function AIConnectXEditorialTeam() {
           </div>
 
           {/* Editorial Header */}
-          <motion.div style={{ opacity: headerOpacity, scale: headerScale }} className="text-center mb-6 sm:mb-8 origin-center">
+          <motion.div
+            style={prefersReducedMotion ? undefined : { opacity: headerOpacity, scale: headerScale }}
+            className="text-center mb-6 sm:mb-8 origin-center"
+          >
             <span className="text-xs font-mono tracking-[0.25em] text-cyan-400 font-semibold uppercase block mb-2">
               04 / CORE LEADERSHIP
             </span>
@@ -224,13 +230,13 @@ export default function AIConnectXEditorialTeam() {
 
           {/* ─── 4-Column Holographic 3D Interactive Cards Grid ─── */}
           <motion.div
-            style={{ scale: cardsScale, y: cardsY }}
+            style={prefersReducedMotion ? undefined : { scale: cardsScale, y: cardsY }}
             className="w-full mb-6 origin-center will-change-transform"
           >
             {/* Standalone Tech Telemetry Status Pill */}
             <div className="flex items-center justify-between px-5 sm:px-6 py-2.5 mb-4 sm:mb-6 rounded-2xl border border-white/[0.12] bg-black/25 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.18)] text-[10px] font-mono text-white/80 select-none">
               <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+                <span className={`w-1.5 h-1.5 rounded-full bg-cyan-400 ${prefersReducedMotion ? "" : "animate-ping"}`} />
                 <span>AI CONNECTX // CORE FACULTY &amp; STUDENT ARCHITECTS</span>
                 <span className="hidden md:inline text-white/30">·</span>
                 <span className="hidden md:inline text-cyan-300 font-bold uppercase">
@@ -290,10 +296,10 @@ export default function AIConnectXEditorialTeam() {
       <AnimatePresence>
         {showDirectory && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.35 }}
+            exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.35 }}
             className="relative z-20 max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 pb-16"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-6 border-t border-sky-400/20">
@@ -306,7 +312,9 @@ export default function AIConnectXEditorialTeam() {
                     onMouseEnter={() => setHoveredDirId(person.id)}
                     className={`relative flex items-center gap-3.5 p-3 rounded-xl border transition-all duration-200 cursor-pointer ${
                       isHovered
-                        ? "bg-gradient-to-r from-cyan-950/70 via-blue-950/60 to-slate-900/80 border-cyan-400/60 shadow-[0_0_20px_rgba(34,211,238,0.3)] scale-[1.01]"
+                        ? `bg-gradient-to-r from-cyan-950/70 via-blue-950/60 to-slate-900/80 border-cyan-400/60 shadow-[0_0_20px_rgba(34,211,238,0.3)] ${
+                            prefersReducedMotion ? "" : "scale-[1.01]"
+                          }`
                         : "bg-slate-950/40 border-sky-400/15 hover:border-cyan-400/40 hover:bg-slate-900/40"
                     }`}
                   >
@@ -348,7 +356,7 @@ export default function AIConnectXEditorialTeam() {
         {selectedMember && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
             <motion.div
-              initial={{ opacity: 0 }}
+              initial={prefersReducedMotion ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedMember(null)}
@@ -356,10 +364,10 @@ export default function AIConnectXEditorialTeam() {
             />
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 25 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.9, y: 25 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 25 }}
-              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.9, y: 25 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.28, ease: [0.16, 1, 0.3, 1] }}
               className="relative w-full max-w-2xl rounded-3xl bg-slate-950/95 border border-cyan-400/40 p-6 sm:p-10 shadow-[0_30px_100px_rgba(2,6,23,0.95)] overflow-hidden"
             >
               {/* Ambient radial accent inside modal */}

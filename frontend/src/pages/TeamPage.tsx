@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import {
   ArrowUpRight,
   X,
@@ -12,6 +12,7 @@ import AIConnectXNavbar from "../components/zubox/ZuboxNavbar";
 import HolographicTeamCard, { type TeamMember } from "../components/zubox/HolographicTeamCard";
 
 export default function TeamPage() {
+  const prefersReducedMotion = useReducedMotion();
   const navigate = useNavigate();
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [viewMode, setViewMode] = useState<"featured" | "all">("featured");
@@ -310,9 +311,9 @@ export default function TeamPage() {
 
           {/* Brutalist Title: TEAM */}
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.6 }}
             className="text-6xl sm:text-8xl md:text-9xl font-black tracking-tight text-white uppercase"
           >
             TEAM
@@ -339,7 +340,7 @@ export default function TeamPage() {
           {/* Top Frame Tech Bar */}
           <div className="flex items-center justify-between px-5 sm:px-6 py-2.5 mb-4 sm:mb-6 rounded-2xl border border-white/[0.12] bg-black/25 backdrop-blur-md shadow-[0_10px_30px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.18)] text-[10px] font-mono text-white/80 select-none">
             <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+              <span className={`w-1.5 h-1.5 rounded-full bg-cyan-400 ${prefersReducedMotion ? "" : "animate-ping"}`} />
               <span>AI CONNECTX // CORE FACULTY &amp; STUDENT ARCHITECTS</span>
             </div>
             <div className="hidden sm:flex items-center gap-4 text-white/50">
@@ -389,10 +390,10 @@ export default function TeamPage() {
         <AnimatePresence>
           {viewMode === "all" && (
             <motion.section
-              initial={{ opacity: 0, height: 0 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
+              exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.5, ease: "easeInOut" }}
               className="overflow-hidden mb-20"
             >
               <div className="mb-6 flex items-center justify-between border-b border-sky-400/20 pb-3">
@@ -506,7 +507,7 @@ export default function TeamPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
             {/* Backdrop */}
             <motion.div
-              initial={{ opacity: 0 }}
+              initial={prefersReducedMotion ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedMember(null)}
@@ -515,10 +516,10 @@ export default function TeamPage() {
 
             {/* Modal Card */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.92, y: 30 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.92, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.92, y: 30 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.92, y: 30 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.35, ease: [0.16, 1, 0.3, 1] }}
               className="relative w-full max-w-2xl rounded-3xl bg-slate-950/95 border border-cyan-400/35 p-6 sm:p-10 shadow-[0_30px_100px_rgba(2,6,23,0.95)] overflow-hidden"
             >
               {/* Close Button */}

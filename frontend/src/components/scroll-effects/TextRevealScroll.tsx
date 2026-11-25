@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { motion, useScroll, useTransform, MotionValue } from "motion/react";
+import { motion, useScroll, useTransform, useReducedMotion, MotionValue } from "motion/react";
 
 interface WordProps {
   children: string;
@@ -85,17 +85,17 @@ function RevealLine({
   finalLiftY,
   finalLiftOpacity,
 }: RevealLineProps) {
-  // Line-level entry, resting center, and exit transition
+  // Line-level entry, resting center, and exit transition (first line stays legible at entry=0)
   const baseOpacity = useTransform(
     progress,
     [enterRange[0], enterRange[1], exitRange[0], exitRange[1]],
-    [0, 1, 1, 0]
+    [enterRange[0] === 0 ? 0.85 : 0, 1, 1, 0]
   );
 
   const baseY = useTransform(
     progress,
     [enterRange[0], enterRange[1], exitRange[0], exitRange[1]],
-    ["40px", "0px", "0px", "-48px"]
+    [enterRange[0] === 0 ? "12px" : "40px", "0px", "0px", "-48px"]
   );
 
   // If this is the last line, optionally blend with the final lift into the 3D cylinder
@@ -155,6 +155,7 @@ function RevealLine({
 }
 
 export default function TextRevealScroll() {
+  const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -180,10 +181,10 @@ export default function TextRevealScroll() {
     reveal: [number, number];
     exit: [number, number];
   }[] = [
-    // Line 1: Enter 0.01-0.05 -> Reveal 0.04-0.13 -> PAUSE 0.13-0.23 -> Exit 0.23-0.26
+    // Line 1: Enter 0.00-0.04 -> Reveal 0.01-0.13 -> PAUSE 0.13-0.23 -> Exit 0.23-0.26
     {
-      enter: [0.01, 0.05],
-      reveal: [0.04, 0.13],
+      enter: [0, 0.04],
+      reveal: [0.01, 0.13],
       exit: [0.23, 0.26],
     },
     // Line 2: Enter 0.26-0.30 -> Reveal 0.29-0.38 -> PAUSE 0.38-0.48 -> Exit 0.48-0.51
@@ -205,6 +206,64 @@ export default function TextRevealScroll() {
       exit: [0.95, 0.99],
     },
   ];
+
+  // Static accessible layout when OS/browser animations are disabled: zero scroll-hidden lines
+  if (prefersReducedMotion) {
+    return (
+      <section
+        id="text-reveal"
+        ref={containerRef}
+        className="relative w-full py-20 sm:py-28 px-5 sm:px-10 lg:px-16 select-none z-10 font-['Outfit',sans-serif]"
+      >
+        <div className="relative w-full max-w-5xl mx-auto">
+          <div className="relative mb-10 sm:mb-12 flex flex-col items-start">
+            <span className="text-2xl sm:text-3xl md:text-4xl font-['Outfit',sans-serif] tracking-tight bg-gradient-to-r from-cyan-300 via-sky-300 to-blue-400 bg-clip-text text-transparent font-bold uppercase">
+              MISSION &amp; OVERVIEW
+            </span>
+            <div className="mt-2 h-[2px] w-20 sm:w-28 bg-gradient-to-r from-cyan-400 via-sky-400 to-transparent" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            {NARRATIVE_LINES.map((line) => {
+              const highlightSet = new Set(line.highlights);
+              return (
+                <div
+                  key={line.id}
+                  className="rounded-2xl bg-slate-950/75 border border-white/15 p-6 sm:p-7 text-left shadow-lg"
+                >
+                  <div className="mb-3 flex items-center gap-3">
+                    <span className="text-xs font-bold tracking-[0.22em] text-cyan-300 uppercase">
+                      {line.index} / {line.tag}
+                    </span>
+                    <span className="w-8 h-px bg-cyan-400/60" />
+                  </div>
+                  <p className="text-xl sm:text-2xl font-light leading-snug tracking-tight text-white">
+                    {line.text.split(" ").map((word, j) => {
+                      const cleanWord = word.replace(/[.,]/g, "");
+                      const isHighlighted =
+                        highlightSet.has(word) || highlightSet.has(cleanWord);
+                      return (
+                        <span
+                          key={j}
+                          className={`inline-block mr-[0.28em] ${
+                            isHighlighted
+                              ? "text-cyan-300 font-medium"
+                              : "text-white"
+                          }`}
+                        >
+                          {word}
+                        </span>
+                      );
+                    })}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section

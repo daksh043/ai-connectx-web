@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MotionConfig } from "motion/react";
 import { AuthProvider } from "./contexts/AuthContext";
 import { useAuth } from "./contexts/auth-context";
 import ClubPage from "./pages/ClubPage";
@@ -77,91 +78,93 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <AuthProvider>
-          <SmoothScrollProvider>
-            {/* Compliant DPDP & Cookie Consent Banner */}
-            <CookieConsentBanner />
+    <MotionConfig reducedMotion="user">
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AuthProvider>
+            <SmoothScrollProvider>
+              {/* Compliant DPDP & Cookie Consent Banner */}
+              <CookieConsentBanner />
 
-            <Suspense fallback={<RouteFallback />}>
-              <Routes>
-              {/* Club Website (Public Landing Page) */}
-              <Route path="/" element={<ClubPage />} />
-              <Route path="/club" element={<ClubPage />} />
-              <Route path="/overview" element={<Navigate to="/" replace />} />
-              <Route path="/mission" element={<Navigate to="/" replace />} />
-              <Route path="/team" element={<CylinderPage />} />
-              <Route path="/our-team" element={<CylinderPage />} />
-              <Route path="/contact" element={<ContactUsPage />} />
-              <Route path="/contact-us" element={<ContactUsPage />} />
-              <Route path="/spiral-3d" element={<Spiral3DPage />} />
-              <Route path="/spiral" element={<Spiral3DPage />} />
-              <Route path="/projects" element={<ProjectsPage />} />
-              <Route path="/featured-projects" element={<ProjectsPage />} />
-              <Route path="/industry-voices" element={<IndustryVoicesPage />} />
-              <Route path="/voices" element={<IndustryVoicesPage />} />
-              <Route path="/testimonials" element={<IndustryVoicesPage />} />
-              <Route path="/cylinder" element={<CylinderPage />} />
-              <Route path="/kinetix" element={<CylinderPage />} />
-              <Route path="/reel-wall" element={<CylinderPage />} />
+              <Suspense fallback={<RouteFallback />}>
+                <Routes>
+                {/* Club Website (Public Landing Page) */}
+                <Route path="/" element={<ClubPage />} />
+                <Route path="/club" element={<ClubPage />} />
+                <Route path="/overview" element={<Navigate to="/" replace />} />
+                <Route path="/mission" element={<Navigate to="/" replace />} />
+                <Route path="/team" element={<CylinderPage />} />
+                <Route path="/our-team" element={<CylinderPage />} />
+                <Route path="/contact" element={<ContactUsPage />} />
+                <Route path="/contact-us" element={<ContactUsPage />} />
+                <Route path="/spiral-3d" element={<Spiral3DPage />} />
+                <Route path="/spiral" element={<Spiral3DPage />} />
+                <Route path="/projects" element={<ProjectsPage />} />
+                <Route path="/featured-projects" element={<ProjectsPage />} />
+                <Route path="/industry-voices" element={<IndustryVoicesPage />} />
+                <Route path="/voices" element={<IndustryVoicesPage />} />
+                <Route path="/testimonials" element={<IndustryVoicesPage />} />
+                <Route path="/cylinder" element={<CylinderPage />} />
+                <Route path="/kinetix" element={<CylinderPage />} />
+                <Route path="/reel-wall" element={<CylinderPage />} />
 
-              {/* Legal & Compliance Routes (DPDP Act, GDPR) */}
-              <Route path="/privacy" element={<PrivacyPolicyPage />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-              <Route path="/terms" element={<TermsOfServicePage />} />
-              <Route path="/terms-of-service" element={<TermsOfServicePage />} />
-              <Route path="/cookie-policy" element={<CookiePolicyPage />} />
-              <Route path="/cookies" element={<CookiePolicyPage />} />
-              <Route path="/refund-policy" element={<RefundPolicyPage />} />
-              <Route path="/refund" element={<RefundPolicyPage />} />
+                {/* Legal & Compliance Routes (DPDP Act, GDPR) */}
+                <Route path="/privacy" element={<PrivacyPolicyPage />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                <Route path="/terms" element={<TermsOfServicePage />} />
+                <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+                <Route path="/cookie-policy" element={<CookiePolicyPage />} />
+                <Route path="/cookies" element={<CookiePolicyPage />} />
+                <Route path="/refund-policy" element={<RefundPolicyPage />} />
+                <Route path="/refund" element={<RefundPolicyPage />} />
 
-              <Route
-                path="/gallery-preview"
-                element={
-                  <div className="bg-[#050507] min-h-screen text-white flex flex-col items-center justify-center p-6">
-                    <AIConnectX3DGallery />
-                  </div>
-                }
-              />
-              <Route
-                path="/team-preview"
-                element={
-                  <div className="bg-[#050507] min-h-screen text-white flex flex-col items-center justify-center">
-                    <AIConnectXEditorialTeam />
-                  </div>
-                }
-              />
-              <Route path="/showcase" element={<ShowcasePage />} />
-              <Route path="/soffit" element={<ShowcasePage />} />
-              <Route path="/faq" element={<FAQPage />} />
-              <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
-              <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
+                <Route
+                  path="/gallery-preview"
+                  element={
+                    <div className="bg-[#050507] min-h-screen text-white flex flex-col items-center justify-center p-6">
+                      <AIConnectX3DGallery />
+                    </div>
+                  }
+                />
+                <Route
+                  path="/team-preview"
+                  element={
+                    <div className="bg-[#050507] min-h-screen text-white flex flex-col items-center justify-center">
+                      <AIConnectXEditorialTeam />
+                    </div>
+                  }
+                />
+                <Route path="/showcase" element={<ShowcasePage />} />
+                <Route path="/soffit" element={<ShowcasePage />} />
+                <Route path="/faq" element={<FAQPage />} />
+                <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+                <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
 
-              {/* Protected CRM routes */}
-              <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
-                <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/app" element={<DashboardPage />} />
-                <Route path="/campaigns" element={<CampaignsPage />} />
-                <Route path="/companies" element={<CompaniesPage />} />
-                <Route path="/contacts" element={<ContactsPage />} />
-                <Route path="/outreach" element={<OutreachPage />} />
-                <Route path="/pipeline" element={<PipelinePage />} />
-                <Route path="/analytics" element={<AnalyticsPage />} />
-                <Route path="/assistant" element={<AIAssistantPage />} />
-                <Route path="/automations" element={<AutomationsPage />} />
-              </Route>
+                {/* Protected CRM routes */}
+                <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                  <Route path="/app" element={<DashboardPage />} />
+                  <Route path="/campaigns" element={<CampaignsPage />} />
+                  <Route path="/companies" element={<CompaniesPage />} />
+                  <Route path="/contacts" element={<ContactsPage />} />
+                  <Route path="/outreach" element={<OutreachPage />} />
+                  <Route path="/pipeline" element={<PipelinePage />} />
+                  <Route path="/analytics" element={<AnalyticsPage />} />
+                  <Route path="/assistant" element={<AIAssistantPage />} />
+                  <Route path="/automations" element={<AutomationsPage />} />
+                </Route>
 
-              {/* Branded 404 Route */}
-              <Route path="/404" element={<NotFoundPage />} />
-              <Route path="/not-found" element={<NotFoundPage />} />
-              <Route path="/not-found-demo" element={<NotFoundDemoPage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </Suspense>
-          </SmoothScrollProvider>
-        </AuthProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
+                {/* Branded 404 Route */}
+                <Route path="/404" element={<NotFoundPage />} />
+                <Route path="/not-found" element={<NotFoundPage />} />
+                <Route path="/not-found-demo" element={<NotFoundDemoPage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </Suspense>
+            </SmoothScrollProvider>
+          </AuthProvider>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </MotionConfig>
   );
 }

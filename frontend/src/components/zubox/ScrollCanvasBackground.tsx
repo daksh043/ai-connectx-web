@@ -20,6 +20,11 @@ function ScrollCanvasBackgroundComponent({
     new Array(TOTAL_FRAMES + 1).fill(null)
   );
 
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() =>
+    typeof window !== "undefined" &&
+    Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
+  );
+  const reducedMotionRef = useRef(prefersReducedMotion);
   const [loadedCount, setLoadedCount] = useState(0);
   const loadedCountRef = useRef(0);
   const targetProgressRef = useRef(0);
@@ -36,6 +41,27 @@ function ScrollCanvasBackgroundComponent({
   const lastViewportRef = useRef<{ w: number; h: number; dpr: number }>({ w: 0, h: 0, dpr: 1 });
   const scrollPendingRef = useRef(false);
 
+  useEffect(() => {
+    reducedMotionRef.current = prefersReducedMotion;
+  }, [prefersReducedMotion]);
+
+  useEffect(() => {
+    const mq = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+    if (!mq) return;
+    const onChange = (e: MediaQueryListEvent) => {
+      reducedMotionRef.current = e.matches;
+      if (e.matches) {
+        targetProgressRef.current = 0;
+        currentProgressRef.current = 0;
+        currentFrameRef.current = 0;
+        setLoadedCount(TOTAL_FRAMES);
+      }
+      setPrefersReducedMotion(e.matches);
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
   // Function to load an individual frame
   const loadSingleFrame = useCallback((frameIdx: number) => {
     if (frameIdx < 1 || frameIdx > TOTAL_FRAMES || requestedRef.current.has(frameIdx)) return;
@@ -48,14 +74,19 @@ function ScrollCanvasBackgroundComponent({
       imagesRef.current[frameIdx] = img;
       loadedCountRef.current++;
       const count = loadedCountRef.current;
+      if (reducedMotionRef.current && frameIdx === 1) {
+        setLoadedCount(TOTAL_FRAMES);
+        renderFrame(1);
+        return;
+      }
       if (count % 30 === 0 || count === TOTAL_FRAMES) {
         setLoadedCount(count);
       }
 
       // If this is the current target frame, render immediately
-      const currentTarget = Math.round(
-        1 + currentProgressRef.current * (TOTAL_FRAMES - 1)
-      );
+      const currentTarget = reducedMotionRef.current
+        ? 1
+        : Math.round(1 + currentProgressRef.current * (TOTAL_FRAMES - 1));
       if (Math.abs(currentTarget - frameIdx) <= 1) {
         renderFrame(currentTarget);
       }
@@ -183,6 +214,12 @@ function ScrollCanvasBackgroundComponent({
     // Load Frame 1 immediately
     loadSingleFrame(1);
 
+    if (reducedMotionRef.current) {
+      return () => {
+        isCancelled = true;
+      };
+    }
+
     // Initial sequence (frames 1–20) for fluid startup
     for (let i = 2; i <= 20; i++) {
       loadSingleFrame(i);
@@ -236,7 +273,7 @@ function ScrollCanvasBackgroundComponent({
     return () => {
       isCancelled = true;
     };
-  }, [loadSingleFrame]);
+  }, [loadSingleFrame, prefersReducedMotion]);
 
   // Sync with overrideProgress when provided
   useEffect(() => {
@@ -289,11 +326,13 @@ function ScrollCanvasBackgroundComponent({
       const winHeight = metrics.winHeight || window.innerHeight;
       const maxScroll = metrics.maxScroll;
 
-      const progress = Math.min(1, Math.max(0, scrollY / maxScroll));
+      const progress = reducedMotionRef.current
+        ? 0
+        : Math.min(1, Math.max(0, scrollY / maxScroll));
       targetProgressRef.current = progress;
       const targetFrame = Math.round(1 + progress * (TOTAL_FRAMES - 1));
 
-      if (targetFrame !== lastPrefetchedFrameRef.current) {
+      if (!reducedMotionRef.current && targetFrame !== lastPrefetchedFrameRef.current) {
         lastPrefetchedFrameRef.current = targetFrame;
         prefetchAroundTarget(targetFrame);
       }
@@ -323,6 +362,17 @@ function ScrollCanvasBackgroundComponent({
       handleScroll();
     };
 
+    const resizeObserver =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(() => {
+            updateLayoutMetrics();
+            handleScroll();
+          })
+        : null;
+    if (resizeObserver && document.body) {
+      resizeObserver.observe(document.body);
+    }
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleResize, { passive: true });
     updateLayoutMetrics();
@@ -330,10 +380,11 @@ function ScrollCanvasBackgroundComponent({
     handleScroll();
 
     return () => {
+      resizeObserver?.disconnect();
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
     };
-  }, [overrideProgress, prefetchAroundTarget, resizeCanvas]);
+  }, [overrideProgress, prefetchAroundTarget, resizeCanvas, prefersReducedMotion]);
 
   // 3. Low-overhead requestAnimationFrame loop with physics lerp for silk-smooth frames & lift
   useEffect(() => {
@@ -344,20 +395,25 @@ function ScrollCanvasBackgroundComponent({
     const tick = () => {
       if (!isActive) return;
 
-      // Smooth progress lerp for video frames
-      const diff = targetProgressRef.current - currentProgressRef.current;
-      if (Math.abs(diff) > 0.0004) {
-        currentProgressRef.current += diff * 0.35;
-      } else {
+      if (reducedMotionRef.current) {
         currentProgressRef.current = targetProgressRef.current;
-      }
-
-      // Smooth physics lerp for background lift (60-120fps silk smoothness)
-      const liftDiff = targetLiftYRef.current - currentLiftYRef.current;
-      if (Math.abs(liftDiff) > 0.4) {
-        currentLiftYRef.current += liftDiff * 0.28;
-      } else {
         currentLiftYRef.current = targetLiftYRef.current;
+      } else {
+        // Smooth progress lerp for video frames
+        const diff = targetProgressRef.current - currentProgressRef.current;
+        if (Math.abs(diff) > 0.0004) {
+          currentProgressRef.current += diff * 0.35;
+        } else {
+          currentProgressRef.current = targetProgressRef.current;
+        }
+
+        // Smooth physics lerp for background lift (60-120fps silk smoothness)
+        const liftDiff = targetLiftYRef.current - currentLiftYRef.current;
+        if (Math.abs(liftDiff) > 0.4) {
+          currentLiftYRef.current += liftDiff * 0.28;
+        } else {
+          currentLiftYRef.current = targetLiftYRef.current;
+        }
       }
 
       const activeLift = currentLiftYRef.current;

@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import {
   Quote,
   Sparkles,
@@ -72,6 +72,7 @@ const EXTENDED_VOICES: ExtendedVoice[] = [
 ];
 
 export default function IndustryVoicesPage() {
+  const prefersReducedMotion = useReducedMotion();
   return (
     <div className="relative min-h-[100dvh] bg-[#050507] text-white selection:bg-teal-400 selection:text-black font-sans antialiased overflow-x-clip">
       {/* Ambient living Soffit WebGL2 background at low opacity */}
@@ -155,10 +156,10 @@ export default function IndustryVoicesPage() {
             {EXTENDED_VOICES.map((voice) => (
               <motion.div
                 key={voice.id}
-                initial={{ opacity: 0, y: 24 }}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4 }}
+                transition={{ duration: prefersReducedMotion ? 0 : 0.4 }}
                 className="group relative flex flex-col justify-between rounded-3xl p-7 bg-slate-950/75 border border-white/15 backdrop-blur-xl hover:border-cyan-400/50 hover:shadow-[0_8px_30px_rgba(34,211,238,0.15)] transition-all overflow-hidden"
               >
                 <div>

@@ -1,20 +1,26 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Cookie, X } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 
 export default function CookieConsentBanner() {
-  const [isVisible, setIsVisible] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+  const [isVisible, setIsVisible] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const savedConsent = localStorage.getItem("aiconnectx_cookie_consent");
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    return !savedConsent && Boolean(reduced);
+  });
 
   useEffect(() => {
     // Check if user has already made a cookie choice
     const savedConsent = localStorage.getItem("aiconnectx_cookie_consent");
     if (!savedConsent) {
-      // Delay showing banner slightly for smooth initial entrance
-      const timer = setTimeout(() => setIsVisible(true), 1200);
+      // Delay showing banner slightly for smooth initial entrance (or show right away when reduced motion)
+      const timer = setTimeout(() => setIsVisible(true), prefersReducedMotion ? 0 : 1200);
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [prefersReducedMotion]);
 
   const handleConsent = (level: "accepted" | "necessary") => {
     localStorage.setItem("aiconnectx_cookie_consent", level);
@@ -25,10 +31,10 @@ export default function CookieConsentBanner() {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, y: 50, scale: 0.96 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 50, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 30, scale: 0.96 }}
-          transition={{ duration: 0.35, ease: "easeOut" }}
+          exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 30, scale: 0.96 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.35, ease: "easeOut" }}
           className="fixed bottom-5 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-50 rounded-2xl bg-[#0a0b12]/95 backdrop-blur-2xl border border-cyan-400/30 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(34,211,238,0.15)] text-left select-none pointer-events-auto"
         >
           {/* Header Row */}

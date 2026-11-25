@@ -67,8 +67,15 @@ export default function SmoothScrollProvider({ children }: SmoothScrollProviderP
     if (location.hash) {
       const target = document.querySelector(location.hash);
       if (target) {
+        const prefersReducedMotion =
+          typeof window !== "undefined" &&
+          window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
         const timeout = setTimeout(() => {
-          lenis.scrollTo(target as HTMLElement, { offset: -70, duration: 1.2 });
+          lenis.scrollTo(target as HTMLElement, {
+            offset: -70,
+            immediate: Boolean(prefersReducedMotion),
+            duration: prefersReducedMotion ? 0 : 1.2,
+          });
         }, 120);
         return () => clearTimeout(timeout);
       }

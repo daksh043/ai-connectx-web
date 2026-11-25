@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight, Quote } from "lucide-react";
 
 interface Testimonial {
@@ -48,10 +48,15 @@ const testimonials: Testimonial[] = [
 function SlideAndMaskText({
   text,
   delay = 0.2,
+  reducedMotion = false,
 }: {
   text: string;
   delay?: number;
+  reducedMotion?: boolean;
 }) {
+  if (reducedMotion) {
+    return <span>{text}</span>;
+  }
   const words = text.split(" ");
 
   return (
@@ -78,6 +83,7 @@ function SlideAndMaskText({
 }
 
 export default function AIConnectXTestimonials() {
+  const prefersReducedMotion = useReducedMotion();
   return (
     <section
       id="testimonials"
@@ -117,14 +123,18 @@ export default function AIConnectXTestimonials() {
           {testimonials.map((item, idx) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, scale: 0.94, y: 24 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.94, y: 24 }}
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{
-                duration: 0.7,
-                delay: idx * 0.12,
-                ease: [0.16, 1, 0.3, 1], // smooth expansion
-              }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : {
+                      duration: 0.7,
+                      delay: idx * 0.12,
+                      ease: [0.16, 1, 0.3, 1], // smooth expansion
+                    }
+              }
               className="relative rounded-3xl p-8 sm:p-9 bg-slate-950/30 backdrop-blur-[6px] border border-white/20 hover:border-cyan-400/60 shadow-[0_8px_32px_0_rgba(0,0,0,0.37),inset_0_1px_1px_0_rgba(255,255,255,0.25)] hover:shadow-[0_12px_40px_0_rgba(0,229,255,0.2),inset_0_1px_2px_0_rgba(255,255,255,0.4)] transition-all duration-300 flex flex-col justify-between group overflow-hidden before:absolute before:inset-0 before:rounded-3xl before:bg-gradient-to-b before:from-white/[0.12] before:via-white/[0.02] before:to-transparent before:pointer-events-none before:z-10"
             >
               {/* Subtle Ambient Glow */}
@@ -133,10 +143,10 @@ export default function AIConnectXTestimonials() {
               <div className="relative z-20">
                 {/* Header Tag & Quote Icon with Fade In */}
                 <motion.div
-                  initial={{ opacity: 0, y: -8 }}
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: -8 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.45, delay: 0.15 + idx * 0.12 }}
+                  transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.45, delay: 0.15 + idx * 0.12 }}
                   className="flex items-center justify-between pb-6 border-b border-white/15 mb-6"
                 >
                   <span className="text-[10px] font-mono text-cyan-300 font-semibold tracking-wider uppercase px-2.5 py-1 rounded-md bg-slate-950/40 backdrop-blur-sm border border-cyan-400/30 shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
@@ -148,17 +158,21 @@ export default function AIConnectXTestimonials() {
                 {/* Tight, Punchy Testimonial Quote with Jitter slideAndMask kinetic reveal */}
                 <p className="text-base sm:text-lg text-white font-normal leading-relaxed mb-8 drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)]">
                   <span className="text-cyan-400 font-serif mr-1">&ldquo;</span>
-                  <SlideAndMaskText text={item.quote} delay={0.25 + idx * 0.12} />
+                  <SlideAndMaskText
+                    text={item.quote}
+                    delay={0.25 + idx * 0.12}
+                    reducedMotion={Boolean(prefersReducedMotion)}
+                  />
                   <span className="text-cyan-400 font-serif ml-1">&rdquo;</span>
                 </p>
               </div>
 
               {/* Author Attribution Block with Delayed Fade In */}
               <motion.div
-                initial={{ opacity: 0, y: 12 }}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.4 + idx * 0.12, ease: "easeOut" }}
+                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: 0.4 + idx * 0.12, ease: "easeOut" }}
                 className="relative z-20 flex items-center gap-4 pt-6 border-t border-white/15"
               >
                 <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-cyan-400/40 shadow-[0_2px_12px_rgba(0,229,255,0.2)]">

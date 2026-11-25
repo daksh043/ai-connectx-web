@@ -28,7 +28,11 @@ const MainSections = memo(function MainSections() {
 
 export default function ClubPage() {
   const [showLoadingScreen, setShowLoadingScreen] = useState(() => {
-    // Show loading screen only on initial landing, avoid annoying repeat delays
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    // Skip splash loader when OS/browser animations are turned off or already seen
+    if (prefersReducedMotion) return false;
     return !sessionStorage.getItem("aiconnectx_loaded");
   });
 
@@ -52,8 +56,11 @@ export default function ClubPage() {
     if (hash && !showLoadingScreen) {
       const el = document.getElementById(hash);
       if (el) {
+        const prefersReducedMotion =
+          typeof window !== "undefined" &&
+          window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
         setTimeout(() => {
-          el.scrollIntoView({ behavior: "smooth" });
+          el.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" });
         }, 150);
       }
     }

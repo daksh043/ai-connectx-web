@@ -1,6 +1,6 @@
 import { useState, useRef, type MouseEvent } from "react";
 import { ArrowUpRight, ShieldCheck, Zap } from "lucide-react";
-import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
+import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from "motion/react";
 
 export interface TeamMember {
   id: string;
@@ -30,6 +30,7 @@ export default function HolographicTeamCard({
   onSelect,
   isScrollFocused = false,
 }: HolographicTeamCardProps) {
+  const prefersReducedMotion = useReducedMotion();
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isImageHovered, setIsImageHovered] = useState(false);
@@ -57,6 +58,7 @@ export default function HolographicTeamCard({
   };
 
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (prefersReducedMotion) return;
     if (!rectRef.current && cardRef.current) {
       rectRef.current = cardRef.current.getBoundingClientRect();
     }
@@ -81,10 +83,10 @@ export default function HolographicTeamCard({
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, y: 30, scale: 0.96 }}
+      initial={prefersReducedMotion ? false : { opacity: 0, y: 30, scale: 0.96 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.5, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -110,13 +112,17 @@ export default function HolographicTeamCard({
 
       {/* 3D Motion Wrapper */}
       <motion.div
-        style={{
-          rotateX,
-          rotateY,
-          transformStyle: "preserve-3d",
-          transform: isCardActive ? "translateZ(15px)" : "translateZ(0px)",
-          transition: "transform 0.4s ease-out",
-        }}
+        style={
+          prefersReducedMotion
+            ? undefined
+            : {
+                rotateX,
+                rotateY,
+                transformStyle: "preserve-3d",
+                transform: isCardActive ? "translateZ(15px)" : "translateZ(0px)",
+                transition: "transform 0.4s ease-out",
+              }
+        }
         className="w-full h-full flex flex-col justify-between transform-gpu will-change-transform"
       >
         {/* Dynamic Specular Glass Glare */}
@@ -127,7 +133,7 @@ export default function HolographicTeamCard({
               ([gx, gy]) =>
                 `radial-gradient(circle 260px at ${gx} ${gy}, rgba(255, 255, 255, 0.14), transparent 70%)`
             ),
-            opacity: isHovered ? 1 : 0,
+            opacity: isHovered && !prefersReducedMotion ? 1 : 0,
           }}
           className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-30 rounded-2xl"
         />
@@ -138,7 +144,11 @@ export default function HolographicTeamCard({
           className="flex items-center justify-between mb-4 z-20 text-[10px] font-mono"
         >
           <div className="flex items-center gap-1.5 text-white/80 group-hover:text-cyan-200">
-            <span className={`w-1.5 h-1.5 rounded-full ${isCardActive ? "bg-cyan-300 animate-ping" : "bg-white/40"}`} />
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                isCardActive ? `bg-cyan-300 ${prefersReducedMotion ? "" : "animate-ping"}` : "bg-white/40"
+              }`}
+            />
             <span className="tracking-widest font-bold">
               {member.codename || `UNIT-0${index + 1}`}
             </span>
@@ -152,9 +162,25 @@ export default function HolographicTeamCard({
           <div className="flex items-center gap-2">
             {/* Equalizer mini soundwave */}
             <div className="flex items-end gap-[2px] h-3 w-3">
-              <span className={`w-[2px] h-full rounded-full transition-colors ${isCardActive ? "bg-cyan-300 animate-pulse" : "bg-white/40"}`} />
-              <span className={`w-[2px] h-2/3 rounded-full transition-colors ${isCardActive ? "bg-cyan-300 animate-pulse [animation-delay:150ms]" : "bg-white/40"}`} />
-              <span className={`w-[2px] h-4/5 rounded-full transition-colors ${isCardActive ? "bg-cyan-300 animate-pulse [animation-delay:300ms]" : "bg-white/40"}`} />
+              <span
+                className={`w-[2px] h-full rounded-full transition-colors ${
+                  isCardActive ? `bg-cyan-300 ${prefersReducedMotion ? "" : "animate-pulse"}` : "bg-white/40"
+                }`}
+              />
+              <span
+                className={`w-[2px] h-2/3 rounded-full transition-colors ${
+                  isCardActive
+                    ? `bg-cyan-300 ${prefersReducedMotion ? "" : "animate-pulse [animation-delay:150ms]"}`
+                    : "bg-white/40"
+                }`}
+              />
+              <span
+                className={`w-[2px] h-4/5 rounded-full transition-colors ${
+                  isCardActive
+                    ? `bg-cyan-300 ${prefersReducedMotion ? "" : "animate-pulse [animation-delay:300ms]"}`
+                    : "bg-white/40"
+                }`}
+              />
             </div>
             {/* Small Blue Status Dot */}
             <span className={`w-1.5 h-1.5 rounded-full transition-all ${isCardActive ? "bg-cyan-300 shadow-[0_0_8px_#22d3ee]" : "bg-white/30"}`} />

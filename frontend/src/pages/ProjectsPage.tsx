@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import {
   Sparkles,
   ExternalLink,
@@ -123,6 +123,7 @@ const PROJECTS_DATA: ProjectItem[] = [
 ];
 
 export default function ProjectsPage() {
+  const prefersReducedMotion = useReducedMotion();
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [activeView, setActiveView] = useState<"rail" | "grid">("rail");
 
@@ -299,9 +300,9 @@ export default function ProjectsPage() {
               {filteredProjects.map((project) => (
                 <motion.div
                   key={project.id}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: prefersReducedMotion ? 0 : 0.3 }}
                   className="group relative flex flex-col justify-between rounded-3xl p-6 bg-slate-950/70 border border-white/15 backdrop-blur-xl hover:border-cyan-400/50 hover:shadow-[0_8px_30px_rgba(34,211,238,0.15)] transition-all overflow-hidden"
                 >
                   <div className="relative z-10 flex flex-col gap-4">

@@ -1,10 +1,11 @@
 import { useRef, useEffect, useCallback } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { BorderBeam } from "@/components/ui/border-beam";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import type Lenis from "lenis";
 
 export default function AIConnectXHero() {
+  const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const tourCleanupRef = useRef<(() => void) | null>(null);
   const { scrollYProgress } = useScroll({
@@ -23,18 +24,29 @@ export default function AIConnectXHero() {
     };
   }, []);
 
-  const handleScrollTo = (id: string) => {
-    tourCleanupRef.current?.();
-    const el = document.getElementById(id);
-    if (el) {
-      const lenis = (window as unknown as { lenis?: Lenis }).lenis;
-      if (lenis) {
-        lenis.scrollTo(el, { duration: 1.4 });
-      } else {
-        el.scrollIntoView({ behavior: "smooth" });
+  const handleScrollTo = useCallback(
+    (id: string) => {
+      tourCleanupRef.current?.();
+      const el = document.getElementById(id);
+      if (el) {
+        const lenis = (window as unknown as { lenis?: Lenis }).lenis;
+        if (prefersReducedMotion) {
+          if (lenis) {
+            lenis.scrollTo(el, { immediate: true });
+          } else {
+            el.scrollIntoView({ behavior: "auto" });
+          }
+          return;
+        }
+        if (lenis) {
+          lenis.scrollTo(el, { duration: 1.4 });
+        } else {
+          el.scrollIntoView({ behavior: "smooth" });
+        }
       }
-    }
-  };
+    },
+    [prefersReducedMotion]
+  );
 
   /**
    * Guided ecosystem tour: smoothly scrolls through Mission & Overview (pausing at
@@ -43,6 +55,11 @@ export default function AIConnectXHero() {
    */
   const handleExploreEcosystem = useCallback(() => {
     tourCleanupRef.current?.();
+
+    if (prefersReducedMotion) {
+      handleScrollTo("text-reveal");
+      return;
+    }
 
     const textRevealEl = document.getElementById("text-reveal");
     const galleryEl = document.getElementById("gallery");
@@ -194,19 +211,25 @@ export default function AIConnectXHero() {
         cleanup();
       }
     })();
-  }, []);
+  }, [prefersReducedMotion, handleScrollTo]);
 
   return (
     <section
       id="hero"
       ref={containerRef}
-      className="relative min-h-[220vh] w-full select-none z-10"
+      className={`relative w-full select-none z-10 ${
+        prefersReducedMotion ? "min-h-screen min-h-[100dvh]" : "min-h-[220vh]"
+      }`}
     >
       {/* Sticky Viewport Stage - Perfectly locks and pauses at top-0 */}
       <div className="sticky top-0 h-screen h-[100dvh] w-full flex flex-col justify-between pt-[calc(env(safe-area-inset-top,0px)+4.75rem)] sm:pt-28 pb-20 sm:pb-12 px-5 sm:px-10 lg:px-12 text-left pointer-events-none">
         {/* ─── Hero Left Content Cluster (Clean, fully left-aligned with zero background box) ─── */}
         <motion.div
-          style={{ opacity: contentOpacity, scale: contentScale, y: contentY }}
+          style={
+            prefersReducedMotion
+              ? { opacity: 1, scale: 1, y: 0 }
+              : { opacity: contentOpacity, scale: contentScale, y: contentY }
+          }
           className="my-auto py-4 sm:py-8 relative flex flex-col items-start w-full max-w-3xl text-left pointer-events-auto will-change-transform"
         >
           {/* Seamless Blended Dark Atmosphere (Naturally feathered into canvas background without blurring) */}
@@ -240,9 +263,9 @@ export default function AIConnectXHero() {
               <h1 className="text-[2.45rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem] font-black tracking-tight leading-[0.95] flex items-center select-none text-white drop-shadow-[0_8px_32px_rgba(0,0,0,0.95)]">
                 {/* "AI" in Bold Crisp White */}
                 <motion.span
-                  initial={{ opacity: 0, x: -16 }}
+                  initial={prefersReducedMotion ? false : { opacity: 0, x: -16 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5 }}
+                  transition={{ duration: prefersReducedMotion ? 0 : 0.5 }}
                   className="text-white mr-2 sm:mr-2.5 tracking-tighter"
                 >
                   AI
@@ -250,9 +273,12 @@ export default function AIConnectXHero() {
 
                 {/* "Connect" in Vivid Royal Blue (Solid vibrant high-contrast glyphs) */}
                 <motion.span
-                  initial={{ opacity: 0, y: 16 }}
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
+                  transition={{
+                    duration: prefersReducedMotion ? 0 : 0.5,
+                    delay: prefersReducedMotion ? 0 : 0.1,
+                  }}
                   className="text-[#4169e1] font-black mr-0.5 drop-shadow-[0_0_35px_rgba(65,105,225,0.95)]"
                 >
                   Connect
@@ -260,9 +286,12 @@ export default function AIConnectXHero() {
 
                 {/* "X" in Iconic Cyber Cyan */}
                 <motion.span
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
+                  transition={{
+                    duration: prefersReducedMotion ? 0 : 0.5,
+                    delay: prefersReducedMotion ? 0 : 0.2,
+                  }}
                   className="text-cyan-400 font-black ml-0.5 drop-shadow-[0_0_25px_rgba(34,211,238,0.85)]"
                 >
                   X
@@ -315,7 +344,7 @@ export default function AIConnectXHero() {
 
         {/* Subtle Scroll Cue */}
         <motion.div
-          style={{ opacity: contentOpacity }}
+          style={{ opacity: prefersReducedMotion ? 1 : contentOpacity }}
           className="absolute bottom-[calc(env(safe-area-inset-bottom,0px)+4.5rem)] lg:bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-70 hover:opacity-100 transition-opacity pointer-events-auto"
         >
           <button
@@ -323,7 +352,9 @@ export default function AIConnectXHero() {
             aria-label="Scroll down"
             className="p-1 cursor-pointer"
           >
-            <ChevronDown className="w-5 h-5 text-white/60 animate-bounce" />
+            <ChevronDown
+              className={`w-5 h-5 text-white/60 ${prefersReducedMotion ? "" : "animate-bounce"}`}
+            />
           </button>
         </motion.div>
       </div>

@@ -1,4 +1,5 @@
-import { BorderBeam } from "border-beam";
+import { BorderBeam as BaseBorderBeam } from "border-beam";
+import { useReducedMotion } from "motion/react";
 import type {
   BorderBeamProps,
   BorderBeamSize,
@@ -13,6 +14,16 @@ export type {
   BorderBeamColorVariant,
 };
 
-export { BorderBeam };
+export function BorderBeam({ active = true, staticColors = false, ...props }: BorderBeamProps) {
+  const prefersReducedMotion = useReducedMotion();
+  return (
+    <BaseBorderBeam
+      {...props}
+      active={!prefersReducedMotion && active}
+      staticColors={Boolean(prefersReducedMotion || staticColors)}
+    />
+  );
+}
+
 export default BorderBeam;
 

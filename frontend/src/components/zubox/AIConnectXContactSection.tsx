@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence, useScroll, useTransform, useSpring } from "motion/react";
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useReducedMotion } from "motion/react";
 import {
   Send,
   CheckCircle2,
@@ -66,6 +66,7 @@ function WhatsAppIcon({ className = "w-4 h-4" }: { className?: string }) {
 
 
 export default function AIConnectXContactSection() {
+  const prefersReducedMotion = useReducedMotion();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -142,14 +143,16 @@ export default function AIConnectXContactSection() {
     <section
       ref={sectionRef}
       id="contact"
-      className="relative w-full min-h-[190vh] z-10 select-none scroll-mt-20 font-['Outfit']"
+      className={`relative w-full z-10 select-none scroll-mt-20 font-['Outfit'] ${
+        prefersReducedMotion ? "min-h-screen min-h-[100dvh]" : "min-h-[190vh]"
+      }`}
     >
       {/* ─── Pinned Sticky Stage: locks contact card in view for a comfortable pause ─── */}
       <div className="sticky top-0 h-screen h-[100dvh] w-full flex items-center justify-center px-3.5 sm:px-6 lg:px-8 pt-14 sm:py-6 pb-20 lg:pb-6">
         <div className="max-w-6xl w-full mx-auto">
           {/* ─── Main Content Container (True Glassmorphism Frame) ─── */}
           <motion.div
-            style={{ scale, y }}
+            style={prefersReducedMotion ? { scale: 1, y: 0 } : { scale, y }}
             data-lenis-prevent
             className="relative rounded-[28px] sm:rounded-[44px] bg-slate-950/70 sm:bg-slate-900/50 backdrop-blur-3xl border border-white/20 shadow-[0_35px_100px_-15px_rgba(0,0,0,0.8),inset_0_1.5px_1px_rgba(255,255,255,0.35),inset_0_-1px_1px_rgba(255,255,255,0.08),0_0_50px_rgba(34,211,238,0.12)] p-5 sm:p-10 lg:p-12 sm:min-h-[500px] flex items-center will-change-transform max-h-[82dvh] sm:max-h-[90dvh] overflow-y-auto lg:overflow-visible overscroll-contain touch-pan-y"
           >

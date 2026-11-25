@@ -1,8 +1,9 @@
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "motion/react";
+import { motion, useScroll, useTransform, AnimatePresence, useReducedMotion } from "motion/react";
 import { Layers, X } from "lucide-react";
 
 export default function Spiral3DScrollAnimation() {
+  const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedPhoto, setSelectedPhoto] = useState<{
     id: number;
@@ -111,7 +112,9 @@ export default function Spiral3DScrollAnimation() {
     <section
       id="spiral-3d"
       ref={containerRef}
-      className="relative min-h-[260vh] w-full flex flex-col items-center justify-start z-10 select-none"
+      className={`relative w-full flex flex-col items-center justify-start z-10 select-none ${
+        prefersReducedMotion ? "min-h-screen min-h-[100dvh]" : "min-h-[260vh]"
+      }`}
     >
       {/* Sticky 3D Viewport Anchor */}
       <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden px-4 [perspective:1400px]">
@@ -159,18 +162,20 @@ export default function Spiral3DScrollAnimation() {
             Spatial 3D Gallery
           </h3>
           <p className="text-xs sm:text-sm text-white/50 font-['Outfit',sans-serif]">
-            Scroll to rotate student works across the spatial dimension.
+            {prefersReducedMotion
+              ? "Click any card to inspect the research artifact."
+              : "Scroll to rotate student works across the spatial dimension."}
           </p>
         </div>
 
         {/* 3D Spiral Helix Container: Perfectly centered with generous vertical clearance */}
         <div className="relative w-full max-w-5xl h-[460px] sm:h-[520px] flex items-center justify-center [perspective:1400px] mt-16 sm:mt-20">
           <motion.div
-            style={{
-              rotateY,
-              y: translateY,
-              transformStyle: "preserve-3d",
-            }}
+            style={
+              prefersReducedMotion
+                ? { rotateY: 0, y: 0, transformStyle: "preserve-3d" }
+                : { rotateY, y: translateY, transformStyle: "preserve-3d" }
+            }
             className="relative w-[320px] sm:w-[420px] h-[200px] sm:h-[260px] flex items-center justify-center"
           >
             {spiralCards.map((card) => {
@@ -190,7 +195,9 @@ export default function Spiral3DScrollAnimation() {
                     alt={card.title}
                     loading="lazy"
                     decoding="async"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    className={`w-full h-full object-cover ${
+                      prefersReducedMotion ? "" : "group-hover:scale-105 transition-transform duration-500"
+                    }`}
                   />
 
                   {/* Gradient Scrim for Legibility */}
@@ -220,8 +227,12 @@ export default function Spiral3DScrollAnimation() {
 
         {/* Scroll Prompt Bottom Indicator */}
         <div className="absolute bottom-6 z-20 text-[11px] font-mono text-cyan-300/80 uppercase tracking-widest flex items-center gap-2">
-          <Layers className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
-          <span>Scroll down to advance 3D spiral arms</span>
+          <Layers className={`w-3.5 h-3.5 text-cyan-400 ${prefersReducedMotion ? "" : "animate-pulse"}`} />
+          <span>
+            {prefersReducedMotion
+              ? "Select any artifact card to open details"
+              : "Scroll down to advance 3D spiral arms"}
+          </span>
         </div>
       </div>
 
@@ -234,10 +245,10 @@ export default function Spiral3DScrollAnimation() {
             onClick={() => setSelectedPhoto(null)}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.9, y: 20 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.25, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => e.stopPropagation()}
               className="relative w-full max-w-3xl rounded-3xl overflow-hidden bg-[#060712] border border-cyan-500/40 shadow-[0_30px_100px_rgba(0,0,0,0.9),0_0_80px_rgba(34,211,238,0.25)] flex flex-col"
             >

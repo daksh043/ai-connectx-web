@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
+import { useReducedMotion } from "motion/react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -62,6 +63,7 @@ interface GalleryEvent {
 }
 
 export default function AIConnectX3DGallery() {
+  const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
 
@@ -357,7 +359,9 @@ export default function AIConnectX3DGallery() {
     <section
       id="gallery"
       ref={containerRef}
-      className="relative w-full min-h-[160vh] bg-transparent text-neutral-900 select-none scroll-mt-0 font-sans z-30"
+      className={`relative w-full bg-transparent text-neutral-900 select-none scroll-mt-0 font-sans z-30 ${
+        prefersReducedMotion ? "min-h-screen min-h-[100dvh]" : "min-h-[160vh]"
+      }`}
     >
       <span id="chronicles" className="sr-only" />
 
@@ -453,10 +457,12 @@ export default function AIConnectX3DGallery() {
                   borderRadius: `${outerRadius}px`,
                   backfaceVisibility: "hidden",
                   WebkitBackfaceVisibility: "hidden",
-                  willChange: isInteractiveVisible ? "transform, opacity" : "auto",
-                  transition: isDragging
-                    ? "opacity 0.15s ease-out, transform 0.04s ease-out"
-                    : "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
+                  willChange: !prefersReducedMotion && isInteractiveVisible ? "transform, opacity" : "auto",
+                  transition: prefersReducedMotion
+                    ? "none"
+                    : isDragging
+                      ? "opacity 0.15s ease-out, transform 0.04s ease-out"
+                      : "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
                 className={`absolute w-[calc(100vw-40px)] max-w-[340px] sm:max-w-none sm:w-[460px] md:w-[580px] lg:w-[680px] xl:w-[720px] h-[225px] sm:h-[300px] md:h-[370px] lg:h-[420px] xl:h-[440px] max-h-[54dvh] sm:max-h-[58dvh] cursor-pointer group ${
                   isCenter
@@ -467,9 +473,11 @@ export default function AIConnectX3DGallery() {
                 {isCenter ? (
                   <div
                     style={{
-                      animation: "beam-ambient-spin 7s linear infinite",
+                      animation: prefersReducedMotion ? "none" : "beam-ambient-spin 7s linear infinite",
                     }}
-                    className="relative w-full h-full transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                    className={`relative w-full h-full ${
+                      prefersReducedMotion ? "" : "transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                    }`}
                   >
                     {/* Soft ambient light falloff */}
                     <div
@@ -515,7 +523,9 @@ export default function AIConnectX3DGallery() {
                           src={evt.image}
                           alt={evt.title}
                           draggable={false}
-                          className="w-full h-full object-cover object-[center_20%] sm:object-[center_25%] pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105"
+                          className={`w-full h-full object-cover object-[center_20%] sm:object-[center_25%] pointer-events-none ${
+                            prefersReducedMotion ? "" : "transition-transform duration-700 ease-out group-hover:scale-105"
+                          }`}
                         />
 
                         {/* Top Soft Gradient Scrim for Tag Legibility */}
@@ -524,7 +534,11 @@ export default function AIConnectX3DGallery() {
                         {/* Top Tag Pill */}
                         <div className="absolute top-4 sm:top-5 left-4 sm:left-5 z-10 pointer-events-none">
                           <span className="px-3 sm:px-3.5 py-1 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/75 backdrop-blur-md border border-white/20 text-white font-bold shadow-lg flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-red-500 via-green-400 to-blue-500 animate-pulse" />
+                            <span
+                              className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r from-red-500 via-green-400 to-blue-500 ${
+                                prefersReducedMotion ? "" : "animate-pulse"
+                              }`}
+                            />
                             #{evt.tag}
                           </span>
                         </div>
@@ -571,14 +585,18 @@ export default function AIConnectX3DGallery() {
                       WebkitClipPath: `inset(0 round ${outerRadius}px)`,
                       transform: "translateZ(0)",
                     }}
-                    className="w-full h-full bg-zinc-950 overflow-hidden border border-white/15 hover:border-white/40 transition-all duration-500 ease-out hover:scale-[1.03] relative"
+                    className={`w-full h-full bg-zinc-950 overflow-hidden border border-white/15 hover:border-white/40 relative ${
+                      prefersReducedMotion ? "" : "transition-all duration-500 ease-out hover:scale-[1.03]"
+                    }`}
                   >
                     {/* Background Image */}
                     <img
                       src={evt.image}
                       alt={evt.title}
                       draggable={false}
-                      className="w-full h-full object-cover object-[center_20%] sm:object-[center_25%] pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105"
+                      className={`w-full h-full object-cover object-[center_20%] sm:object-[center_25%] pointer-events-none ${
+                        prefersReducedMotion ? "" : "transition-transform duration-700 ease-out group-hover:scale-105"
+                      }`}
                     />
 
                     {/* Subtle top scrim for tag */}

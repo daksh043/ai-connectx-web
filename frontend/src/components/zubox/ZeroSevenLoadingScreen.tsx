@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { RotateCw } from "lucide-react";
 
 interface ZeroSevenLoadingScreenProps {
@@ -166,7 +166,8 @@ export default function ZeroSevenLoadingScreen({
   subtitle = "Neural Matrix Synchronizing...",
   autoClose = true,
 }: ZeroSevenLoadingScreenProps) {
-  const [progress, setProgress] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
+  const [progress, setProgress] = useState(prefersReducedMotion ? 100 : 0);
   const [isFinished, setIsFinished] = useState(false);
   const [isZoomingIn, setIsZoomingIn] = useState(false);
 
@@ -235,6 +236,18 @@ export default function ZeroSevenLoadingScreen({
 
   // 60/120fps requestAnimationFrame loop for ultra-smooth & fast progress
   useEffect(() => {
+    if (prefersReducedMotion) {
+      const quickTimer = setTimeout(() => {
+        setProgress(100);
+        onProgressUpdateRef.current?.(100);
+        if (autoClose) {
+          setIsFinished(true);
+          onCompleteRef.current?.();
+        }
+      }, 60);
+      return () => clearTimeout(quickTimer);
+    }
+
     let animId: number;
     const startTime = performance.now();
     let hasCompleted = false;
@@ -270,11 +283,16 @@ export default function ZeroSevenLoadingScreen({
 
     animId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(animId);
-  }, [duration, autoClose]);
+  }, [duration, autoClose, prefersReducedMotion]);
 
   const handleSkip = () => {
     onProgressUpdateRef.current?.(100);
     setProgress(100);
+    if (prefersReducedMotion) {
+      setIsFinished(true);
+      onCompleteRef.current?.();
+      return;
+    }
     setIsZoomingIn(true);
     setTimeout(() => {
       setIsFinished(true);
@@ -289,22 +307,26 @@ export default function ZeroSevenLoadingScreen({
       {!isFinished && (
         <motion.div
           key="07-rainbow-matrix-screen"
-          initial={{ opacity: 0 }}
+          initial={prefersReducedMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.15 }}
-          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, scale: 1.15 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.35, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-0 z-[99999] bg-black/25 backdrop-blur-[2px] text-white flex flex-col items-center justify-center p-4 pb-[calc(env(safe-area-inset-bottom,0px)+1rem)] pt-[calc(env(safe-area-inset-top,0px)+1rem)] select-none overflow-hidden"
         >
           {/* Top Identifier Badge */}
           <motion.div
-            animate={isZoomingIn ? { opacity: 0, y: -25, scale: 0.9 } : { opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.4 }}
+            animate={
+              isZoomingIn && !prefersReducedMotion
+                ? { opacity: 0, y: -25, scale: 0.9 }
+                : { opacity: 1, y: 0, scale: 1 }
+            }
+            transition={{ duration: prefersReducedMotion ? 0 : 0.4 }}
             className="absolute top-[calc(env(safe-area-inset-top,0px)+1.25rem)] z-30 flex flex-col items-center gap-1 pointer-events-none"
           >
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-400/10 border border-teal-400/30 text-teal-300 font-mono text-[11px] uppercase tracking-widest backdrop-blur-md shadow-[0_0_20px_rgba(45,212,191,0.25)]">
-              <RotateCw className="w-3.5 h-3.5 text-teal-400 animate-spin" />
+              <RotateCw className={`w-3.5 h-3.5 text-teal-400 ${prefersReducedMotion ? "" : "animate-spin"}`} />
               <span>07 · {title}</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-ping" />
+              <span className={`w-1.5 h-1.5 rounded-full bg-teal-400 ${prefersReducedMotion ? "" : "animate-ping"}`} />
             </div>
             <p className="text-[10px] font-mono text-white/50 tracking-wider uppercase">{subtitle}</p>
           </motion.div>
@@ -313,22 +335,28 @@ export default function ZeroSevenLoadingScreen({
           <div className="relative w-full max-w-4xl h-[340px] sm:h-[480px] md:h-[580px] flex items-center justify-center scale-[0.58] sm:scale-[0.82] md:scale-100 will-change-transform">
             {/* Ambient Chromatic Core Halo */}
             <motion.div
-              animate={isZoomingIn ? { scale: 3, opacity: 0 } : { scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6 }}
-              className="absolute w-[380px] sm:w-[520px] h-[380px] sm:h-[520px] rounded-full bg-gradient-to-tr from-teal-500/20 via-cyan-500/20 to-fuchsia-500/20 blur-[60px] pointer-events-none animate-aurora-spin"
+              animate={isZoomingIn && !prefersReducedMotion ? { scale: 3, opacity: 0 } : { scale: 1, opacity: 1 }}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.6 }}
+              className={`absolute w-[380px] sm:w-[520px] h-[380px] sm:h-[520px] rounded-full bg-gradient-to-tr from-teal-500/20 via-cyan-500/20 to-fuchsia-500/20 blur-[60px] pointer-events-none ${
+                prefersReducedMotion ? "" : "animate-aurora-spin"
+              }`}
             />
 
-            {/* Orbit Ring 1 (Inner, Radius ~200px): Clockwise continuous rotation */}
+            {/* Orbit Ring 1 (Inner, Radius ~200px) */}
             <motion.div
               animate={
-                isZoomingIn
-                  ? { scale: 2.2, opacity: 0, filter: "blur(12px)" }
-                  : { rotate: 360, scale: 1, opacity: 1, filter: "blur(0px)" }
+                prefersReducedMotion
+                  ? { rotate: 0, scale: 1, opacity: 1 }
+                  : isZoomingIn
+                    ? { scale: 2.2, opacity: 0, filter: "blur(12px)" }
+                    : { rotate: 360, scale: 1, opacity: 1, filter: "blur(0px)" }
               }
               transition={
-                isZoomingIn
-                  ? { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
-                  : { repeat: Infinity, duration: 24, ease: "linear" }
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : isZoomingIn
+                    ? { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
+                    : { repeat: Infinity, duration: 24, ease: "linear" }
               }
               className="absolute w-[380px] sm:w-[440px] h-[380px] sm:h-[440px] rounded-full border border-dashed border-white/10 flex items-center justify-center pointer-events-none will-change-transform transform-gpu"
             >
@@ -350,17 +378,21 @@ export default function ZeroSevenLoadingScreen({
               })}
             </motion.div>
 
-            {/* Orbit Ring 2 (Middle, Radius ~275px): Counter-Clockwise continuous rotation */}
+            {/* Orbit Ring 2 (Middle, Radius ~275px) */}
             <motion.div
               animate={
-                isZoomingIn
-                  ? { scale: 2.5, opacity: 0, filter: "blur(14px)" }
-                  : { rotate: -360, scale: 1, opacity: 1, filter: "blur(0px)" }
+                prefersReducedMotion
+                  ? { rotate: 0, scale: 1, opacity: 1 }
+                  : isZoomingIn
+                    ? { scale: 2.5, opacity: 0, filter: "blur(14px)" }
+                    : { rotate: -360, scale: 1, opacity: 1, filter: "blur(0px)" }
               }
               transition={
-                isZoomingIn
-                  ? { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
-                  : { repeat: Infinity, duration: 34, ease: "linear" }
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : isZoomingIn
+                    ? { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
+                    : { repeat: Infinity, duration: 34, ease: "linear" }
               }
               className="absolute w-[510px] sm:w-[580px] h-[510px] sm:h-[580px] rounded-full border border-dashed border-teal-500/20 flex items-center justify-center pointer-events-none will-change-transform transform-gpu"
             >
@@ -382,17 +414,21 @@ export default function ZeroSevenLoadingScreen({
               })}
             </motion.div>
 
-            {/* Orbit Ring 3 (Outer, Radius ~350px): Clockwise continuous rotation */}
+            {/* Orbit Ring 3 (Outer, Radius ~350px) */}
             <motion.div
               animate={
-                isZoomingIn
-                  ? { scale: 2.8, opacity: 0, filter: "blur(16px)" }
-                  : { rotate: 360, scale: 1, opacity: 0.75, filter: "blur(0px)" }
+                prefersReducedMotion
+                  ? { rotate: 0, scale: 1, opacity: 0.75 }
+                  : isZoomingIn
+                    ? { scale: 2.8, opacity: 0, filter: "blur(16px)" }
+                    : { rotate: 360, scale: 1, opacity: 0.75, filter: "blur(0px)" }
               }
               transition={
-                isZoomingIn
-                  ? { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
-                  : { repeat: Infinity, duration: 46, ease: "linear" }
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : isZoomingIn
+                    ? { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
+                    : { repeat: Infinity, duration: 46, ease: "linear" }
               }
               className="absolute w-[650px] sm:w-[730px] h-[650px] sm:h-[730px] rounded-full border border-dashed border-white/5 flex items-center justify-center pointer-events-none will-change-transform transform-gpu"
             >
@@ -414,40 +450,39 @@ export default function ZeroSevenLoadingScreen({
               })}
             </motion.div>
 
-            {/* Central Ai ConnectX Logo with Cinematic Zoom-In Animated Effect */}
+            {/* Central Ai ConnectX Logo */}
             <motion.div
-              initial={{ scale: 0.6, opacity: 0 }}
+              initial={prefersReducedMotion ? false : { scale: 0.6, opacity: 0 }}
               animate={
-                isZoomingIn
-                  ? {
-                      scale: 8,
-                      opacity: 0,
-                    }
-                  : {
-                      scale: [1, 1.04, 1],
-                      opacity: 1,
-                    }
+                prefersReducedMotion
+                  ? { scale: 1, opacity: 1 }
+                  : isZoomingIn
+                    ? { scale: 8, opacity: 0 }
+                    : { scale: [1, 1.04, 1], opacity: 1 }
               }
               transition={
-                isZoomingIn
-                  ? {
-                      duration: 0.42,
-                      ease: [0.16, 1, 0.3, 1],
-                    }
-                  : {
-                      scale: {
-                        duration: 2.4,
-                        repeat: Infinity,
-                        repeatType: "mirror",
-                        ease: "easeInOut",
-                      },
-                      opacity: { duration: 0.35, ease: "easeOut" },
-                    }
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : isZoomingIn
+                    ? { duration: 0.42, ease: [0.16, 1, 0.3, 1] }
+                    : {
+                        scale: {
+                          duration: 2.4,
+                          repeat: Infinity,
+                          repeatType: "mirror",
+                          ease: "easeInOut",
+                        },
+                        opacity: { duration: 0.35, ease: "easeOut" },
+                      }
               }
               className="z-30 relative flex flex-col items-center justify-center pointer-events-none select-none"
             >
               {/* Radial Energy Pedestal & Glow Halo */}
-              <div className="absolute inset-0 -m-14 bg-gradient-to-tr from-teal-400/30 via-cyan-400/25 to-fuchsia-500/25 rounded-full blur-3xl pointer-events-none animate-aurora-spin" />
+              <div
+                className={`absolute inset-0 -m-14 bg-gradient-to-tr from-teal-400/30 via-cyan-400/25 to-fuchsia-500/25 rounded-full blur-3xl pointer-events-none ${
+                  prefersReducedMotion ? "" : "animate-aurora-spin"
+                }`}
+              />
 
               <div className="relative p-7 sm:p-9 rounded-full bg-zinc-950/70 backdrop-blur-xl border border-teal-400/35 shadow-[0_0_80px_rgba(45,212,191,0.45)] flex flex-col items-center justify-center group">
                 {/* 4K Ai ConnectX Transparent Logo */}

@@ -352,8 +352,35 @@ export default function SoffitGradientCanvas({
     let clock = 0;
     let animId: number;
 
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
+
     applyConfig();
     gl.drawArrays(gl.TRIANGLES, 0, 3); // Draw once immediately
+
+    if (prefersReducedMotion) {
+      const redrawOnResize = () => {
+        resize();
+        gl.useProgram(program);
+        u1f("iTime", 0);
+        u2f("iMouse", 0, 0);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      };
+      window.addEventListener("resize", redrawOnResize, { passive: true });
+      return () => {
+        observer.disconnect();
+        window.removeEventListener("resize", handleResize);
+        window.removeEventListener("resize", redrawOnResize);
+        if (enableEvents) {
+          window.removeEventListener("pointermove", aim);
+          window.removeEventListener("pointerdown", aim);
+        }
+        try {
+          gl.deleteProgram(program);
+        } catch {}
+      };
+    }
 
     function frame(now: number) {
       animId = requestAnimationFrame(frame);

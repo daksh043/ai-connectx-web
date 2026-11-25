@@ -36,9 +36,7 @@ export default function ShowcasePage() {
       el.style.willChange = "transform, opacity";
 
       if (reduced) {
-        window.setTimeout(() => {
-          if (gen === generation) rest(el);
-        }, delayMs);
+        rest(el);
         return;
       }
 

@@ -14,6 +14,8 @@ import {
   Sliders,
   ArrowUpRight,
   Terminal,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 // ============================================================================
@@ -919,6 +921,7 @@ export default function KinetixCylinder16({
       const frame = frameCounterRef.current;
 
       const isAutoSpinPaused =
+        Boolean(isReducedMotion) ||
         isPausedRef.current ||
         hoveredSlotRef.current !== null ||
         isDraggingRef.current ||
@@ -931,7 +934,7 @@ export default function KinetixCylinder16({
 
       const f = formation.get();
       const e = expansion.get();
-      const ringAngle = smoothRingAngle.get();
+      const ringAngle = isReducedMotion ? targetRingAngle.get() : smoothRingAngle.get();
       const scene = sceneFromExpansion(e);
 
       // Shared ring CSS variables
@@ -1059,6 +1062,7 @@ export default function KinetixCylinder16({
         const normA = normalizeDeg(unwrappedAngle);
         const isCentered = e >= 0.5 ? Math.abs(normA) < 22 : Math.abs(normA) > 158;
         const shouldPlayVideo =
+          !isReducedMotion &&
           !isScrollingRef.current &&
           !pose.behindCamera &&
           pose.appear > 0.65 &&
@@ -1107,6 +1111,7 @@ export default function KinetixCylinder16({
     return () => cancelAnimationFrame(rafId);
   }, [
     sectionInView,
+    isReducedMotion,
     formation,
     expansion,
     smoothRingAngle,
@@ -1313,15 +1318,15 @@ export default function KinetixCylinder16({
         initial={false}
         animate={{
           opacity: handoffActive ? 0 : 1,
-          y: handoffActive ? 24 : 0,
+          y: handoffActive && !isReducedMotion ? 24 : 0,
         }}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: isReducedMotion ? 0 : 0.55, ease: [0.22, 1, 0.36, 1] }}
         style={{ pointerEvents: handoffActive ? "none" : "auto" }}
         className={`${pos} inset-x-0 bottom-0 z-40 p-6 md:p-10 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-6 text-[#014BAA]`}
       >
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2.5">
-            <span className="w-2 h-2 rounded-full bg-[#014BAA] animate-ping" />
+            <span className={`w-2 h-2 rounded-full bg-[#014BAA] ${isReducedMotion ? "" : "animate-ping"}`} />
             <ScrambledCaption
               text="Loading Team"
               progress={loaderPercent / 100}
@@ -1367,9 +1372,13 @@ export default function KinetixCylinder16({
         initial={false}
         animate={{
           opacity: handoffActive ? 1 : 0,
-          scale: handoffActive ? 1 : 0.96,
+          scale: handoffActive || isReducedMotion ? 1 : 0.96,
         }}
-        transition={{ duration: 0.85, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+        transition={{
+          duration: isReducedMotion ? 0 : 0.85,
+          delay: isReducedMotion ? 0 : 0.18,
+          ease: [0.22, 1, 0.36, 1],
+        }}
         className={`pointer-events-none ${pos} inset-4 md:inset-6 z-30 flex flex-col justify-center p-6 md:p-8`}
       >
 
@@ -1380,6 +1389,29 @@ export default function KinetixCylinder16({
           <p className="relative mt-4 text-xs sm:text-sm md:text-base font-extrabold tracking-[0.18em] uppercase bg-gradient-to-r from-cyan-300 via-sky-300 to-cyan-400 bg-clip-text text-transparent drop-shadow-[0_2px_16px_rgba(0,0,0,0.95)] max-w-xl">
             Empowering the Next Wave of Autonomous Intelligence
           </p>
+          {isReducedMotion && handoffActive && (
+            <div className="pointer-events-auto mt-5 flex items-center gap-3" data-no-drag>
+              <button
+                type="button"
+                onClick={() => targetRingAngle.set(targetRingAngle.get() + SLOT_STEP)}
+                aria-label="Previous team member"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-black/75 border border-cyan-400/50 text-cyan-300 hover:bg-cyan-400 hover:text-slate-950 transition-colors cursor-pointer"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <span className="text-[11px] font-mono uppercase tracking-widest text-white/80 bg-black/60 px-3 py-1.5 rounded-full border border-white/15">
+                Step Team
+              </span>
+              <button
+                type="button"
+                onClick={() => targetRingAngle.set(targetRingAngle.get() - SLOT_STEP)}
+                aria-label="Next team member"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-black/75 border border-cyan-400/50 text-cyan-300 hover:bg-cyan-400 hover:text-slate-950 transition-colors cursor-pointer"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
         </div>
       </motion.div>
 
@@ -1424,7 +1456,7 @@ export default function KinetixCylinder16({
                     <video
                       src={activeReelModal.videoUrl}
                       poster={activeReelModal.coverUrl}
-                      autoPlay
+                      autoPlay={!isReducedMotion}
                       controls
                       playsInline
                       className="w-full h-full object-cover"

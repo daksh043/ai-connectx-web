@@ -1,17 +1,23 @@
 import { useEffect, useRef } from "react";
+import { useReducedMotion } from "motion/react";
 import KinetixCylinder16 from "./KinetixCylinder16";
 
 
 export default function AIConnectXCylinderSection() {
+  const prefersReducedMotion = useReducedMotion();
   const stageRef = useRef<HTMLDivElement>(null);
 
-  // Fade-in / fade-out driven by the stage's own live geometry, computed directly
-  // in the scroll handler (no rAF dependency): opacity ramps 0→1 across the entry
-  // glide (stage top: viewport bottom → viewport top, i.e. pinned) and back to 0
-  // across the section's final scroll span — a friendly materialize-in / dissolve-out.
+  // Fade-in driven by live geometry unless reduced motion is active (always opacity 1)
   useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
+
+    if (prefersReducedMotion) {
+      el.style.opacity = "1";
+      el.style.pointerEvents = "";
+      return;
+    }
+
     const section = el.parentElement?.parentElement as HTMLElement | null;
     if (!section) return;
 
@@ -39,19 +45,21 @@ export default function AIConnectXCylinderSection() {
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
     <section
       id="team"
-      className="relative z-30 w-full min-h-[185vh] bg-transparent select-none pointer-events-none"
+      className={`relative z-30 w-full bg-transparent select-none pointer-events-none ${
+        prefersReducedMotion ? "min-h-screen min-h-[100dvh]" : "min-h-[185vh]"
+      }`}
     >
       <span id="cylinder" className="sr-only" />
       {/* ─── Cylinder Stage: scrolls in joined with the Hero canvas lift ─── */}
       <div className="sticky top-0 h-screen h-[100dvh] w-full flex items-center justify-center overflow-hidden">
         <div
           ref={stageRef}
-          style={{ opacity: 0 }}
+          style={{ opacity: prefersReducedMotion ? 1 : 0 }}
           className="relative flex h-full w-full flex-col items-center justify-center will-change-[opacity] overflow-hidden"
         >
           {/* Unified 3D Cylinder Matrix */}

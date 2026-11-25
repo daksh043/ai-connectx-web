@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 
 interface AskPhillNavbarProps {
   brandName?: string;
@@ -51,6 +51,7 @@ export default function AskPhillNavbar({
   themeColor = "#00b4d8",
   accentColor = "#050507",
 }: AskPhillNavbarProps) {
+  const prefersReducedMotion = useReducedMotion();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [isHoveredPreview, setIsHoveredPreview] = useState(false);
@@ -177,8 +178,8 @@ export default function AskPhillNavbar({
               {brandName}
             </span>
             <motion.span
-              animate={{ scale: [1, 1.25, 1] }}
-              transition={{ repeat: Infinity, duration: 2.8, ease: "easeInOut" }}
+              animate={prefersReducedMotion ? undefined : { scale: [1, 1.25, 1] }}
+              transition={prefersReducedMotion ? { duration: 0 } : { repeat: Infinity, duration: 2.8, ease: "easeInOut" }}
               className="inline-block h-2 w-2 rounded-full transition-colors duration-200"
               style={{ backgroundColor: themeColor }}
             />
@@ -211,15 +212,15 @@ export default function AskPhillNavbar({
               type="button"
               onClick={() => setIsOpen(true)}
               onMouseEnter={() => {
-                if (window.innerWidth >= 1024) {
+                if (window.innerWidth >= 1024 && !prefersReducedMotion) {
                   setIsHoveredPreview(true);
                 }
               }}
               onMouseLeave={() => setIsHoveredPreview(false)}
               animate={{
-                width: isHoveredPreview ? 168 : 124,
+                width: isHoveredPreview && !prefersReducedMotion ? 168 : 124,
               }}
-              transition={springPill}
+              transition={prefersReducedMotion ? { duration: 0 } : springPill}
               className="relative flex h-[42px] items-center rounded-full p-1 text-slate-950 font-bold shadow-[0px_4px_22px_rgba(0,180,216,0.4)] overflow-hidden select-none cursor-pointer"
               style={{ backgroundColor: themeColor }}
               aria-expanded={isOpen}
@@ -228,10 +229,10 @@ export default function AskPhillNavbar({
               {/* Rotating / Translating circle badge: 0px -> 40px, 0deg -> 90deg */}
               <motion.div
                 animate={{
-                  x: isHoveredPreview ? 40 : 0,
-                  rotate: isHoveredPreview ? 90 : 0,
+                  x: isHoveredPreview && !prefersReducedMotion ? 40 : 0,
+                  rotate: isHoveredPreview && !prefersReducedMotion ? 90 : 0,
                 }}
-                transition={springCircle}
+                transition={prefersReducedMotion ? { duration: 0 } : springCircle}
                 className="relative flex aspect-square h-[34px] w-[34px] shrink-0 items-center justify-center rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.2)]"
                 style={{ backgroundColor: accentColor }}
               >
@@ -249,10 +250,10 @@ export default function AskPhillNavbar({
               {/* Label that fades / shifts out on hover expansion */}
               <motion.div
                 animate={{
-                  opacity: isHoveredPreview ? 0 : 1,
-                  x: isHoveredPreview ? 18 : 0,
+                  opacity: isHoveredPreview && !prefersReducedMotion ? 0 : 1,
+                  x: isHoveredPreview && !prefersReducedMotion ? 18 : 0,
                 }}
-                transition={{ duration: 0.18, ease: "easeInOut" }}
+                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.18, ease: "easeInOut" }}
                 className="w-full pr-2 text-center text-[1.125rem] font-bold tracking-tight text-slate-950"
               >
                 Menu
@@ -262,10 +263,10 @@ export default function AskPhillNavbar({
             /* EXPANDED MENU DRAWER with Height Expansion & Sliding Link Cursor */
             <motion.div
               key="expanded-menu"
-              initial={{ height: 42, width: 124, opacity: 0.8 }}
+              initial={prefersReducedMotion ? false : { height: 42, width: 124, opacity: 0.8 }}
               animate={{ height: "auto", width: 176, opacity: 1 }}
-              exit={{ height: 42, width: 124, opacity: 0 }}
-              transition={springPill}
+              exit={prefersReducedMotion ? { opacity: 0 } : { height: 42, width: 124, opacity: 0 }}
+              transition={prefersReducedMotion ? { duration: 0 } : springPill}
               data-lenis-prevent
               className="relative max-h-[calc(100dvh-6rem)] overflow-y-auto overscroll-contain rounded-[26px] p-2 text-slate-950 shadow-[0px_12px_40px_rgba(0,0,0,0.55)] select-none"
               style={{ backgroundColor: themeColor }}
