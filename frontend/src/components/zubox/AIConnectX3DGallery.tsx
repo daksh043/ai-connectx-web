@@ -438,8 +438,7 @@ export default function AIConnectX3DGallery() {
                 }`}
               >
                 {isCenter ? (
-                  <div className="w-full h-full rounded-[24px] sm:rounded-[28px] overflow-hidden border border-white/20 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.03] relative">
-                    <div className="relative w-full h-full rounded-[24px] sm:rounded-[28px] overflow-hidden">
+                  <div className="relative w-full h-full rounded-[24px] sm:rounded-[28px] overflow-hidden border border-white/15 bg-zinc-950 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.03]">
                       {/* Background Image - Positioned to keep people's faces visible in landscape */}
                       <img
                         src={evt.image}
@@ -490,7 +489,6 @@ export default function AIConnectX3DGallery() {
                           </button>
                         </div>
                       </div>
-                    </div>
                   </div>
                 ) : (
                   <div className="w-full h-full rounded-[28px] overflow-hidden border border-white/15 hover:border-white/40 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.03] relative">
