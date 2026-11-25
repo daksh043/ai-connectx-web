@@ -431,14 +431,57 @@ export default function AIConnectX3DGallery() {
                     ? "opacity 0.15s ease-out, transform 0.04s ease-out"
                     : "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
-                className={`absolute w-[310px] sm:w-[480px] md:w-[600px] lg:w-[720px] h-[210px] sm:h-[310px] md:h-[380px] lg:h-[440px] rounded-[24px] sm:rounded-[28px] cursor-pointer group ${
-                  isCenter
-                    ? "shadow-[0_20px_45px_rgba(0,0,0,0.75)]"
-                    : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
-                }`}
+                className={`absolute w-[310px] sm:w-[480px] md:w-[600px] lg:w-[720px] h-[210px] sm:h-[310px] md:h-[380px] lg:h-[440px] rounded-[24px] sm:rounded-[28px] cursor-pointer group ${isCenter
+                  ? "shadow-[0_18px_40px_rgba(0,0,0,0.35)]"
+                  : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
+                  }`}
               >
+                {/* ─── Soft Diffused Ambient RGB Light Behind Card (No Sharp Border Line) ─── */}
+                {isCenter && (
+                  <>
+                    <div
+                      className="ambient-beam-shadow-wide absolute -inset-5 sm:-inset-8 rounded-[40px] -z-10 pointer-events-none transition-all duration-500 group-hover:scale-[1.03]"
+                      style={{
+                        background: `conic-gradient(
+                          from var(--beam-ambient-angle, 0deg),
+                          #ff0055 0deg,
+                          #ff3b30 40deg,
+                          #ff9500 75deg,
+                          #00e676 130deg,
+                          #00b0ff 190deg,
+                          #2979ff 250deg,
+                          #d500f9 305deg,
+                          #ff0055 360deg
+                        )`,
+                        filter: "blur(32px) saturate(1.7)",
+                        opacity: 0.5,
+                        animation: "beam-ambient-spin 7s linear infinite",
+                      }}
+                    />
+                    <div
+                      className="ambient-beam-shadow-near absolute -inset-2 sm:-inset-3 rounded-[34px] -z-10 pointer-events-none transition-all duration-500 group-hover:scale-[1.03]"
+                      style={{
+                        background: `conic-gradient(
+                          from var(--beam-ambient-angle, 0deg),
+                          #ff0055 0deg,
+                          #ff3b30 40deg,
+                          #ff9500 75deg,
+                          #00e676 130deg,
+                          #00b0ff 190deg,
+                          #2979ff 250deg,
+                          #d500f9 305deg,
+                          #ff0055 360deg
+                        )`,
+                        filter: "blur(16px) saturate(1.8)",
+                        opacity: 0.65,
+                        animation: "beam-ambient-spin 7s linear infinite",
+                      }}
+                    />
+                  </>
+                )}
+
                 {isCenter ? (
-                  <div className="relative w-full h-full rounded-[24px] sm:rounded-[28px] overflow-hidden border border-white/15 bg-zinc-950 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.03]">
+                  <div className="relative w-full h-full rounded-[24px] sm:rounded-[28px] overflow-hidden border border-white/15 bg-zinc-950 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) group-hover:scale-[1.03]">
                       {/* Background Image - Positioned to keep people's faces visible in landscape */}
                       <img
                         src={evt.image}
@@ -539,11 +582,10 @@ export default function AIConnectX3DGallery() {
               key={evt.id}
               onClick={() => setActiveIdx(idx)}
               aria-label={`Go to event ${idx + 1}`}
-              className={`transition-all duration-300 cursor-pointer rounded-full ${
-                idx === activeIdx
-                  ? "w-7 h-1.5 bg-[#1D4ED8] shadow-sm"
-                  : "w-1.5 h-1.5 bg-[#1D4ED8]/25 hover:bg-[#1D4ED8]/50"
-              }`}
+              className={`transition-all duration-300 cursor-pointer rounded-full ${idx === activeIdx
+                ? "w-7 h-1.5 bg-[#1D4ED8] shadow-sm"
+                : "w-1.5 h-1.5 bg-[#1D4ED8]/25 hover:bg-[#1D4ED8]/50"
+                }`}
             />
           ))}
         </div>
