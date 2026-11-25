@@ -127,7 +127,7 @@ function RevealLine({
       </div>
 
       {/* Main Kinetic Typography Line */}
-      <div className="relative text-2xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-light leading-tight sm:leading-tight md:leading-[1.22] tracking-tight text-left drop-shadow-[0_12px_36px_rgba(0,0,0,0.85)] max-w-4xl lg:max-w-5xl">
+      <div className="relative text-[1.45rem] sm:text-4xl md:text-5xl lg:text-[3.25rem] font-light leading-snug sm:leading-tight md:leading-[1.22] tracking-tight text-left drop-shadow-[0_12px_36px_rgba(0,0,0,0.85)] max-w-4xl lg:max-w-5xl">
         {words.map((word, j) => {
           const wStart =
             revealRange[0] + (j / words.length) * (revealRange[1] - revealRange[0]);
@@ -233,7 +233,7 @@ export default function TextRevealScroll() {
           </div>
 
           {/* Central Optical Stage: lines transition in the exact same reading location */}
-          <div className="relative w-full h-[220px] sm:h-[260px] md:h-[300px]">
+          <div className="relative w-full min-h-[240px] h-[250px] sm:h-[260px] md:h-[300px]">
             {NARRATIVE_LINES.map((line, i) => {
               const b = lineBrackets[i];
               const isLast = i === NARRATIVE_LINES.length - 1;

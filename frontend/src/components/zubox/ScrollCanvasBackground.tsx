@@ -33,6 +33,7 @@ function ScrollCanvasBackgroundComponent({
   const videoLayerRef = useRef<HTMLDivElement>(null);
   const lastPrefetchedFrameRef = useRef(-1);
   const cachedLayoutRef = useRef<{ maxScroll: number; boundaryTop: number; winHeight: number } | null>(null);
+  const lastViewportRef = useRef<{ w: number; h: number; dpr: number }>({ w: 0, h: 0, dpr: 1 });
   const scrollPendingRef = useRef(false);
 
   // Function to load an individual frame
@@ -146,19 +147,30 @@ function ScrollCanvasBackgroundComponent({
     [findClosestLoadedImage]
   );
 
-  // Handle canvas resize cleanly
+  // Handle canvas resize cleanly (Retina sharp up to 1.5x DPR; ignore tiny iOS Safari URL-bar height jitter)
   const resizeCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const w = window.innerWidth;
     const h = window.innerHeight;
-    if (canvas.width !== w || canvas.height !== h) {
-      canvas.width = w;
-      canvas.height = h;
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const prev = lastViewportRef.current;
+
+    // Ignore minor vertical-only resizes (< 120px) triggered by iOS/Android browser chrome hiding/showing on scroll
+    if (prev.w === w && prev.dpr === dpr && Math.abs(prev.h - h) < 120 && canvas.width > 0) {
+      return;
+    }
+
+    lastViewportRef.current = { w, h, dpr };
+    const targetW = Math.round(w * dpr);
+    const targetH = Math.round(h * dpr);
+    if (canvas.width !== targetW || canvas.height !== targetH) {
+      canvas.width = targetW;
+      canvas.height = targetH;
       const ctx = canvas.getContext("2d", { alpha: false });
       if (ctx) {
         ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = "low";
+        ctx.imageSmoothingQuality = "medium";
       }
       renderFrame(currentFrameRef.current);
     }

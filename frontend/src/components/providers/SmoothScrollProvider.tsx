@@ -20,12 +20,16 @@ export default function SmoothScrollProvider({ children }: SmoothScrollProviderP
     // Register GSAP ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
 
-    // Initialize Lenis with lerp ~0.08 and gentle multipliers for reduced sensitivity
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+    // Initialize Lenis tuned for Mac trackpads and smooth wheel scrolling; native touch stays fluid on iOS/Android
     const lenis = new Lenis({
-      lerp: 0.08,
-      smoothWheel: true,
-      wheelMultiplier: 0.75, // Reduced from 1.0 for softer, less twitchy wheel scroll
-      touchMultiplier: 0.9,  // Reduced from 1.5 to prevent hyper-sensitive trackpad/touch scrolls
+      lerp: prefersReducedMotion ? 1 : 0.095,
+      smoothWheel: !prefersReducedMotion,
+      wheelMultiplier: 0.85,
+      touchMultiplier: 1.0,
       autoRaf: false, // GSAP ticker drives the RAF loop
     });
 

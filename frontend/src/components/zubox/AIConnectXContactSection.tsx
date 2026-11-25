@@ -145,12 +145,13 @@ export default function AIConnectXContactSection() {
       className="relative w-full min-h-[190vh] z-10 select-none scroll-mt-20 font-['Outfit']"
     >
       {/* ─── Pinned Sticky Stage: locks contact card in view for a comfortable pause ─── */}
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center px-4 sm:px-6 lg:px-8 py-6">
+      <div className="sticky top-0 h-screen h-[100dvh] w-full flex items-center justify-center px-3.5 sm:px-6 lg:px-8 pt-14 sm:py-6 pb-20 lg:pb-6">
         <div className="max-w-6xl w-full mx-auto">
           {/* ─── Main Content Container (True Glassmorphism Frame) ─── */}
           <motion.div
             style={{ scale, y }}
-            className="relative rounded-[32px] sm:rounded-[44px] overflow-hidden bg-slate-950/70 sm:bg-slate-900/50 backdrop-blur-3xl border border-white/20 shadow-[0_35px_100px_-15px_rgba(0,0,0,0.8),inset_0_1.5px_1px_rgba(255,255,255,0.35),inset_0_-1px_1px_rgba(255,255,255,0.08),0_0_50px_rgba(34,211,238,0.12)] p-6 sm:p-10 lg:p-12 min-h-[500px] flex items-center will-change-transform max-h-[92vh] overflow-y-auto sm:overflow-visible"
+            data-lenis-prevent
+            className="relative rounded-[28px] sm:rounded-[44px] bg-slate-950/70 sm:bg-slate-900/50 backdrop-blur-3xl border border-white/20 shadow-[0_35px_100px_-15px_rgba(0,0,0,0.8),inset_0_1.5px_1px_rgba(255,255,255,0.35),inset_0_-1px_1px_rgba(255,255,255,0.08),0_0_50px_rgba(34,211,238,0.12)] p-5 sm:p-10 lg:p-12 sm:min-h-[500px] flex items-center will-change-transform max-h-[82dvh] sm:max-h-[90dvh] overflow-y-auto lg:overflow-visible overscroll-contain touch-pan-y"
           >
           {/* Frosted Glass Specular Sheen & Atmospheric Overlays */}
           <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-cyan-400/25 via-sky-500/10 to-transparent rounded-full blur-3xl pointer-events-none" />
@@ -158,19 +159,19 @@ export default function AIConnectXContactSection() {
           <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-white/[0.02] pointer-events-none" />
 
           {/* ════ Content Grid: Left Welcome Column + Right Floating Glass Card ════ */}
-          <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+          <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-8 items-center">
             
             {/* ─── LEFT COLUMN: Brand Logo, "Welcome!", Mission & "Learn More" ─── */}
             <div className="lg:col-span-7 flex flex-col items-start pr-0 lg:pr-6">
               {/* Minimalist Brandmark Icon */}
-              <div className="mb-6 flex items-center gap-3">
-                <span className="px-3 py-1 rounded-full bg-cyan-950/50 border border-cyan-400/30 text-xs font-mono font-bold tracking-[0.25em] text-cyan-300 uppercase shadow-[0_0_15px_rgba(34,211,238,0.2)]">
+              <div className="mb-3 sm:mb-6 flex items-center gap-3">
+                <span className="px-3 py-1 rounded-full bg-cyan-950/50 border border-cyan-400/30 text-[10px] sm:text-xs font-mono font-bold tracking-[0.25em] text-cyan-300 uppercase shadow-[0_0_15px_rgba(34,211,238,0.2)]">
                   05 / TRANSMISSION HUB
                 </span>
               </div>
 
               {/* Bold Title: "Welcome!" */}
-              <h2 className="text-5xl sm:text-7xl lg:text-8xl font-black text-white tracking-tight leading-none">
+              <h2 className="text-4xl sm:text-7xl lg:text-8xl font-black text-white tracking-tight leading-none">
                 Welcome!
               </h2>
 
@@ -217,7 +218,7 @@ export default function AIConnectXContactSection() {
             {/* ─── RIGHT COLUMN: High-Definition Frosted Glass Form Card ─── */}
             <div className="lg:col-span-5 flex justify-center lg:justify-end">
               <div
-                className="relative w-full max-w-[390px] sm:max-w-[430px] rounded-[28px] sm:rounded-[36px] bg-slate-950/40 backdrop-blur-2xl border border-white/30 shadow-[0_30px_70px_rgba(0,0,0,0.6),inset_0_1.5px_2px_rgba(255,255,255,0.45),inset_0_-1px_2px_rgba(255,255,255,0.1),0_0_40px_rgba(34,211,238,0.2)] p-7 sm:p-9 flex flex-col justify-between overflow-hidden"
+                className="relative w-full max-w-[390px] sm:max-w-[430px] rounded-[24px] sm:rounded-[36px] bg-slate-950/40 backdrop-blur-2xl border border-white/30 shadow-[0_30px_70px_rgba(0,0,0,0.6),inset_0_1.5px_2px_rgba(255,255,255,0.45),inset_0_-1px_2px_rgba(255,255,255,0.1),0_0_40px_rgba(34,211,238,0.2)] p-5 sm:p-9 flex flex-col justify-between overflow-hidden"
               >
                 {/* Internal Refraction Glow Orbs */}
                 <div className="absolute -top-16 -right-16 w-52 h-52 bg-cyan-400/25 rounded-full blur-3xl pointer-events-none" />
@@ -253,7 +254,7 @@ export default function AIConnectXContactSection() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="Your Full Name"
-                        className="w-full px-5 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.12] focus:bg-white/[0.16] backdrop-blur-xl border border-white/25 text-sm text-white placeholder-slate-300/60 outline-none transition-all duration-300 focus:border-cyan-300 focus:shadow-[0_0_24px_rgba(34,211,238,0.45),inset_0_1.5px_2px_rgba(255,255,255,0.35)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.3)]"
+                        className="w-full px-5 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.12] focus:bg-white/[0.16] backdrop-blur-xl border border-white/25 text-base sm:text-sm text-white placeholder-slate-300/60 outline-none transition-all duration-300 focus:border-cyan-300 focus:shadow-[0_0_24px_rgba(34,211,238,0.45),inset_0_1.5px_2px_rgba(255,255,255,0.35)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.3)]"
                       />
                     </div>
 
@@ -268,7 +269,7 @@ export default function AIConnectXContactSection() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="aiconnectx@universalai.in"
-                        className="w-full px-5 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.12] focus:bg-white/[0.16] backdrop-blur-xl border border-white/25 text-sm text-white placeholder-slate-300/60 outline-none transition-all duration-300 focus:border-cyan-300 focus:shadow-[0_0_24px_rgba(34,211,238,0.45),inset_0_1.5px_2px_rgba(255,255,255,0.35)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.3)]"
+                        className="w-full px-5 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.12] focus:bg-white/[0.16] backdrop-blur-xl border border-white/25 text-base sm:text-sm text-white placeholder-slate-300/60 outline-none transition-all duration-300 focus:border-cyan-300 focus:shadow-[0_0_24px_rgba(34,211,238,0.45),inset_0_1.5px_2px_rgba(255,255,255,0.35)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.3)]"
                       />
                     </div>
 
@@ -282,7 +283,7 @@ export default function AIConnectXContactSection() {
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         placeholder="Write your transmission..."
-                        className="w-full px-5 py-2.5 rounded-2xl bg-white/[0.08] hover:bg-white/[0.12] focus:bg-white/[0.16] backdrop-blur-xl border border-white/25 text-sm text-white placeholder-slate-300/60 outline-none transition-all duration-300 focus:border-cyan-300 focus:shadow-[0_0_24px_rgba(34,211,238,0.45),inset_0_1.5px_2px_rgba(255,255,255,0.35)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.3)] resize-none"
+                        className="w-full px-5 py-2.5 rounded-2xl bg-white/[0.08] hover:bg-white/[0.12] focus:bg-white/[0.16] backdrop-blur-xl border border-white/25 text-base sm:text-sm text-white placeholder-slate-300/60 outline-none transition-all duration-300 focus:border-cyan-300 focus:shadow-[0_0_24px_rgba(34,211,238,0.45),inset_0_1.5px_2px_rgba(255,255,255,0.35)] shadow-[inset_0_1.5px_2px_rgba(255,255,255,0.2),0_4px_16px_rgba(0,0,0,0.3)] resize-none"
                       />
                     </div>
 

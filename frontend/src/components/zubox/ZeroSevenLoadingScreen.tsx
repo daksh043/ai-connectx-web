@@ -291,15 +291,15 @@ export default function ZeroSevenLoadingScreen({
           key="07-rainbow-matrix-screen"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.25, filter: "blur(22px)" }}
-          transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-[99999] bg-black/25 backdrop-blur-[2px] text-white flex flex-col items-center justify-center p-4 select-none overflow-hidden"
+          exit={{ opacity: 0, scale: 1.15 }}
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed inset-0 z-[99999] bg-black/25 backdrop-blur-[2px] text-white flex flex-col items-center justify-center p-4 pb-[calc(env(safe-area-inset-bottom,0px)+1rem)] pt-[calc(env(safe-area-inset-top,0px)+1rem)] select-none overflow-hidden"
         >
           {/* Top Identifier Badge */}
           <motion.div
             animate={isZoomingIn ? { opacity: 0, y: -25, scale: 0.9 } : { opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.4 }}
-            className="absolute top-5 z-30 flex flex-col items-center gap-1 pointer-events-none"
+            className="absolute top-[calc(env(safe-area-inset-top,0px)+1.25rem)] z-30 flex flex-col items-center gap-1 pointer-events-none"
           >
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-400/10 border border-teal-400/30 text-teal-300 font-mono text-[11px] uppercase tracking-widest backdrop-blur-md shadow-[0_0_20px_rgba(45,212,191,0.25)]">
               <RotateCw className="w-3.5 h-3.5 text-teal-400 animate-spin" />
@@ -310,7 +310,7 @@ export default function ZeroSevenLoadingScreen({
           </motion.div>
 
           {/* Concentric Rotating Galaxy of AI Model Logos Orbiting Central ConnectX Logo */}
-          <div className="relative w-full max-w-4xl h-[480px] sm:h-[580px] flex items-center justify-center">
+          <div className="relative w-full max-w-4xl h-[340px] sm:h-[480px] md:h-[580px] flex items-center justify-center scale-[0.58] sm:scale-[0.82] md:scale-100 will-change-transform">
             {/* Ambient Chromatic Core Halo */}
             <motion.div
               animate={isZoomingIn ? { scale: 3, opacity: 0 } : { scale: 1, opacity: 1 }}
@@ -420,14 +420,12 @@ export default function ZeroSevenLoadingScreen({
               animate={
                 isZoomingIn
                   ? {
-                      scale: 14,
+                      scale: 8,
                       opacity: 0,
-                      filter: "blur(18px)",
                     }
                   : {
                       scale: [1, 1.04, 1],
                       opacity: 1,
-                      filter: "blur(0px)",
                     }
               }
               transition={

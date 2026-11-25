@@ -132,7 +132,7 @@ export default function ProjectsPage() {
       : PROJECTS_DATA.filter((p) => p.category === selectedCategory);
 
   return (
-    <div className="relative min-h-screen bg-[#050507] text-white selection:bg-teal-400 selection:text-black font-sans antialiased overflow-x-hidden">
+    <div className="relative min-h-[100dvh] bg-[#050507] text-white selection:bg-teal-400 selection:text-black font-sans antialiased overflow-x-clip">
       {/* Ambient living Soffit WebGL2 background at low opacity for stunning aesthetic */}
       <div className="fixed inset-0 pointer-events-none z-0 opacity-40">
         <SoffitGradientCanvas enableEvents={false} />

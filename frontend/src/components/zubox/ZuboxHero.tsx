@@ -203,11 +203,11 @@ export default function AIConnectXHero() {
       className="relative min-h-[220vh] w-full select-none z-10"
     >
       {/* Sticky Viewport Stage - Perfectly locks and pauses at top-0 */}
-      <div className="sticky top-0 h-screen h-[100dvh] w-full flex flex-col justify-between pt-20 sm:pt-28 pb-10 sm:pb-12 px-5 sm:px-10 lg:px-12 text-left pointer-events-none">
+      <div className="sticky top-0 h-screen h-[100dvh] w-full flex flex-col justify-between pt-[calc(env(safe-area-inset-top,0px)+4.75rem)] sm:pt-28 pb-20 sm:pb-12 px-5 sm:px-10 lg:px-12 text-left pointer-events-none">
         {/* ─── Hero Left Content Cluster (Clean, fully left-aligned with zero background box) ─── */}
         <motion.div
           style={{ opacity: contentOpacity, scale: contentScale, y: contentY }}
-          className="my-auto py-6 sm:py-8 relative flex flex-col items-start w-full max-w-3xl text-left pointer-events-auto will-change-transform"
+          className="my-auto py-4 sm:py-8 relative flex flex-col items-start w-full max-w-3xl text-left pointer-events-auto will-change-transform"
         >
           {/* Seamless Blended Dark Atmosphere (Naturally feathered into canvas background without blurring) */}
           <div
@@ -237,7 +237,7 @@ export default function AIConnectXHero() {
 
             {/* High-Impact Modern Typographic Headline (Refined, perfectly scaled) */}
             <div className="relative font-sans">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem] font-black tracking-tight leading-[0.95] flex items-center select-none text-white drop-shadow-[0_8px_32px_rgba(0,0,0,0.95)]">
+              <h1 className="text-[2.45rem] sm:text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem] font-black tracking-tight leading-[0.95] flex items-center select-none text-white drop-shadow-[0_8px_32px_rgba(0,0,0,0.95)]">
                 {/* "AI" in Bold Crisp White */}
                 <motion.span
                   initial={{ opacity: 0, x: -16 }}
@@ -275,7 +275,7 @@ export default function AIConnectXHero() {
           </div>
 
           {/* 2. Core Focus Statement (Connecting Talent. Technology. Industry.) */}
-          <div className="flex flex-wrap items-center gap-x-5 sm:gap-x-7 md:gap-x-8 gap-y-2 mt-4 sm:mt-5 font-['Outfit',sans-serif] font-bold tracking-tight text-xl sm:text-2xl md:text-3xl select-none text-left">
+          <div className="flex flex-wrap items-center gap-x-4 sm:gap-x-7 md:gap-x-8 gap-y-1.5 sm:gap-y-2 mt-4 sm:mt-5 font-['Outfit',sans-serif] font-bold tracking-tight text-lg sm:text-2xl md:text-3xl select-none text-left">
             <span>
               <span className="text-white">Connecting </span>
               <span className="bg-gradient-to-r from-cyan-300 via-sky-300 to-blue-500 bg-clip-text text-transparent">
@@ -316,7 +316,7 @@ export default function AIConnectXHero() {
         {/* Subtle Scroll Cue */}
         <motion.div
           style={{ opacity: contentOpacity }}
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-70 hover:opacity-100 transition-opacity pointer-events-auto"
+          className="absolute bottom-[calc(env(safe-area-inset-bottom,0px)+4.5rem)] lg:bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-70 hover:opacity-100 transition-opacity pointer-events-auto"
         >
           <button
             onClick={() => handleScrollTo("text-reveal")}

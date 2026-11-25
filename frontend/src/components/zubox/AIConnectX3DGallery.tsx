@@ -451,11 +451,14 @@ export default function AIConnectX3DGallery() {
                   opacity,
                   pointerEvents: isInteractiveVisible ? "auto" : "none",
                   borderRadius: `${outerRadius}px`,
+                  backfaceVisibility: "hidden",
+                  WebkitBackfaceVisibility: "hidden",
+                  willChange: isInteractiveVisible ? "transform, opacity" : "auto",
                   transition: isDragging
                     ? "opacity 0.15s ease-out, transform 0.04s ease-out"
                     : "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
-                className={`absolute w-[310px] sm:w-[480px] md:w-[600px] lg:w-[720px] h-[210px] sm:h-[310px] md:h-[380px] lg:h-[440px] cursor-pointer group ${
+                className={`absolute w-[calc(100vw-40px)] max-w-[340px] sm:max-w-none sm:w-[460px] md:w-[580px] lg:w-[680px] xl:w-[720px] h-[225px] sm:h-[300px] md:h-[370px] lg:h-[420px] xl:h-[440px] max-h-[54dvh] sm:max-h-[58dvh] cursor-pointer group ${
                   isCenter
                     ? "shadow-[0_20px_45px_rgba(0,0,0,0.75)]"
                     : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
@@ -611,7 +614,7 @@ export default function AIConnectX3DGallery() {
         </div>
 
         {/* ─── Bottom Pagination Dots ─── */}
-        <div className="w-full flex items-center justify-center gap-2 pt-2 pb-2 z-20 shrink-0 [text-shadow:none]">
+        <div className="w-full flex items-center justify-center gap-2 pt-2 pb-[calc(env(safe-area-inset-bottom,0px)+3.5rem)] lg:pb-2 z-20 shrink-0 [text-shadow:none]">
           {events.map((evt, idx) => (
             <button
               key={evt.id}
@@ -642,7 +645,8 @@ export default function AIConnectX3DGallery() {
         createPortal(
           <div
             data-media-modal="true"
-            className="media-modal-active fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200 select-auto"
+            data-lenis-prevent
+            className="media-modal-active fixed inset-0 z-[99999] flex items-center justify-center p-3 pb-[calc(env(safe-area-inset-bottom,0px)+0.75rem)] sm:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200 select-auto"
             onClick={(e) => {
               if (e.target === e.currentTarget) setSelectedEvent(null);
             }}
@@ -652,7 +656,8 @@ export default function AIConnectX3DGallery() {
             <div
               role="dialog"
               aria-modal="true"
-              className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl bg-zinc-950/95 border border-white/20 p-5 sm:p-8 shadow-[0_30px_90px_rgba(0,0,0,0.95)] text-white focus:outline-none"
+              data-lenis-prevent
+              className="relative w-full max-w-3xl max-h-[88dvh] sm:max-h-[90vh] overflow-y-auto overscroll-contain touch-pan-y rounded-3xl bg-zinc-950/95 border border-white/20 p-4 sm:p-8 shadow-[0_30px_90px_rgba(0,0,0,0.95)] text-white focus:outline-none"
             >
               {/* Header */}
               <div className="flex items-start justify-between pb-4 border-b border-white/10 mb-5">

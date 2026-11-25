@@ -339,7 +339,7 @@ const CSS =
   ":where(.kwf) ul{list-style:none}" +
   ".kwf .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}" +
   ".kwf-tile{position:absolute;inset:0;width:100%;height:100%;max-width:none;z-index:-1;display:block;pointer-events:none}" +
-  ".kwf-in-wrap{position:relative;padding:1cqw 1.5cqw 1cqw;max-height:50vh;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box}" +
+  ".kwf-in-wrap{position:relative;padding:1.4cqw 1.5cqw calc(1.2cqw + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box}" +
   ".kwf-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1.5cqw;min-height:auto;margin-bottom:0.8cqw}" +
   ".kwf-motto{font-size:clamp(16px,2.2cqw,34px);line-height:.96;font-weight:500;letter-spacing:-.012em}" +
   ".kwf-motto span{display:block}" +
@@ -371,7 +371,7 @@ const CSS =
   ".kwf-reg{flex:1;min-width:0;opacity:0.8}" +
   ".kwf-legal{display:flex;gap:.35em;white-space:nowrap}" +
   "@container (max-width: 720px){" +
-  ".kwf-in-wrap{padding:12px;max-height:none}" +
+  ".kwf-in-wrap{padding:16px 14px calc(16px + env(safe-area-inset-bottom,0px));max-height:none}" +
   ".kwf-top{min-height:auto;margin-bottom:8px}" +
   ".kwf-motto{font-size:clamp(18px,5.5cqw,26px)}" +
   ".kwf-row{grid-template-columns:1fr 1fr;gap:12px 10px;font-size:11px}" +

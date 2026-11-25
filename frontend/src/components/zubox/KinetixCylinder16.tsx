@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { createPortal } from "react-dom";
 import {
   motion,
   useMotionValue,
@@ -54,19 +55,25 @@ export interface SceneParameters {
  */
 export function sceneFromExpansion(
   expansion: number,
-  viewportWidth?: number
+  viewportWidth?: number,
+  viewportHeight?: number
 ): SceneParameters {
   const e = clamp(expansion, 0, 1);
   const vw =
     viewportWidth ??
     (typeof window !== "undefined" ? window.innerWidth : 1200);
+  const vh =
+    viewportHeight ??
+    (typeof window !== "undefined" ? window.innerHeight : 820);
   const isMobile = vw < 768;
   const isSmallMobile = vw < 420;
+  // Scale gently on shorter screens (iPhone SE 667px, MacBook Air 1280x720) so cards never clip vertically
+  const vhFactor = clamp(vh / 800, 0.72, 1.05);
 
   const baseRadius = isSmallMobile ? 255 : isMobile ? 320 : 460;
-  const baseScale = isSmallMobile ? 0.36 : isMobile ? 0.42 : 0.52;
+  const baseScale = (isSmallMobile ? 0.36 : isMobile ? 0.42 : 0.52) * vhFactor;
   const targetRadius = isSmallMobile ? 1050 : isMobile ? 1350 : 1800;
-  const targetScale = isSmallMobile ? 1.35 : isMobile ? 1.7 : 2.3;
+  const targetScale = (isSmallMobile ? 1.25 : isMobile ? 1.55 : 2.15) * vhFactor;
   const basePerspective = isMobile ? 750 : 1000;
 
   return {
@@ -548,15 +555,37 @@ export default function KinetixCylinder16({
   isPausedRef.current = isPaused;
   const muted = true;
 
-  // Toggle media-modal-open on body to hide the taskbar/navbar when reel video is open
+  // Scroll-lock body & hide navbar when reel modal is open (matches Event modal portal behavior)
   useEffect(() => {
-    if (activeReelModal) {
-      document.body.classList.add("media-modal-open");
-    } else {
-      document.body.classList.remove("media-modal-open");
-    }
+    if (!activeReelModal) return;
+
+    const scrollY = window.scrollY;
+    const originalStyles = {
+      position: document.body.style.position,
+      top: document.body.style.top,
+      left: document.body.style.left,
+      right: document.body.style.right,
+      overflow: document.body.style.overflow,
+      width: document.body.style.width,
+    };
+
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.overflow = "hidden";
+    document.body.style.width = "100%";
+    document.body.classList.add("media-modal-open");
+
     return () => {
+      document.body.style.position = originalStyles.position;
+      document.body.style.top = originalStyles.top;
+      document.body.style.left = originalStyles.left;
+      document.body.style.right = originalStyles.right;
+      document.body.style.overflow = originalStyles.overflow;
+      document.body.style.width = originalStyles.width;
       document.body.classList.remove("media-modal-open");
+      window.scrollTo(0, scrollY);
     };
   }, [activeReelModal]);
 
@@ -1158,7 +1187,7 @@ export default function KinetixCylinder16({
         isDraggingRef.current = false;
       }}
       className={`relative overflow-hidden bg-transparent text-[#F8F3F0] select-none cursor-grab active:cursor-grabbing font-sans touch-pan-y ${
-        isPageEmbedded ? "w-full h-full min-h-[750px]" : "w-screen h-screen"
+        isPageEmbedded ? "w-full h-full min-h-[100dvh]" : "w-screen h-screen h-[100dvh]"
       }`}
     >
       {/* Hidden backdrop ref to satisfy animation hooks without an opaque layer */}
@@ -1344,7 +1373,7 @@ export default function KinetixCylinder16({
         className={`pointer-events-none ${pos} inset-4 md:inset-6 z-30 flex flex-col justify-center p-6 md:p-8`}
       >
 
-        <div className="my-auto relative flex flex-col items-center text-center max-w-2xl mx-auto pointer-events-none px-6 sm:px-10 py-6 sm:py-8">
+        <div className="my-auto relative flex flex-col items-center text-center max-w-2xl mx-auto pointer-events-none px-4 sm:px-10 py-6 pb-16 lg:pb-8">
           <h1 className="relative text-4xl sm:text-6xl md:text-7xl font-black tracking-[-0.04em] leading-[0.94] text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
             Our team.
           </h1>
@@ -1368,64 +1397,71 @@ export default function KinetixCylinder16({
         </div>
       )}
 
-      {/* REEL DETAIL MODAL */}
-      {activeReelModal && (
-        <div
-          data-no-drag
-          data-media-modal="true"
-          className="media-modal-active fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 animate-in fade-in duration-200"
-          onClick={() => setActiveReelModal(null)}
-        >
+      {/* REEL DETAIL MODAL (Portaled to document.body to prevent 3D cylinder transform glitches) */}
+      {activeReelModal &&
+        typeof document !== "undefined" &&
+        createPortal(
           <div
-            onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-sm sm:max-w-md max-h-[88dvh] overflow-hidden flex flex-col bg-[#014BAA] border-2 border-[#F8F3F0] rounded-2xl sm:rounded-3xl shadow-[0_28px_80px_rgba(1,75,170,0.95)] text-[#F8F3F0]"
+            data-no-drag
+            data-media-modal="true"
+            data-lenis-prevent
+            className="media-modal-active fixed inset-0 z-[99999] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 pb-[calc(env(safe-area-inset-bottom,0px)+1rem)] animate-in fade-in duration-200 select-auto"
+            onClick={() => setActiveReelModal(null)}
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
           >
-            <div className="relative aspect-[9/12] w-full bg-black">
-              <div
-                className="absolute inset-0"
-                style={{ filter: "none", mixBlendMode: "normal" }}
-              >
-                {activeReelModal.videoUrl ? (
-                  <video
-                    src={activeReelModal.videoUrl}
-                    poster={activeReelModal.coverUrl}
-                    autoPlay
-                    controls
-                    playsInline
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <img
-                    src={activeReelModal.coverUrl}
-                    alt={activeReelModal.director}
-                    className="w-full h-full object-cover object-center"
-                  />
-                )}
-              </div>
-              <button
-                type="button"
-                onClick={() => setActiveReelModal(null)}
-                className="absolute top-4 right-4 px-3.5 py-1.5 rounded-full bg-[#F8F3F0] text-[#014BAA] text-xs font-mono font-bold uppercase border border-[#F8F3F0] hover:bg-[#014BAA] hover:text-[#F8F3F0] transition"
-              >
-                Close [Esc]
-              </button>
-            </div>
-            <div className="p-6 flex items-center justify-between bg-[#014BAA] border-t border-[#F8F3F0]/25">
-              <div>
-                <div className="text-xs font-mono text-[#F8F3F0]/75">
-                  {activeReelModal.code} · {activeReelModal.director}
+            <div
+              onClick={(e) => e.stopPropagation()}
+              data-lenis-prevent
+              className="relative w-full max-w-sm sm:max-w-md max-h-[88dvh] overflow-y-auto overscroll-contain flex flex-col bg-[#014BAA] border-2 border-[#F8F3F0] rounded-2xl sm:rounded-3xl shadow-[0_28px_80px_rgba(1,75,170,0.95)] text-[#F8F3F0]"
+            >
+              <div className="relative aspect-[9/12] w-full bg-black shrink-0">
+                <div
+                  className="absolute inset-0"
+                  style={{ filter: "none", mixBlendMode: "normal" }}
+                >
+                  {activeReelModal.videoUrl ? (
+                    <video
+                      src={activeReelModal.videoUrl}
+                      poster={activeReelModal.coverUrl}
+                      autoPlay
+                      controls
+                      playsInline
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <img
+                      src={activeReelModal.coverUrl}
+                      alt={activeReelModal.director}
+                      className="w-full h-full object-cover object-center"
+                    />
+                  )}
                 </div>
-                <h2 className="text-xl font-bold text-[#F8F3F0] mt-0.5">
-                  {activeReelModal.title}
-                </h2>
+                <button
+                  type="button"
+                  onClick={() => setActiveReelModal(null)}
+                  className="absolute top-4 right-4 px-3.5 py-1.5 rounded-full bg-[#F8F3F0] text-[#014BAA] text-xs font-mono font-bold uppercase border border-[#F8F3F0] hover:bg-[#014BAA] hover:text-[#F8F3F0] transition cursor-pointer"
+                >
+                  Close [Esc]
+                </button>
               </div>
-              <span className="px-3 py-1 rounded-full bg-[#F8F3F0] text-[#014BAA] text-xs font-mono font-bold">
-                {activeReelModal.duration}
-              </span>
+              <div className="p-5 sm:p-6 flex items-center justify-between bg-[#014BAA] border-t border-[#F8F3F0]/25">
+                <div>
+                  <div className="text-xs font-mono text-[#F8F3F0]/75">
+                    {activeReelModal.code} · {activeReelModal.director}
+                  </div>
+                  <h2 className="text-lg sm:text-xl font-bold text-[#F8F3F0] mt-0.5">
+                    {activeReelModal.title}
+                  </h2>
+                </div>
+                <span className="px-3 py-1 rounded-full bg-[#F8F3F0] text-[#014BAA] text-xs font-mono font-bold shrink-0">
+                  {activeReelModal.duration}
+                </span>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
 
       {/* ARCHITECTURE DRAWER */}
       {inspectorOpen && (

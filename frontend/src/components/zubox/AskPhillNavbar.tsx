@@ -120,16 +120,16 @@ export default function AskPhillNavbar({
     };
   }, []);
 
-  // Close when clicking outside
+  // Close when tapping or clicking outside
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
+    const handleClickOutside = (e: PointerEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setIsOpen(false);
         setIsHoveredPreview(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("pointerdown", handleClickOutside);
+    return () => document.removeEventListener("pointerdown", handleClickOutside);
   }, []);
 
   // Ask Phill scroll observer: hide mobile menu button when footer is visible
@@ -154,7 +154,7 @@ export default function AskPhillNavbar({
       {/* 1. TOP CENTER: LOGO (Ask Phill layout: dynamic difference / normal mode)   */}
       {/* ------------------------------------------------------------------------- */}
       <header
-        className="pointer-events-none fixed left-1/2 top-4 z-40 flex -translate-x-1/2 justify-center transition-colors duration-300 lg:top-7"
+        className="pointer-events-none fixed left-1/2 top-[calc(env(safe-area-inset-top,0px)+1rem)] z-40 flex -translate-x-1/2 justify-center transition-colors duration-300 lg:top-7"
         style={{ mixBlendMode: isLightSection ? "normal" : "difference" }}
       >
         <motion.div
@@ -190,7 +190,7 @@ export default function AskPhillNavbar({
       {/* ------------------------------------------------------------------------- */}
       {/* 2. TOP RIGHT: CONTACT PILL BUTTON (Ask Phill layout + BouncyBackground)   */}
       {/* ------------------------------------------------------------------------- */}
-      <div className="fixed right-5 top-4 z-40 hidden lg:block lg:top-6">
+      <div className="fixed right-5 top-[calc(env(safe-area-inset-top,0px)+1rem)] z-40 hidden lg:block lg:top-6">
         <motion.div
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.95 }}
@@ -221,7 +221,7 @@ export default function AskPhillNavbar({
         }}
         className={`fixed isolate z-50 transition-transform duration-300 ease-out ${
           isFooterVisible ? "translate-y-[200%] lg:translate-y-0" : "translate-y-0"
-        } bottom-5 left-1/2 -translate-x-1/2 lg:bottom-auto lg:left-6 lg:top-6 lg:translate-x-0`}
+        } bottom-[calc(env(safe-area-inset-bottom,0px)+1rem)] left-1/2 -translate-x-1/2 lg:bottom-auto lg:left-6 lg:top-6 lg:translate-x-0`}
       >
         <AnimatePresence mode="wait">
           {!isOpen ? (
@@ -286,7 +286,8 @@ export default function AskPhillNavbar({
               animate={{ height: "auto", width: 176, opacity: 1 }}
               exit={{ height: 42, width: 124, opacity: 0 }}
               transition={springPill}
-              className="relative overflow-hidden rounded-[26px] p-2 text-slate-950 shadow-[0px_12px_40px_rgba(0,0,0,0.55)] select-none"
+              data-lenis-prevent
+              className="relative max-h-[calc(100dvh-6rem)] overflow-y-auto overscroll-contain rounded-[26px] p-2 text-slate-950 shadow-[0px_12px_40px_rgba(0,0,0,0.55)] select-none"
               style={{ backgroundColor: themeColor }}
             >
               {/* Header with Close Button on Mobile */}
