@@ -246,6 +246,22 @@ export default function AIConnectX3DGallery() {
 
   const total = events.length;
 
+  const isDesktop = windowWidth >= 1280;
+  const isLaptop = windowWidth >= 1024;
+  const isTablet = windowWidth >= 640;
+
+  // Shift card stage toward the right half on tablet/desktop so the left side stays blank
+  const baseShiftX = isDesktop
+    ? Math.round(windowWidth * 0.14)
+    : isLaptop
+    ? Math.round(windowWidth * 0.13)
+    : isTablet
+    ? Math.round(windowWidth * 0.11)
+    : 0;
+  const stepX = isDesktop ? 250 : isLaptop ? 210 : isTablet ? 165 : 140;
+  const outerRadius = isTablet ? 28 : 24;
+  const innerRadius = outerRadius - 3;
+
   const handlePrev = useCallback(() => {
     setActiveIdx((prev) => (prev === 0 ? total - 1 : prev - 1));
   }, [total]);
@@ -391,53 +407,60 @@ export default function AIConnectX3DGallery() {
           </div>
         </div>
 
-        {/* ─── 3D Card Stage (Landscape Cards in 3D Perspective) ─── */}
+        {/* ─── 3D Card Stage (Right-aligned deck keeping the left side blank) ─── */}
         <div
           ref={stageRef}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerCancel}
-          style={{ touchAction: "pan-y" }}
+          style={{
+            touchAction: "pan-y",
+            perspectiveOrigin: windowWidth >= 640 ? "64% 50%" : "50% 50%",
+          }}
           className="relative w-full flex-1 flex items-center justify-center [perspective:1400px] overflow-visible my-auto select-none cursor-grab active:cursor-grabbing"
         >
           {events.map((evt, idx) => {
-            let diff = (idx - activeIdx + total) % total;
-            if (diff > total / 2) diff -= total;
+            // Keep active card on the right half and fan upcoming cards rightward,
+            // ensuring passed/hidden cards never occupy the blank left side.
+            const diff = (idx - activeIdx + total) % total;
 
             const isCenter = diff === 0;
-            const isAbsOne = Math.abs(diff) === 1;
+            const isNextOne = diff === 1;
+            const isNextTwo = diff === 2;
+            const isExitingPrev = diff === total - 1;
 
-            const isDesktop = windowWidth >= 1280;
-            const isLaptop = windowWidth >= 1024;
-            const isTablet = windowWidth >= 640;
-            const stepX = isDesktop ? 390 : isLaptop ? 340 : isTablet ? 270 : 180;
-            const outerRadius = isTablet ? 28 : 24;
-            const innerRadius = outerRadius - 3;
+            const relativeX = isExitingPrev
+              ? -Math.round(stepX * 0.12)
+              : diff >= 3
+              ? stepX * 2.35
+              : diff * stepX;
 
-            const currentTranslateX = diff * stepX + dragOffset;
-            const translateZ = isCenter ? 80 : isAbsOne ? -60 : -160;
-            const rotateY = diff * -16;
-            const scale = isCenter ? 1.0 : isAbsOne ? 0.88 : 0.74;
-            const opacity = isCenter ? 1 : isAbsOne ? 0.7 : 0.3;
-            const zIndex = 30 - Math.abs(diff) * 10;
+            const currentTranslateX = baseShiftX + relativeX + dragOffset;
+            const translateZ = isCenter ? 80 : isNextOne ? -50 : -150;
+            const rotateY = isCenter ? 0 : isExitingPrev ? 6 : Math.min(diff, 2) * -15;
+            const scale = isCenter ? 1.0 : isNextOne ? 0.88 : isNextTwo ? 0.76 : isExitingPrev ? 0.92 : 0.68;
+            const opacity = isCenter ? 1 : isNextOne ? 0.78 : isNextTwo ? 0.42 : 0;
+            const zIndex = isCenter ? 30 : isNextOne ? 20 : isNextTwo ? 10 : isExitingPrev ? 25 : 5;
+            const isInteractiveVisible = isCenter || isNextOne || isNextTwo;
 
             return (
               <div
                 key={evt.id}
                 onClick={() => {
-                  if (Math.abs(dragOffset) < 5) setActiveIdx(idx);
+                  if (isInteractiveVisible && Math.abs(dragOffset) < 5) setActiveIdx(idx);
                 }}
                 style={{
                   transform: `translateX(${currentTranslateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
                   zIndex,
                   opacity,
+                  pointerEvents: isInteractiveVisible ? "auto" : "none",
                   borderRadius: `${outerRadius}px`,
                   transition: isDraggingRef.current
                     ? "opacity 0.15s ease-out, transform 0.04s ease-out"
                     : "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
-                className={`absolute w-[310px] sm:w-[480px] md:w-[600px] lg:w-[720px] h-[210px] sm:h-[310px] md:h-[380px] lg:h-[440px] cursor-pointer group ${
+                className={`absolute w-[310px] sm:w-[440px] md:w-[500px] lg:w-[560px] xl:w-[640px] 2xl:w-[700px] h-[210px] sm:h-[290px] md:h-[330px] lg:h-[360px] xl:h-[410px] 2xl:h-[435px] cursor-pointer group ${
                   isCenter
                     ? "shadow-[0_20px_45px_rgba(0,0,0,0.75)]"
                     : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
@@ -592,8 +615,13 @@ export default function AIConnectX3DGallery() {
           })}
         </div>
 
-        {/* ─── Bottom Pagination Dots ─── */}
-        <div className="w-full flex items-center justify-center gap-2 pt-2 pb-2 z-20 shrink-0 [text-shadow:none]">
+        {/* ─── Bottom Pagination Dots (Aligned with shifted card focal point) ─── */}
+        <div
+          style={{
+            transform: isTablet ? `translateX(${baseShiftX}px)` : undefined,
+          }}
+          className="w-full flex items-center justify-center gap-2 pt-2 pb-2 z-20 shrink-0 [text-shadow:none] transition-transform duration-300"
+        >
           {events.map((evt, idx) => (
             <button
               key={evt.id}
