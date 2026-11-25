@@ -342,6 +342,8 @@ export const BASE_COVERS = [
   "/team/ratnadeep.jpg",
   "/team/mahi.jpg",
   "/team/sana.jpg",
+  "/team/parth-mukne.jpg",
+  "/team/angad-mishra.jpg",
   "/team/passport_07.jpg",
   "/team/passport_08.jpg",
   "/team/passport_09.jpg",
@@ -350,8 +352,6 @@ export const BASE_COVERS = [
   "/team/passport_12.jpg",
   "/team/passport_13.jpg",
   "/team/passport_14.jpg",
-  "/team/passport_15.jpg",
-  "/team/passport_16.jpg",
 ];
 
 export const REEL_TITLES = [
@@ -361,6 +361,8 @@ export const REEL_TITLES = [
   "GENERAL SECRETARY",
   "STUDENT ADVISORY - INDUSTRY EVENTS LEAD",
   "STARTUP & INDUSTRY RELATIONS TEAM LEAD",
+  "CORPORATE RELATIONS ASSOCIATE",
+  "STARTUP & INDUSTRY RELATIONS TEAM LEAD",
   "ROBOTICS & PERCEPTION",
   "FULL-STACK ML ENGINEER",
   "DEEP LEARNING SPECIALIST",
@@ -369,8 +371,6 @@ export const REEL_TITLES = [
   "EDGE AI & HARDWARE",
   "DATA PLATFORM ARCHITECT",
   "QUANTUM & TENSOR AI",
-  "APPLIED AI RESEARCHER",
-  "PERCEPTION & SLAM LEAD",
 ];
 
 export const REEL_DIRECTORS = [
@@ -380,6 +380,8 @@ export const REEL_DIRECTORS = [
   "Ratnadeep Patil",
   "Mahi Jain",
   "Sana Khan",
+  "Parth Mukne",
+  "Angad Mishra",
   "Sora Takahashi",
   "Marcus Vance",
   "Ananya Iyer",
@@ -388,8 +390,6 @@ export const REEL_DIRECTORS = [
   "Vikram Malhotra",
   "Nadia Lindqvist",
   "Arjun Mehta",
-  "Chloe Dubois",
-  "Aditya Verma",
 ];
 
 export const ACCENT_PALETTES = [
@@ -397,12 +397,32 @@ export const ACCENT_PALETTES = [
   ["#F8F3F0", "#014BAA"],
 ];
 
+const TEAM_MEMBER_BIOS: Record<string, string> = {
+  "Mr. Pranav More":
+    "Experienced Training & Placement Officer and Assistant Professor with a demonstrated history in education management. Skilled in image processing, big data analytics, data science, Java, and machine learning. Holds a PhD in Computer Science and Engineering.",
+  "Surya Gupta": "Surya Gupta leads AI ConnectX as President.",
+  "Atharva Sarde": "Atharva Sarde serves as Vice President of AI ConnectX.",
+  "Ratnadeep Patil": "Ratnadeep Patil serves as General Secretary of AI ConnectX.",
+  "Mahi Jain": "Mahi Jain leads student advisory and industry events at AI ConnectX.",
+  "Sana Khan": "Sana Khan leads startup and industry relations at AI ConnectX.",
+  "Parth Mukne": "Parth Mukne is a Corporate Relations Associate at AI ConnectX.",
+  "Angad Mishra": "Angad Mishra is the Startup & Industry Relations Team Lead at AI ConnectX.",
+};
+
+const TEAM_MEMBER_LINKEDIN: Record<string, string> = {
+  "Mr. Pranav More": "https://www.linkedin.com/in/pranav-more-892a14131/",
+  "Angad Mishra": "https://www.linkedin.com/in/angad-mishra-34186b380/",
+};
+
 export interface ReelItem {
   id: string;
   index: number;
   code: string;
   title: string;
   director: string;
+  bio: string;
+  linkedinUrl: string;
+  hasLinkedinProfile: boolean;
   duration: string;
   fps: string;
   coverUrl: string;
@@ -422,6 +442,15 @@ export const REEL_LIBRARY: ReelItem[] = Array.from(
       code: `AI—${String(i + 1).padStart(2, "0")}`,
       title: REEL_TITLES[i % REEL_TITLES.length],
       director: REEL_DIRECTORS[i % REEL_DIRECTORS.length],
+      bio:
+        TEAM_MEMBER_BIOS[REEL_DIRECTORS[i % REEL_DIRECTORS.length]] ??
+        `${REEL_DIRECTORS[i % REEL_DIRECTORS.length]} is part of AI ConnectX as ${REEL_TITLES[i % REEL_TITLES.length]}.`,
+      linkedinUrl:
+        TEAM_MEMBER_LINKEDIN[REEL_DIRECTORS[i % REEL_DIRECTORS.length]] ??
+        `https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(REEL_DIRECTORS[i % REEL_DIRECTORS.length])}`,
+      hasLinkedinProfile: Boolean(
+        TEAM_MEMBER_LINKEDIN[REEL_DIRECTORS[i % REEL_DIRECTORS.length]]
+      ),
       duration: `00:${String(14 + ((i * 7) % 45)).padStart(2, "0")}`,
       fps: i % 2 === 0 ? "60 FPS" : "120 FPS",
       coverUrl: BASE_COVERS[i % BASE_COVERS.length],
@@ -1122,6 +1151,9 @@ export default function KinetixCylinder16({
 
   // Pointer drag & swipe
   const handlePointerDown = (e: React.PointerEvent) => {
+    // Clear the previous gesture before no-drag controls return early. Otherwise,
+    // a card click after rotating the carousel is mistaken for the old drag.
+    dragMovedDistanceRef.current = 0;
     if ((e.target as HTMLElement).closest("button, input, [data-no-drag]"))
       return;
     try {
@@ -1133,7 +1165,6 @@ export default function KinetixCylinder16({
     dragStartXRef.current = e.clientX;
     dragStartYRef.current = e.clientY;
     dragStartAngleRef.current = targetRingAngle.get();
-    dragMovedDistanceRef.current = 0;
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
@@ -1301,7 +1332,15 @@ export default function KinetixCylinder16({
                     <h3 className="text-sm font-semibold tracking-tight text-[#F8F3F0] truncate">
                       {reel.title}
                     </h3>
-                    <span className="w-6 h-6 rounded-full bg-[#F8F3F0]/15 border border-[#F8F3F0]/40 backdrop-blur-md flex items-center justify-center text-[#F8F3F0] group-hover:bg-[#F8F3F0] group-hover:text-[#014BAA] transition-colors">
+                    <span
+                      data-no-drag
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setActiveReelModal(reel);
+                      }}
+                      className="pointer-events-auto w-6 h-6 rounded-full bg-[#F8F3F0]/15 border border-[#F8F3F0]/40 backdrop-blur-md flex items-center justify-center text-[#F8F3F0] group-hover:bg-[#F8F3F0] group-hover:text-[#014BAA] transition-colors cursor-pointer"
+                    >
                       <ArrowUpRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
@@ -1437,7 +1476,7 @@ export default function KinetixCylinder16({
             data-no-drag
             data-media-modal="true"
             data-lenis-prevent
-            className="media-modal-active fixed inset-0 z-[99999] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 pb-[calc(env(safe-area-inset-bottom,0px)+1rem)] animate-in fade-in duration-200 select-auto"
+            className="media-modal-active fixed inset-0 z-[99999] bg-[#F8F3F0]/95 backdrop-blur-xl flex items-center justify-center p-4 pb-[calc(env(safe-area-inset-bottom,0px)+1rem)] animate-in fade-in duration-200 select-auto"
             onClick={() => setActiveReelModal(null)}
             onWheel={(e) => e.stopPropagation()}
             onTouchMove={(e) => e.stopPropagation()}
@@ -1445,9 +1484,9 @@ export default function KinetixCylinder16({
             <div
               onClick={(e) => e.stopPropagation()}
               data-lenis-prevent
-              className="relative w-full max-w-sm sm:max-w-md max-h-[88dvh] overflow-y-auto overscroll-contain flex flex-col bg-[#014BAA] border-2 border-[#F8F3F0] rounded-2xl sm:rounded-3xl shadow-[0_28px_80px_rgba(1,75,170,0.95)] text-[#F8F3F0]"
+              className="relative w-full max-w-sm sm:max-w-3xl max-h-[88dvh] overflow-y-auto overscroll-contain flex flex-col sm:flex-row bg-[#014BAA] border-2 border-[#F8F3F0] rounded-2xl sm:rounded-3xl shadow-[0_28px_80px_rgba(1,75,170,0.95)] text-[#F8F3F0]"
             >
-              <div className="relative aspect-[9/12] w-full bg-black shrink-0">
+              <div className="relative aspect-[9/12] w-full sm:w-[42%] sm:aspect-auto sm:min-h-[480px] bg-black shrink-0">
                 <div
                   className="absolute inset-0"
                   style={{ filter: "none", mixBlendMode: "normal" }}
@@ -1477,18 +1516,28 @@ export default function KinetixCylinder16({
                   Close [Esc]
                 </button>
               </div>
-              <div className="p-5 sm:p-6 flex items-center justify-between bg-[#014BAA] border-t border-[#F8F3F0]/25">
-                <div>
-                  <div className="text-xs font-mono text-[#F8F3F0]/75">
-                    {activeReelModal.code} · {activeReelModal.director}
-                  </div>
-                  <h2 className="text-lg sm:text-xl font-bold text-[#F8F3F0] mt-0.5">
-                    {activeReelModal.title}
-                  </h2>
+              <div className="p-5 sm:p-8 flex flex-1 flex-col justify-center bg-[#014BAA] border-t sm:border-t-0 sm:border-l border-[#F8F3F0]/25">
+                <div className="text-xs font-mono text-[#F8F3F0]/75 uppercase tracking-wider">
+                  AI CONNECTX TEAM ? {activeReelModal.code}
                 </div>
-                <span className="px-3 py-1 rounded-full bg-[#F8F3F0] text-[#014BAA] text-xs font-mono font-bold shrink-0">
-                  {activeReelModal.duration}
-                </span>
+                <h2 className="text-2xl sm:text-3xl font-bold text-[#F8F3F0] mt-2">
+                  {activeReelModal.director}
+                </h2>
+                <p className="text-sm sm:text-base font-semibold text-[#F8F3F0]/85 mt-2">
+                  {activeReelModal.title}
+                </p>
+                <p className="text-sm leading-relaxed text-[#F8F3F0]/80 mt-5">
+                  {activeReelModal.bio}
+                </p>
+                <a
+                  href={activeReelModal.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex w-fit items-center gap-2 mt-7 px-4 py-2.5 rounded-full bg-[#F8F3F0] text-[#014BAA] text-sm font-semibold hover:bg-white transition-colors"
+                >
+                  {activeReelModal.hasLinkedinProfile ? "LinkedIn Profile" : "Find on LinkedIn"}
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
               </div>
             </div>
           </div>,

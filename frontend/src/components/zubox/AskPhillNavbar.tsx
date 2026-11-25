@@ -327,6 +327,35 @@ export default function AskPhillNavbar({
           )}
         </AnimatePresence>
       </div>
+      {/* ------------------------------------------------------------------------- */}
+      {/* 3. TOP RIGHT: CONTACT BUTTON (fixed cyan pill)                            */}
+      {/* ------------------------------------------------------------------------- */}
+      <div
+        className={`fixed right-[calc(env(safe-area-inset-right,0px)+1rem)] top-[calc(env(safe-area-inset-top,0px)+1rem)] z-40 lg:right-6 lg:top-6 transition-opacity duration-300 ${
+          isFooterVisible ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+      >
+        <motion.div
+          whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+          whileTap={prefersReducedMotion ? undefined : { scale: 0.94 }}
+          transition={springBouncy}
+        >
+          <a
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+              const el = document.getElementById("contact");
+              if (el) {
+                el.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" });
+              }
+            }}
+            className="inline-flex items-center justify-center h-[42px] px-5 rounded-full font-bold text-[0.9375rem] tracking-tight shadow-[0px_4px_22px_rgba(0,180,216,0.4)] select-none cursor-pointer transition-shadow hover:shadow-[0px_6px_28px_rgba(0,180,216,0.55)]"
+            style={{ backgroundColor: themeColor, color: accentColor }}
+          >
+            Contact
+          </a>
+        </motion.div>
+      </div>
     </>
   );
 }
