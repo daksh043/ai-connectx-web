@@ -102,11 +102,6 @@
   }
 }
 
-.group:hover .ambient-beam-shadow-wide,
-.group:hover .ambient-beam-shadow-near {
-  animation-duration: 14s !important;
-}
-
 @layer base {
   :root {
     --background: #ffffff;

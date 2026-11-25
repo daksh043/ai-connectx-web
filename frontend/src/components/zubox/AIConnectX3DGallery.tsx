@@ -10,6 +10,9 @@ import {
   X,
 } from "lucide-react";
 
+const RAINBOW_CONIC_GRADIENT =
+  "conic-gradient(from var(--beam-ambient-angle, 0deg), #ff0055 0deg, #ff3b30 40deg, #ff9500 75deg, #00e676 130deg, #00b0ff 190deg, #2979ff 250deg, #d500f9 305deg, #ff0055 360deg)";
+
 // Helper to parse markdown links [label](url) in event descriptions
 function renderFormattedText(text: string) {
   const parts: (string | React.ReactNode)[] = [];
@@ -409,6 +412,8 @@ export default function AIConnectX3DGallery() {
             const isLaptop = windowWidth >= 1024;
             const isTablet = windowWidth >= 640;
             const stepX = isDesktop ? 390 : isLaptop ? 340 : isTablet ? 270 : 180;
+            const outerRadius = isTablet ? 28 : 24;
+            const innerRadius = outerRadius - 3;
 
             const currentTranslateX = diff * stepX + dragOffset;
             const translateZ = isCenter ? 80 : isAbsOne ? -60 : -160;
@@ -427,114 +432,126 @@ export default function AIConnectX3DGallery() {
                   transform: `translateX(${currentTranslateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
                   zIndex,
                   opacity,
+                  borderRadius: `${outerRadius}px`,
                   transition: isDraggingRef.current
                     ? "opacity 0.15s ease-out, transform 0.04s ease-out"
                     : "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
-                className={`absolute w-[310px] sm:w-[480px] md:w-[600px] lg:w-[720px] h-[210px] sm:h-[310px] md:h-[380px] lg:h-[440px] rounded-[24px] sm:rounded-[28px] cursor-pointer group ${isCenter
-                  ? "shadow-[0_18px_40px_rgba(0,0,0,0.35)]"
-                  : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
-                  }`}
+                className={`absolute w-[310px] sm:w-[480px] md:w-[600px] lg:w-[720px] h-[210px] sm:h-[310px] md:h-[380px] lg:h-[440px] cursor-pointer group ${
+                  isCenter
+                    ? "shadow-[0_20px_45px_rgba(0,0,0,0.75)]"
+                    : "shadow-[0_15px_40px_rgba(0,0,0,0.7)]"
+                }`}
               >
-                {/* ─── Soft Diffused Ambient RGB Light Behind Card (No Sharp Border Line) ─── */}
-                {isCenter && (
-                  <>
-                    <div
-                      className="ambient-beam-shadow-wide absolute -inset-5 sm:-inset-8 rounded-[40px] -z-10 pointer-events-none transition-all duration-500 group-hover:scale-[1.03]"
-                      style={{
-                        background: `conic-gradient(
-                          from var(--beam-ambient-angle, 0deg),
-                          #ff0055 0deg,
-                          #ff3b30 40deg,
-                          #ff9500 75deg,
-                          #00e676 130deg,
-                          #00b0ff 190deg,
-                          #2979ff 250deg,
-                          #d500f9 305deg,
-                          #ff0055 360deg
-                        )`,
-                        filter: "blur(32px) saturate(1.7)",
-                        opacity: 0.5,
-                        animation: "beam-ambient-spin 7s linear infinite",
-                      }}
-                    />
-                    <div
-                      className="ambient-beam-shadow-near absolute -inset-2 sm:-inset-3 rounded-[34px] -z-10 pointer-events-none transition-all duration-500 group-hover:scale-[1.03]"
-                      style={{
-                        background: `conic-gradient(
-                          from var(--beam-ambient-angle, 0deg),
-                          #ff0055 0deg,
-                          #ff3b30 40deg,
-                          #ff9500 75deg,
-                          #00e676 130deg,
-                          #00b0ff 190deg,
-                          #2979ff 250deg,
-                          #d500f9 305deg,
-                          #ff0055 360deg
-                        )`,
-                        filter: "blur(16px) saturate(1.8)",
-                        opacity: 0.65,
-                        animation: "beam-ambient-spin 7s linear infinite",
-                      }}
-                    />
-                  </>
-                )}
-
                 {isCenter ? (
-                  <div className="relative w-full h-full rounded-[24px] sm:rounded-[28px] overflow-hidden border border-white/15 bg-zinc-950 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) group-hover:scale-[1.03]">
-                      {/* Background Image - Positioned to keep people's faces visible in landscape */}
-                      <img
-                        src={evt.image}
-                        alt={evt.title}
-                        draggable={false}
-                        className="w-full h-full object-cover object-[center_20%] sm:object-[center_25%] pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105"
-                      />
+                  <div
+                    style={{
+                      animation: "beam-ambient-spin 7s linear infinite",
+                    }}
+                    className="relative w-full h-full transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                  >
+                    {/* Soft ambient light falloff */}
+                    <div
+                      className="ambient-beam-shadow-wide absolute -inset-4 sm:-inset-6 rounded-[38px] -z-10 pointer-events-none"
+                      style={{
+                        background: RAINBOW_CONIC_GRADIENT,
+                        filter: "blur(28px) brightness(1.15) saturate(1.35)",
+                        opacity: 0.38,
+                      }}
+                    />
+                    {/* Near ambient halo hugging the rounded border */}
+                    <div
+                      className="ambient-beam-shadow-near absolute -inset-1 sm:-inset-1.5 rounded-[34px] -z-10 pointer-events-none"
+                      style={{
+                        background: RAINBOW_CONIC_GRADIENT,
+                        filter: "blur(10px) brightness(1.25) saturate(1.45)",
+                        opacity: 0.5,
+                      }}
+                    />
 
-                      {/* Top Soft Gradient Scrim for Tag Legibility */}
-                      <div className="absolute top-0 inset-x-0 h-20 bg-gradient-to-b from-black/75 via-black/25 to-transparent pointer-events-none" />
+                    {/* Crisp concentric 3px rainbow border ring */}
+                    <div
+                      style={{
+                        background: RAINBOW_CONIC_GRADIENT,
+                        borderRadius: `${outerRadius}px`,
+                        clipPath: `inset(0 round ${outerRadius}px)`,
+                        WebkitClipPath: `inset(0 round ${outerRadius}px)`,
+                        transform: "translateZ(0)",
+                      }}
+                      className="relative w-full h-full p-[3px]"
+                    >
+                      <div
+                        style={{
+                          borderRadius: `${innerRadius}px`,
+                          clipPath: `inset(0 round ${innerRadius}px)`,
+                          WebkitClipPath: `inset(0 round ${innerRadius}px)`,
+                          transform: "translateZ(0)",
+                        }}
+                        className="relative w-full h-full bg-zinc-950 overflow-hidden"
+                      >
+                        {/* Background Image - Positioned to keep people's faces visible in landscape */}
+                        <img
+                          src={evt.image}
+                          alt={evt.title}
+                          draggable={false}
+                          className="w-full h-full object-cover object-[center_20%] sm:object-[center_25%] pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105"
+                        />
 
-                      {/* Top Tag Pill */}
-                      <div className="absolute top-4 sm:top-5 left-4 sm:left-5 z-10 pointer-events-none">
-                        <span className="px-3 sm:px-3.5 py-1 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/75 backdrop-blur-md border border-white/20 text-white font-bold shadow-lg flex items-center gap-1.5">
-                          <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-red-500 via-green-400 to-blue-500 animate-pulse" />
-                          #{evt.tag}
-                        </span>
-                      </div>
+                        {/* Top Soft Gradient Scrim for Tag Legibility */}
+                        <div className="absolute top-0 inset-x-0 h-20 bg-gradient-to-b from-black/75 via-black/25 to-transparent pointer-events-none" />
 
-                      {/* Bottom Editorial Content Overlay in Landscape Layout (Clean, compact height) */}
-                      <div className="absolute bottom-0 left-0 right-0 pt-10 sm:pt-14 pb-3.5 sm:pb-5 px-4 sm:px-6 flex flex-col justify-end z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent">
-                        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-6">
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-base sm:text-2xl md:text-3xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
-                              {evt.title}
-                            </h3>
-                            <p className="text-[10px] sm:text-xs font-mono font-bold tracking-wider mt-0.5 uppercase bg-gradient-to-r from-red-400 via-emerald-400 to-blue-400 bg-clip-text text-transparent">
-                              // {evt.subtitle}
-                            </p>
-                            <p className="text-[11px] sm:text-xs text-white/80 line-clamp-1 sm:line-clamp-2 leading-relaxed font-light mt-1 drop-shadow-sm max-w-xl hidden sm:block">
-                              {evt.summary}
-                            </p>
-                          </div>
+                        {/* Top Tag Pill */}
+                        <div className="absolute top-4 sm:top-5 left-4 sm:left-5 z-10 pointer-events-none">
+                          <span className="px-3 sm:px-3.5 py-1 rounded-full text-[10px] sm:text-[11px] font-mono tracking-widest uppercase bg-black/75 backdrop-blur-md border border-white/20 text-white font-bold shadow-lg flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-red-500 via-green-400 to-blue-500 animate-pulse" />
+                            #{evt.tag}
+                          </span>
+                        </div>
 
-                          {/* Action CTA Button */}
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedEvent(evt);
-                            }}
-                            className="relative group/btn shrink-0 w-full sm:w-auto p-[1px] rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer shadow-[0_0_20px_rgba(255,0,85,0.25),0_0_25px_rgba(0,255,102,0.2),0_0_30px_rgba(0,102,255,0.25)]"
-                          >
-                            <span className="absolute inset-0 bg-gradient-to-r from-red-500 via-emerald-400 to-blue-500 opacity-80 group-hover/btn:opacity-100 transition-opacity" />
-                            <div className="relative px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-[11px] bg-zinc-950/90 group-hover/btn:bg-zinc-900/90 flex items-center justify-center gap-2 transition-colors">
-                              <span className="text-white text-[10px] sm:text-xs font-bold tracking-wider uppercase whitespace-nowrap">View Event Story</span>
-                              <ArrowUpRight className="w-3.5 h-3.5 text-white/90 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                        {/* Bottom Editorial Content Overlay in Landscape Layout (Clean, compact height) */}
+                        <div className="absolute bottom-0 left-0 right-0 pt-10 sm:pt-14 pb-3.5 sm:pb-5 px-4 sm:px-6 flex flex-col justify-end z-10 bg-gradient-to-t from-black/95 via-black/70 to-transparent">
+                          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 sm:gap-6">
+                            <div className="flex-1 min-w-0">
+                              <h3 className="text-base sm:text-2xl md:text-3xl font-black text-white tracking-tight uppercase leading-tight drop-shadow-md">
+                                {evt.title}
+                              </h3>
+                              <p className="text-[10px] sm:text-xs font-mono font-bold tracking-wider mt-0.5 uppercase bg-gradient-to-r from-red-400 via-emerald-400 to-blue-400 bg-clip-text text-transparent">
+                                // {evt.subtitle}
+                              </p>
+                              <p className="text-[11px] sm:text-xs text-white/80 line-clamp-1 sm:line-clamp-2 leading-relaxed font-light mt-1 drop-shadow-sm max-w-xl hidden sm:block">
+                                {evt.summary}
+                              </p>
                             </div>
-                          </button>
+
+                            {/* Action CTA Button */}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedEvent(evt);
+                              }}
+                              className="relative group/btn shrink-0 w-full sm:w-auto p-[1px] rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer shadow-[0_0_20px_rgba(255,0,85,0.25),0_0_25px_rgba(0,255,102,0.2),0_0_30px_rgba(0,102,255,0.25)]"
+                            >
+                              <span className="absolute inset-0 bg-gradient-to-r from-red-500 via-emerald-400 to-blue-500 opacity-80 group-hover/btn:opacity-100 transition-opacity" />
+                              <div className="relative px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-[11px] bg-zinc-950/90 group-hover/btn:bg-zinc-900/90 flex items-center justify-center gap-2 transition-colors">
+                                <span className="text-white text-[10px] sm:text-xs font-bold tracking-wider uppercase whitespace-nowrap">View Event Story</span>
+                                <ArrowUpRight className="w-3.5 h-3.5 text-white/90 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                              </div>
+                            </button>
+                          </div>
                         </div>
                       </div>
+                    </div>
                   </div>
                 ) : (
-                  <div className="w-full h-full rounded-[28px] overflow-hidden border border-white/15 hover:border-white/40 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) hover:scale-[1.03] relative">
+                  <div
+                    style={{
+                      borderRadius: `${outerRadius}px`,
+                      clipPath: `inset(0 round ${outerRadius}px)`,
+                      WebkitClipPath: `inset(0 round ${outerRadius}px)`,
+                      transform: "translateZ(0)",
+                    }}
+                    className="w-full h-full bg-zinc-950 overflow-hidden border border-white/15 hover:border-white/40 transition-all duration-500 ease-out hover:scale-[1.03] relative"
+                  >
                     {/* Background Image */}
                     <img
                       src={evt.image}
@@ -582,10 +599,11 @@ export default function AIConnectX3DGallery() {
               key={evt.id}
               onClick={() => setActiveIdx(idx)}
               aria-label={`Go to event ${idx + 1}`}
-              className={`transition-all duration-300 cursor-pointer rounded-full ${idx === activeIdx
-                ? "w-7 h-1.5 bg-[#1D4ED8] shadow-sm"
-                : "w-1.5 h-1.5 bg-[#1D4ED8]/25 hover:bg-[#1D4ED8]/50"
-                }`}
+              className={`transition-all duration-300 cursor-pointer rounded-full ${
+                idx === activeIdx
+                  ? "w-7 h-1.5 bg-[#1D4ED8] shadow-sm"
+                  : "w-1.5 h-1.5 bg-[#1D4ED8]/25 hover:bg-[#1D4ED8]/50"
+              }`}
             />
           ))}
         </div>
