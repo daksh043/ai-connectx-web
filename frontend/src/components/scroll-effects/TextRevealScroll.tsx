@@ -224,11 +224,12 @@ export default function TextRevealScroll() {
         />
 
         <div className="relative w-full max-w-4xl lg:max-w-5xl pointer-events-auto">
-          {/* Section Index Header */}
-          <div className="relative mb-6 sm:mb-8 z-20">
-            <span className="text-xs sm:text-sm font-['Outfit',sans-serif] tracking-[0.22em] bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 bg-clip-text text-transparent font-bold uppercase">
-              01 / MISSION &amp; OVERVIEW
+          {/* Section Header */}
+          <div className="relative mb-6 sm:mb-8 z-20 flex flex-col items-start">
+            <span className="text-xl sm:text-3xl md:text-4xl font-['Outfit',sans-serif] tracking-[0.12em] bg-gradient-to-r from-white via-cyan-200 to-sky-400 bg-clip-text text-transparent font-black uppercase drop-shadow-[0_4px_24px_rgba(34,211,238,0.45)]">
+              MISSION &amp; OVERVIEW
             </span>
+            <div className="mt-2 h-[2px] w-20 sm:w-28 bg-gradient-to-r from-cyan-400 via-sky-400 to-transparent shadow-[0_0_12px_rgba(34,211,238,0.8)]" />
           </div>
 
           {/* Central Optical Stage: lines transition in the exact same reading location */}
