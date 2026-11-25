@@ -70,6 +70,7 @@ export default function AIConnectX3DGallery() {
 
   // Drag interaction states for left-to-right gesture tracking
   const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const isDraggingRef = useRef(false);
   const dragStartXRef = useRef(0);
 
@@ -250,15 +251,32 @@ export default function AIConnectX3DGallery() {
   const isLaptop = windowWidth >= 1024;
   const isTablet = windowWidth >= 640;
 
-  // Shift card stage toward the right half on tablet/desktop so the left side stays blank
-  const baseShiftX = isDesktop
-    ? Math.round(windowWidth * 0.14)
+  // Start right-shifted on the opening card (keeping the left side blank);
+  // after swiping forward (activeIdx > 0), center the carousel so swiped cards move left.
+  const isAtStart = activeIdx === 0;
+  const baseShiftX =
+    isAtStart && isTablet
+      ? isDesktop
+        ? Math.round(windowWidth * 0.14)
+        : isLaptop
+        ? Math.round(windowWidth * 0.13)
+        : Math.round(windowWidth * 0.11)
+      : 0;
+  const stepX = isAtStart
+    ? isDesktop
+      ? 250
+      : isLaptop
+      ? 210
+      : isTablet
+      ? 165
+      : 140
+    : isDesktop
+    ? 360
     : isLaptop
-    ? Math.round(windowWidth * 0.13)
+    ? 310
     : isTablet
-    ? Math.round(windowWidth * 0.11)
-    : 0;
-  const stepX = isDesktop ? 250 : isLaptop ? 210 : isTablet ? 165 : 140;
+    ? 250
+    : 180;
   const outerRadius = isTablet ? 28 : 24;
   const innerRadius = outerRadius - 3;
 
@@ -314,6 +332,7 @@ export default function AIConnectX3DGallery() {
   const handlePointerDown = (e: React.PointerEvent) => {
     if (e.button !== 0 && e.pointerType === "mouse") return;
     isDraggingRef.current = true;
+    setIsDragging(true);
     dragStartXRef.current = e.clientX;
     setDragOffset(0);
   };
@@ -327,6 +346,7 @@ export default function AIConnectX3DGallery() {
   const handlePointerUp = () => {
     if (!isDraggingRef.current) return;
     isDraggingRef.current = false;
+    setIsDragging(false);
 
     const threshold = 35;
     if (dragOffset < -threshold) {
@@ -340,18 +360,20 @@ export default function AIConnectX3DGallery() {
 
   const handlePointerCancel = () => {
     isDraggingRef.current = false;
+    setIsDragging(false);
     setDragOffset(0);
   };
 
   // ─── Keyboard Arrow Navigation ───
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedEvent) return;
       if (e.key === "ArrowLeft") handlePrev();
       if (e.key === "ArrowRight") handleNext();
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handlePrev, handleNext]);
+  }, [handlePrev, handleNext, selectedEvent]);
 
   return (
     <section
@@ -407,7 +429,7 @@ export default function AIConnectX3DGallery() {
           </div>
         </div>
 
-        {/* ─── 3D Card Stage (Right-aligned deck keeping the left side blank) ─── */}
+        {/* ─── 3D Card Stage (Starts right-aligned with left blank; swiped cards move left) ─── */}
         <div
           ref={stageRef}
           onPointerDown={handlePointerDown}
@@ -416,33 +438,26 @@ export default function AIConnectX3DGallery() {
           onPointerCancel={handlePointerCancel}
           style={{
             touchAction: "pan-y",
-            perspectiveOrigin: windowWidth >= 640 ? "64% 50%" : "50% 50%",
+            perspectiveOrigin: isAtStart && isTablet ? "64% 50%" : "50% 50%",
           }}
           className="relative w-full flex-1 flex items-center justify-center [perspective:1400px] overflow-visible my-auto select-none cursor-grab active:cursor-grabbing"
         >
           {events.map((evt, idx) => {
-            // Keep active card on the right half and fan upcoming cards rightward,
-            // ensuring passed/hidden cards never occupy the blank left side.
-            const diff = (idx - activeIdx + total) % total;
+            // Linear signed offset: swiped cards (idx < activeIdx) move left (negative diff),
+            // upcoming cards stay to the right (positive diff), keeping the left side blank at start.
+            const diff = idx - activeIdx;
+            const absDiff = Math.abs(diff);
 
             const isCenter = diff === 0;
-            const isNextOne = diff === 1;
-            const isNextTwo = diff === 2;
-            const isExitingPrev = diff === total - 1;
+            const isAbsOne = absDiff === 1;
+            const isInteractiveVisible = absDiff <= 2;
 
-            const relativeX = isExitingPrev
-              ? -Math.round(stepX * 0.12)
-              : diff >= 3
-              ? stepX * 2.35
-              : diff * stepX;
-
-            const currentTranslateX = baseShiftX + relativeX + dragOffset;
-            const translateZ = isCenter ? 80 : isNextOne ? -50 : -150;
-            const rotateY = isCenter ? 0 : isExitingPrev ? 6 : Math.min(diff, 2) * -15;
-            const scale = isCenter ? 1.0 : isNextOne ? 0.88 : isNextTwo ? 0.76 : isExitingPrev ? 0.92 : 0.68;
-            const opacity = isCenter ? 1 : isNextOne ? 0.78 : isNextTwo ? 0.42 : 0;
-            const zIndex = isCenter ? 30 : isNextOne ? 20 : isNextTwo ? 10 : isExitingPrev ? 25 : 5;
-            const isInteractiveVisible = isCenter || isNextOne || isNextTwo;
+            const currentTranslateX = baseShiftX + diff * stepX + dragOffset;
+            const translateZ = isCenter ? 80 : isAbsOne ? -55 : absDiff === 2 ? -155 : -220;
+            const rotateY = diff * -16;
+            const scale = isCenter ? 1.0 : isAbsOne ? 0.88 : absDiff === 2 ? 0.75 : 0.65;
+            const opacity = isCenter ? 1 : isAbsOne ? 0.75 : absDiff === 2 ? 0.35 : 0;
+            const zIndex = 30 - absDiff * 10;
 
             return (
               <div
@@ -456,7 +471,7 @@ export default function AIConnectX3DGallery() {
                   opacity,
                   pointerEvents: isInteractiveVisible ? "auto" : "none",
                   borderRadius: `${outerRadius}px`,
-                  transition: isDraggingRef.current
+                  transition: isDragging
                     ? "opacity 0.15s ease-out, transform 0.04s ease-out"
                     : "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
                 }}
