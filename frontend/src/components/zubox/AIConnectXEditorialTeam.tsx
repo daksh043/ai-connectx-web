@@ -163,6 +163,17 @@ export default function AIConnectXEditorialTeam() {
       skills: ["Event Management", "Operations", "Logistics", "Strategic Planning"],
     },
     {
+      id: "manasi-pawar",
+      name: "MANASI PAWAR",
+      role: "EVENT & MANAGEMENT ASSOCIATE",
+      title: "Event & Management Associate",
+      dept: "Universal AI University",
+      image: "/team/manasi-pawar.jpg",
+      bio: "Event & Management Associate supporting flagship AI conclaves, workshop coordination, and participant operations.",
+      contributions: ["Supported flagship AI conclave execution and scheduling", "Coordinated participant onboarding and event logistics"],
+      skills: ["Event Coordination", "Operations", "Logistics", "Team Collaboration"],
+    },
+    {
       id: "angad-mishra",
       name: "ANGAD MISHRA",
       role: "STUDENT RELATIONS & NETWORKING",

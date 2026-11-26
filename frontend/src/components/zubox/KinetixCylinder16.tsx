@@ -345,7 +345,7 @@ export const BASE_COVERS = [
   "/team/parth-mukne.jpg",
   "/team/angad-mishra.jpg",
   "/team/prachi-ghorpade.jpg",
-  "/team/passport_08.jpg",
+  "/team/manasi-pawar.jpg",
   "/team/passport_09.jpg",
   "/team/passport_10.jpg",
   "/team/passport_11.jpg",
@@ -364,7 +364,7 @@ export const REEL_TITLES = [
   "CORPORATE RELATIONS ASSOCIATE",
   "STARTUP & INDUSTRY RELATIONS TEAM LEAD",
   "EVENT & MANAGEMENT LEAD",
-  "FULL-STACK ML ENGINEER",
+  "EVENT & MANAGEMENT ASSOCIATE",
   "DEEP LEARNING SPECIALIST",
   "NLP & REASONING ARCHITECT",
   "PRODUCT & ECOSYSTEM LEAD",
@@ -383,7 +383,7 @@ export const REEL_DIRECTORS = [
   "Parth Mukne",
   "Angad Mishra",
   "Prachi Ghorpade",
-  "Marcus Vance",
+  "Manasi Pawar",
   "Ananya Iyer",
   "David Chen",
   "Sarah Jenkins",
@@ -409,6 +409,8 @@ const TEAM_MEMBER_BIOS: Record<string, string> = {
   "Angad Mishra": "Angad Mishra is the Startup & Industry Relations Team Lead at AI ConnectX.",
   "Prachi Ghorpade":
     "Prachi Ghorpade is the Event & Management Lead at AI ConnectX, overseeing flagship AI conclaves, hackathon logistics, and corporate summits.",
+  "Manasi Pawar":
+    "Manasi Pawar is an Event & Management Associate at AI ConnectX, supporting event execution, summit coordination, and participant operations.",
 };
 
 const TEAM_MEMBER_LINKEDIN: Record<string, string> = {

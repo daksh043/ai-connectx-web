@@ -117,6 +117,22 @@ export default function TeamPage() {
       badge: "EVENT LEAD",
     },
     {
+      id: "manasi",
+      name: "MANASI PAWAR",
+      role: "EVENT & MANAGEMENT ASSOCIATE",
+      title: "Event & Management Associate",
+      dept: "Universal AI University",
+      image: "/team/manasi-pawar.jpg",
+      bio: "Event & Management Associate at AI CONNECTX, Universal AI University. Supporting event execution, summit coordination, hackathon logistics, and seamless participant operations.",
+      contributions: [
+        "Supporting end-to-end event coordination and execution for AI ConnectX conclaves and workshops",
+        "Managing participant onboarding, scheduling, and on-ground event logistics",
+        "Collaborating with student teams and speakers to deliver seamless technical events",
+      ],
+      skills: ["Event Coordination", "Operations Support", "Logistics", "Team Collaboration"],
+      badge: "EVENT ASSOCIATE",
+    },
+    {
       id: "daksh",
       name: "DAKSH RAJESH KHANDAGALE",
       role: "FOUNDER & LEAD ARCHITECT",
