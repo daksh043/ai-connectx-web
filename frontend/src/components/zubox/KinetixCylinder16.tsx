@@ -344,7 +344,7 @@ export const BASE_COVERS = [
   "/team/sana.jpg",
   "/team/parth-mukne.jpg",
   "/team/angad-mishra.jpg",
-  "/team/passport_07.jpg",
+  "/team/prachi-ghorpade.jpg",
   "/team/passport_08.jpg",
   "/team/passport_09.jpg",
   "/team/passport_10.jpg",
@@ -363,7 +363,7 @@ export const REEL_TITLES = [
   "STARTUP & INDUSTRY RELATIONS TEAM LEAD",
   "CORPORATE RELATIONS ASSOCIATE",
   "STARTUP & INDUSTRY RELATIONS TEAM LEAD",
-  "ROBOTICS & PERCEPTION",
+  "EVENT & MANAGEMENT LEAD",
   "FULL-STACK ML ENGINEER",
   "DEEP LEARNING SPECIALIST",
   "NLP & REASONING ARCHITECT",
@@ -382,7 +382,7 @@ export const REEL_DIRECTORS = [
   "Sana Khan",
   "Parth Mukne",
   "Angad Mishra",
-  "Sora Takahashi",
+  "Prachi Ghorpade",
   "Marcus Vance",
   "Ananya Iyer",
   "David Chen",
@@ -407,6 +407,8 @@ const TEAM_MEMBER_BIOS: Record<string, string> = {
   "Sana Khan": "Sana Khan leads startup and industry relations at AI ConnectX.",
   "Parth Mukne": "Parth Mukne is a Corporate Relations Associate at AI ConnectX.",
   "Angad Mishra": "Angad Mishra is the Startup & Industry Relations Team Lead at AI ConnectX.",
+  "Prachi Ghorpade":
+    "Prachi Ghorpade is the Event & Management Lead at AI ConnectX, overseeing flagship AI conclaves, hackathon logistics, and corporate summits.",
 };
 
 const TEAM_MEMBER_LINKEDIN: Record<string, string> = {
