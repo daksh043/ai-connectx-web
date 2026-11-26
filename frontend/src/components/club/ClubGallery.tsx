@@ -66,7 +66,7 @@ export default function ClubGallery() {
               </span>
             </div>
             <h2 className="text-4xl sm:text-6xl md:text-7xl font-black font-display tracking-tight uppercase">
-              CLUB CHRONICLES
+              EVENT AND GALLERY
             </h2>
           </div>
 

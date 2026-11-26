@@ -100,7 +100,7 @@ export default function AIConnectXChronicles() {
               </span>
             </div>
             <h2 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight uppercase font-sans">
-              CLUB <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500">CHRONICLES</span>
+              EVENT AND <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-500">GALLERY</span>
             </h2>
           </div>
 

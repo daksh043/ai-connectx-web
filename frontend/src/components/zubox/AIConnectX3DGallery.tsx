@@ -54,12 +54,20 @@ interface GalleryEvent {
   description: string;
   image: string;
   fullImage?: string;
+  images?: string[];
   date: string;
   location: string;
   highlights: string[];
   panelists?: string[];
   mentors?: string[];
   closingNote?: string;
+}
+
+function getEventPhotos(event: GalleryEvent): string[] {
+  if (event.images && event.images.length > 0) {
+    return event.images;
+  }
+  return [event.fullImage || event.image];
 }
 
 export default function AIConnectX3DGallery() {
@@ -69,6 +77,12 @@ export default function AIConnectX3DGallery() {
 
   const [virtualIdx, setVirtualIdx] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState<GalleryEvent | null>(null);
+  const [activePhotoIdx, setActivePhotoIdx] = useState(0);
+
+  const openEventModal = useCallback((evt: GalleryEvent) => {
+    setActivePhotoIdx(0);
+    setSelectedEvent(evt);
+  }, []);
 
   // Drag interaction states for left-to-right gesture tracking
   const [dragOffset, setDragOffset] = useState(0);
@@ -111,6 +125,14 @@ export default function AIConnectX3DGallery() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setSelectedEvent(null);
+        return;
+      }
+      const photos = getEventPhotos(selectedEvent);
+      if (photos.length <= 1) return;
+      if (e.key === "ArrowRight") {
+        setActivePhotoIdx((prev) => (prev + 1) % photos.length);
+      } else if (e.key === "ArrowLeft") {
+        setActivePhotoIdx((prev) => (prev - 1 + photos.length) % photos.length);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -140,6 +162,12 @@ export default function AIConnectX3DGallery() {
         "Turning industry expertise into student experiences. 🤝\n\n[AI ConnectX](https://www.linkedin.com/company/ai-connectx-ai/) was proud to support and contribute to the successful execution of the insightful session on AI Engineering × Agentic Systems by Mr. [Dipan Mehta](https://www.linkedin.com/in/dipanmehta/) at [Universal Ai University](https://www.linkedin.com/school/universalaiuniversity/).\n\nFrom coordination to execution, our team worked to create a platform where industry expertise meets student curiosity, enabling meaningful learning and interaction.",
       image: "/gallery/agentic_systems.jpg",
       fullImage: "/gallery/agentic_systems_full.jpg",
+      images: [
+        "/gallery/agentic_systems_full.jpg",
+        "/gallery/agentic_systems_2.jpg",
+        "/gallery/agentic_systems_3.jpg",
+        "/gallery/agentic_systems_poster.jpg",
+      ],
       date: "Campus Masterclass · 2026",
       location: "Universal Ai University Auditorium & Innovation Stage",
       highlights: [
@@ -168,6 +196,11 @@ export default function AIConnectX3DGallery() {
         "🙌 Behind every successful initiative is a team that makes it happen! The successful completion of SIP Evaluation 2026 at Universal Ai University was made possible through the dedication, coordination, and hard work of the Ai ConnectX team.\n\nFrom coordinating with industry professionals to managing evaluation sessions and ensuring smooth execution, our team worked together behind the scenes to make the process successful.",
       image: "/gallery/sip_evaluation.jpg",
       fullImage: "/gallery/sip_evaluation_full.jpg",
+      images: [
+        "/gallery/sip_evaluation_full.jpg",
+        "/gallery/sip_evaluation_2.jpg",
+        "/gallery/sip_evaluation_poster.jpg",
+      ],
       date: "Saturday, 26/09/2026 · 01:00 PM",
       location: "Universal AI University Campus, Kushiwali, Maharashtra",
       highlights: [
@@ -381,7 +414,7 @@ export default function AIConnectX3DGallery() {
               className="text-3xl sm:text-5xl lg:text-6xl font-['Outfit',sans-serif] font-extrabold tracking-[-0.03em] text-[#1D4ED8] drop-shadow-none leading-none select-none"
               style={{ textShadow: "none" }}
             >
-              Club Chronicles
+              Event and Gallery
             </h2>
           </div>
 
@@ -562,7 +595,7 @@ export default function AIConnectX3DGallery() {
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                setSelectedEvent(evt);
+                                openEventModal(evt);
                               }}
                               className="relative group/btn shrink-0 w-full sm:w-auto p-[1px] rounded-xl overflow-hidden transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer shadow-[0_0_20px_rgba(255,0,85,0.25),0_0_25px_rgba(0,255,102,0.2),0_0_30px_rgba(0,102,255,0.25)]"
                             >
@@ -701,14 +734,81 @@ export default function AIConnectX3DGallery() {
               </div>
 
               <div className="space-y-4">
-                {/* Event Image Banner - Widescreen Landscape */}
-                <div className="w-full aspect-[16/9] sm:aspect-[16/10] max-h-80 sm:max-h-96 rounded-2xl overflow-hidden border border-white/10 mb-4 bg-black/80 flex items-center justify-center shadow-inner">
-                  <img
-                    src={selectedEvent.fullImage || selectedEvent.image}
-                    alt={selectedEvent.title}
-                    className="w-full h-full object-contain object-center"
-                  />
-                </div>
+                {/* Event Image Banner - Multi-Photo Carousel */}
+                {(() => {
+                  const eventPhotos = getEventPhotos(selectedEvent);
+                  const safeIdx = Math.min(activePhotoIdx, eventPhotos.length - 1);
+                  const activeSrc = eventPhotos[safeIdx];
+                  const hasMultiple = eventPhotos.length > 1;
+                  return (
+                    <div className="mb-4 space-y-2.5">
+                      <div className="relative w-full aspect-[16/9] sm:aspect-[16/10] max-h-80 sm:max-h-96 rounded-2xl overflow-hidden border border-white/10 bg-black/80 flex items-center justify-center shadow-inner">
+                        <img
+                          src={activeSrc}
+                          alt={`${selectedEvent.title}${hasMultiple ? ` (${safeIdx + 1} of ${eventPhotos.length})` : ""}`}
+                          onError={(e) => {
+                            if (!e.currentTarget.src.endsWith(selectedEvent.image)) {
+                              e.currentTarget.src = selectedEvent.image;
+                            }
+                          }}
+                          className="w-full h-full object-contain object-center"
+                        />
+
+                        {hasMultiple && (
+                          <>
+                            <span className="absolute top-3 right-3 z-20 px-2.5 py-1 rounded-full bg-black/80 backdrop-blur-md border border-white/20 text-[11px] font-mono text-white shadow-lg">
+                              {safeIdx + 1} / {eventPhotos.length}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setActivePhotoIdx((prev) => (prev - 1 + eventPhotos.length) % eventPhotos.length)
+                              }
+                              aria-label="Previous photo"
+                              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/80 hover:bg-white hover:text-black border border-white/25 flex items-center justify-center text-white transition-colors cursor-pointer shadow-lg"
+                            >
+                              <ChevronLeft className="w-5 h-5" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setActivePhotoIdx((prev) => (prev + 1) % eventPhotos.length)
+                              }
+                              aria-label="Next photo"
+                              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/80 hover:bg-white hover:text-black border border-white/25 flex items-center justify-center text-white transition-colors cursor-pointer shadow-lg"
+                            >
+                              <ChevronRight className="w-5 h-5" />
+                            </button>
+                          </>
+                        )}
+                      </div>
+
+                      {hasMultiple && (
+                        <div className="flex items-center gap-2 overflow-x-auto pb-1">
+                          {eventPhotos.map((photoSrc, idx) => (
+                            <button
+                              key={`${photoSrc}-${idx}`}
+                              type="button"
+                              onClick={() => setActivePhotoIdx(idx)}
+                              aria-label={`View photo ${idx + 1}`}
+                              className={`relative shrink-0 w-20 h-14 rounded-lg overflow-hidden border transition-all cursor-pointer ${
+                                idx === safeIdx
+                                  ? "border-cyan-400 ring-2 ring-cyan-400/40 opacity-100"
+                                  : "border-white/15 opacity-55 hover:opacity-85"
+                              }`}
+                            >
+                              <img
+                                src={photoSrc}
+                                alt={`${selectedEvent.title} thumbnail ${idx + 1}`}
+                                className="w-full h-full object-cover"
+                              />
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
 
                 <div className="flex flex-wrap items-center gap-4 text-xs text-white/70 font-mono pb-2">
                   <span className="flex items-center gap-1.5">

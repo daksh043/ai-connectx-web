@@ -20,7 +20,7 @@ const DEFAULT_LINKS: NavLinkItem[] = [
   { label: "Our Team", href: "/team" },
   { label: "Featured Projects", href: "/projects" },
   { label: "Industry Voices", href: "/industry-voices" },
-  { label: "Club Chronicles", href: "/#chronicles" },
+  { label: "Event and Gallery", href: "/#chronicles" },
 ];
 
 // Exact spring physics from Ask Phill (ap.main.js: stiffness 400, damping 24 & 29)
